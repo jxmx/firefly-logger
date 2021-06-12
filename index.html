@@ -1,0 +1,161 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Firefly Field Day Logger</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/jquery.typeahead.min.css" rel="stylesheet"> 
+	<link href="css/local.css" rel="stylesheet">
+	<link rel="shortcut icon" href="img/firefly-logo.jpg">
+	
+</head>
+<body>
+<main>
+	<div class="container-fluid bg-secondary bg-gradient">
+		<div class="d-flex justify-content-evenly">
+			<div class="align-self-center">
+				<img src="img/firefly-logo.jpg"> <b>Firefly Field Day Logger</b>
+			</div>
+			<div class="align-self-center">
+				<form id="stationset" name="stationset">
+				<table class="stationsett">
+				<tbody>
+					<td class="align-middle bg-warning rounded-3 p-2">
+						<b>Station Info</b>
+					</td>
+					<td>
+						<input type="text" id="callsign" name="callsign" size="10" class="form-control" placeholder="Callsign"
+							onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
+					</td>
+					<td>
+						<input type="text" id="operator" name="operator" size="10" class="form-control" placeholder="Operator"
+							onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
+					</td>
+					<td>
+						<select id="band" name="band" class="form-control">
+							<option value="X">Select Band...</option>
+							<option value="160m">160m</option>
+							<option value="80m">80m</option>
+							<option value="40m">40m</option>
+							<option value="20m">20m</option>
+							<option value="15m">15m</option>
+							<option value="10m">10m</option>
+							<option value="6m">6m</option>
+							<option value="2m">2m</option>
+						</select>
+					</td>
+					<td>
+						<select id="mode" name="mode" class="form-control">
+							<option value="X">Select Mode...</option>
+							<option value="SSB">SSB</option>
+							<option value="CW">CW</option>
+							<option value="FM">FM</option>
+							<option value="FT8">FT8</option>
+							<option value="FT4">FT4</option>
+							<option value="JT65">JT65</option>
+							<option value="RTTY">RTTY</option>
+						</select>
+					</td>
+					<td>
+						<button type="button" class="btn btn-primary btn-sm" onclick="saveStationData()">Set</button>
+					</td>
+				</tbody>
+				</table>
+				</form>
+			</div>
+			<div class="align-self-center">
+						<button type="button" class="btn btn-secondary btn-sm" onclick="showHelp()">Help</button>
+			</div>
+		</div>
+	</div>
+	<div class="container-md qso-entry-container shadow">
+		<div class="row">
+				<form id="log" name="log">
+					<table class="table table-borderless">
+						<thead>
+							<th scope="col" style="width: 20%">Date/Time</th>
+							<th scope="col" style="width: 20%">Callsign</th>
+							<th scope="col" style="width: 20%">Class</th>
+							<th scope="col" style="width: 10%">Section</th>
+							<th scope="col" style="width: 10%">&nbsp;</th>
+							<th scope="col" style="width: 10%">&nbsp;</th>
+							<th scope="col" style="width: 10%">&nbsp;</th>
+						</thead>
+						<tbody>
+							<td class="align-bottom">
+								<input type="text" size=15 name="logclock" id="logclock" class="form-control" 
+									tabindex="-1" autocomplete="off">
+							</td>
+							<td class="align-bottom">
+								<input id="call" name="call" type="text" size="10" class="form-control"
+									onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
+							</td>
+							<td class="align-bottom">
+								<input id="opclass" name="opclass" type="text" size="10" class="form-control"
+									 onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
+							</td>
+							<td class="align-bottom">
+	 							<div id="arrl-sections">
+								<input id="section" name="section" class="typeahead form-control" type="text"
+										size="10" autocomplete="off"  onkeyup="this.value = this.value.toUpperCase();">
+								</div>
+							</td>
+							<td class="align-bottom" align="center">
+								<button id="logsubmit" name="logsubmit" type="button" class="btn btn-danger"
+									onclick="logSubmit()">Log</button>
+							</td>
+							<td class="align-bottom" align="left">
+								<button id="logclear" name="logclear" type="button" class="btn btn-secondary"
+									onclick="logReset()">Clear</button>
+							</td>
+							<td class="align-bottom">
+								<div id="statusarea" class="invisible rounded-3 text-white"></div>
+
+							</td>
+						</tbody>
+					</table>
+					<input type="hidden" id="opcallsign" name="opcallsign" value="">
+					<input type="hidden" id="opoperator" name="opoperator" value="">
+					<input type="hidden" id="opband" name="opband" value="">
+					<input type="hidden" id="opmode" name="opmode" value="">
+					<input type="hidden" id="qkey" name="qkey" value="">
+				</form>
+		</div>
+	</div>
+	<div class="container-md shadow log-disp-container">
+		<div class="row">
+			<div class="col">
+				<div class="d-flex shadow bg-primary text-white p-2"><b>Last 10 QSOs</b></div>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Date/Time</th>
+							<th scope="col">Call</th>
+							<th scope="col">Class</th>
+							<th scope="col">Section</th>
+							<th scope="col">Band</th>
+							<th scope="col">Mode</th>
+							<th scope="col">Oper</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+					<tbody id="logdisplay" name="logdisplay">
+					</tbody>
+				</table>
+				<div class="d-flex p-2"><i>Log updates every 15 seconds with last 10 QSOs</i></div>
+			</div>
+		</div>
+	</div>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/typeahead.jquery.js"></script>
+	<script src="js/murmurhash3_unrolled_rp.js"></script>
+	<script src="js/forms.js"></script>
+	<script src="js/stationset.js"></script>
+	<script src="js/data.js"></script>
+</main>
+<footer>
+	<div class="d-flex shadow m-5 p-2"><i>Powered by Firefly Field Day Logger by Jason McCormick N8EI - GitHub</i></div>
+</footer>
+</body>
+</html>
