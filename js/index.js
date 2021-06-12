@@ -1,4 +1,13 @@
 //
+// Things that might require configuration
+//
+
+// Add/edit/delete the ARRL/RAC sections from this array as things change
+var sections = [
+"CT", "EMA", "ME", "NH", "RI", "VT", "WMA", "ENY", "NLI", "NNJ", "NNY", "SNJ", "WNY", "DE", "EPA", "MDC", "WPA", "AL", "GA", "KY", "NC", "NFL", "SC", "SFL", "WCF", "TN", "VA", "PR", "VI", "AR", "LA", "MS", "NM", "NTX", "OK", "STX", "WTX", "EB", "LAX", "ORG", "SB", "SCV", "SDG", "SF", "SJV", "SV", "PAC", "AZ", "EWA", "ID", "MT", "NV", "OR", "UT", "WWA", "WY", "AK", "MI", "OH", "WV", "IL", "IN", "WI", "CO", "IA", "KS", "MN", "MO", "NE", "ND", "SD", "MAR", "NL", "PE", "QC", "ONE", "ONN", "ONS", "GTA", "MB", "SK", "AB", "BC", "NT", "DX" ]; 
+
+
+//
 // Type-ahead searching for section box
 //
 
@@ -23,9 +32,6 @@ var substringMatcher = function(strs) {
     cb(matches);
   };
 };
-
-var sections = [
-"CT", "EMA", "ME", "NH", "RI", "VT", "WMA", "ENY", "NLI", "NNJ", "NNY", "SNJ", "WNY", "DE", "EPA", "MDC", "WPA", "AL", "GA", "KY", "NC", "NFL", "SC", "SFL", "WCF", "TN", "VA", "PR", "VI", "AR", "LA", "MS", "NM", "NTX", "OK", "STX", "WTX", "EB", "LAX", "ORG", "SB", "SCV", "SDG", "SF", "SJV", "SV", "PAC", "AZ", "EWA", "ID", "MT", "NV", "OR", "UT", "WWA", "WY", "AK", "MI", "OH", "WV", "IL", "IN", "WI", "CO", "IA", "KS", "MN", "MO", "NE", "ND", "SD", "MAR", "NL", "PE", "QC", "ONE", "ONN", "ONS", "GTA", "MB", "SK", "AB", "BC", "NT", "DX" ]; 
 
 $('#arrl-sections .typeahead').typeahead({
   hint: true,
@@ -83,13 +89,42 @@ $('#call').on('input', function() {
 	}
 });
 
-function callCheckDupe() {
-	var callf = document.getElementById("call");
-	var dupe = isDupeQSO();
-	if(dupe){
+
+// Duplicate checking logic
+// Note: this has to be async because of XHR and then call a different function to lock stuff out
+function isDupeQSO() {
+    var opband = document.getElementById("band").value;
+    document.getElementById("opband").value = opband;
+
+    var opmode = document.getElementById("mode").value;
+    document.getElementById("opmode").value = opmode;
+
+    var qsocall = document.getElementById("call").value;
+    var qkey = murmurhash3_32_rp( qsocall + opband + opmode, 17);
+
+    $.ajax({
+        type:   "POST",
+        url:    "api/checkdupe.php?qkey=" + qkey,
+        data:   { qkey: qkey },
+        success: function(output) {
+			handleIsQSO(output);
+        },
+        failure: function(msg)  {
+            console.log("Error " + msg);
+        }
+    });
+
+}
+
+function handleIsQSO(resp) {
+
+	callf = document.getElementById("call")
+
+	if(resp === "DUPE"){
 		submitOkDupe = false;	
 		callf.classList.remove("is-valid");
 		callf.classList.add("is-invalid");
+		callf.focus();
 	} else {
 		submitOkDupe = true;
 		callf.classList.remove("is-invalid");
@@ -265,3 +300,27 @@ function editQSO(qkey){
 function delQSO(qkey){
 	alert("Function not implemented");
 }
+
+//
+// Display QSOs
+//	
+
+// update function
+function updateDisplayLog(){
+	$.ajax({
+		type: "get",
+		url: "api/displaylog.php",
+		success: function(output) {
+			$("#logdisplay").html(output);
+		},
+		failure: function(output) {
+			$("#logdisplay").html(output);
+		}
+	});
+}
+
+// set the timer
+window.addEventListener("load", function(){
+	updateDisplayLog();
+	setInterval(updateDisplayLog, 15000);
+});
