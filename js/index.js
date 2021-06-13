@@ -104,9 +104,8 @@ function isDupeQSO() {
     var qkey = murmurhash3_32_rp( qsocall + opband + opmode, 17);
 
     $.ajax({
-        type:   "POST",
+        type:   "GET",
         url:    "api/checkdupe.php?qkey=" + qkey,
-        data:   { qkey: qkey },
         success: function(output) {
 			handleIsDupeQSO(output);
         },
@@ -320,15 +319,35 @@ function testMsg(){
 }
 
 // 
-// Other functions
+// Manage QSOs
 //
 
 function editQSO(qkey){
 	alert("Function not implemented");
 }
 
-function delQSO(qkey){
-	alert("Function not implemented");
+function delQSO(qkey, qcall){
+	if( confirm("Are you sue your want to delete QSO with " + qcall + "?\n(QSO ID# " + qkey + ")") ){
+	    $.ajax({
+	        type:   "GET",
+	        url:    "api/delqso.php?qkey=" + qkey,
+	        success: function(output) {
+	            handleDelQSO(output, qkey, qcall);
+	        },
+	        failure: function(msg)  {
+	            alertStatusMsg("Unable to contact server with error: " + msg);
+	        }
+	    });
+	} 
+}
+
+function handleDelQSO(output, qkey, qcall){
+	if( output === "OK" ){
+		decayingAlertStatusMsg("Deleted QSO with " + qcall + " (key: " + qkey + ")", 3);
+		updateDisplayLog();
+	} else {
+		alertStatusMsg("Error deleting QSO: " + output + " (key: " + qkey + ")");
+	}		
 }
 
 //
@@ -354,3 +373,5 @@ window.addEventListener("load", function(){
 	updateDisplayLog();
 	setInterval(updateDisplayLog, 15000);
 });
+
+
