@@ -76,6 +76,7 @@ var submitOkClass = false;
 var submitOkSection = false;
 var submitOkDupe = false;
 
+// QSO Call
 $('#call').on('input', function() {
 	var input=$(this);
 	var re = /^[a-zA-Z0-9\/]{2,9}[a-zA-Z]$/;
@@ -110,7 +111,7 @@ function isDupeQSO() {
 			handleIsDupeQSO(output);
         },
         failure: function(msg)  {
-            console.log("Error " + msg);
+			alertStatusMsg("Unable to contact server with error: " + msg);
         }
     });
 
@@ -159,7 +160,7 @@ $('#section').on('input', function() {
 });
 
 $('#log').on('input', function() {
-	if(checkSubmitOkStatus()){
+	if(checkSubmitOkStatus() && checkStationSetOkStatus()){
 		toggleLogButton(true);
 	} else {
 		toggleLogButton(false);
@@ -201,8 +202,13 @@ function checkSubmitOkStatus() {
 
 function logSubmit() {
 
+	if(!checkStationSetOkStatus()){
+		alertStatusMsg("Station information not set");
+		return false;
+	}
+
 	if(!checkSubmitOkStatus()){
-		console.log("Not ready to submit");
+		decayingAlertStatusMsg("Entry not complete", 1);
 		return false;
 	}
 
@@ -230,7 +236,6 @@ function logSubmit() {
 
 	var qsocall = document.getElementById("call").value;
 	var qkey = murmurhash3_32_rp( qsocall + opband + opmode, 17);
-	console.log(qkey);
 	document.getElementById("qkey").value = qkey;
 
 	var fd = new FormData(lform);
@@ -241,10 +246,10 @@ function logSubmit() {
 		url:	"api/storeqso.php",
 		data:	fj,
 		success: function(msg) {
-			console.log(msg);
+			decayingGoodStatusMsg("Stored QSO for " + qsocall + "!  (QKEY: " + qkey + " , API Resp: " + msg + ")", 3);
 		},
 		failure: function(msg) {
-			console.log(msg);
+			alertStatusMsg("Failed to store QSO for " + qsocall + "! (QKEY: " + qkey + " , API Resp: " + msg + ")");
 		}
 	});
 
@@ -281,6 +286,11 @@ function goodStatusMsg(msg) {
 	statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>";
 };
 
+function decayingGoodStatusMsg(msg, secs) {
+	setTimeout(clearStatusMsg, secs * 1000);
+	goodStatusMsg(msg);
+}
+
 function alertStatusMsg(msg) {
 	var statusbox = document.getElementById("statusarea");
 	clearStatusMsg();
@@ -290,6 +300,12 @@ function alertStatusMsg(msg) {
 	statusbox.innerHTML += "<div class=\"d-inline-flex\">" + msg + "</div>";
 	statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>";
 };
+
+function decayingAlertStatusMsg(msg, secs) {
+    setTimeout(clearStatusMsg, secs * 1000);
+    alertStatusMsg(msg);
+}
+
 
 
 function clearStatusMsg(){
