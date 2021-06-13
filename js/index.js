@@ -107,7 +107,7 @@ function isDupeQSO() {
         url:    "api/checkdupe.php?qkey=" + qkey,
         data:   { qkey: qkey },
         success: function(output) {
-			handleIsQSO(output);
+			handleIsDupeQSO(output);
         },
         failure: function(msg)  {
             console.log("Error " + msg);
@@ -116,7 +116,7 @@ function isDupeQSO() {
 
 }
 
-function handleIsQSO(resp) {
+function handleIsDupeQSO(resp) {
 
 	callf = document.getElementById("call")
 
@@ -125,6 +125,7 @@ function handleIsQSO(resp) {
 		callf.classList.remove("is-valid");
 		callf.classList.add("is-invalid");
 		callf.focus();
+		alertStatusMsg("Duplicate QSO: Callsign + Band + Mode already in log");
 	} else {
 		submitOkDupe = true;
 		callf.classList.remove("is-invalid");
@@ -204,7 +205,6 @@ function logSubmit() {
 		console.log("Not ready to submit");
 		return false;
 	}
-	console.log("Submit form");
 
 	// Initialize the form
 	var lform = document.getElementById("log");
@@ -273,20 +273,34 @@ function logReset() {
 // 
 function goodStatusMsg(msg) {
 	var statusbox = document.getElementById("statusarea");
+	clearStatusMsg();
 	statusbox.classList.remove("invisible");
-	statusbox.classList.add("bg-success");
-	statusbox.innerHTML += "<p>" + msg + "</p>";
+	statusbox.classList.add("alert-success");
+	statusbox.innerHTML += "<svg class=\"bi flex-shrink-0 me-2\" width=\"24\" height=\"24\" role=\"img\" aria-label=\"Success:\"><use xlink:href=\"#check-circle-fill\"/></svg>";
+	statusbox.innerHTML += "<div class=\"d-inline-flex\">" + msg + "</div>";
+	statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>";
 };
+
+function alertStatusMsg(msg) {
+	var statusbox = document.getElementById("statusarea");
+	clearStatusMsg();
+	statusbox.classList.remove("invisible");
+	statusbox.classList.add("alert-danger");
+	statusbox.innerHTML += "<svg class=\"bi flex-shrink-0 me-2\" width=\"24\" height=\"24\" role=\"img\" aria-label=\"Success:\"><use xlink:href=\"#exclamation-triangle-fill\"/></svg>";
+	statusbox.innerHTML += "<div class=\"d-inline-flex\">" + msg + "</div>";
+	statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>";
+};
+
 
 function clearStatusMsg(){
 	var statusbox = document.getElementById("statusarea");
-	statusbox.classList.remove("bg-success");
+	statusbox.classList.remove("alert-success", "alert-danger");
     statusbox.classList.add("invisible");
 	statusbox.innerHTML = "";
 }
 
 function testMsg(){
-	goodStatusMsg("This is a test!");
+	alertStatusMsg("This is a test!");
 }
 
 // 
