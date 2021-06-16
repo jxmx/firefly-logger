@@ -16,11 +16,7 @@ $operator = getPostVar("operator");
 $band = getPostVar("band");
 $mode = getPostVar("mode");
 
-$db = mysqli_connect("localhost","ffdl","ffdl","ffdl");
-if($db->connect_errno){
-	echo "ERROR Failed to connect to MariaDB instance";
-	exit();	
-}
+include("db.php");
 
 $qry = sprintf("UPDATE qso SET callsign='%s', date='%s', band='%s', class='%s', mode='%s', " .
 	"station='%s', section='%s', operator='%s' WHERE qkey=%d;",

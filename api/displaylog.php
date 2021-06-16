@@ -1,10 +1,6 @@
 <?php
 
-$db = mysqli_connect("localhost","ffdl","ffdl","ffdl");
-if($db->connect_errno){
-	echo "ERROR Failed to connect to MariaDB instance";
-	exit();	
-}
+include("db.php");
 
 $insqry = "select * from ( select * from qso order by date desc limit 10 ) sub order by date desc;";
 if($res = $db->query($insqry)){

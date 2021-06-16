@@ -16,11 +16,7 @@ $operator = getPostVar("opoperator");
 $band = getPostVar("opband");
 $mode = getPostVar("opmode");
 
-$db = mysqli_connect("localhost","ffdl","ffdl","ffdl");
-if($db->connect_errno){
-	echo "ERROR Failed to connect to MariaDB instance";
-	exit();	
-}
+include("db.php");
 
 $insqry = sprintf("INSERT INTO qso VALUES(%d,'%s','%s','%s','%s','%s','%s','%s','%s');",
 	$qkey,$call,$logclock,$band,$opclass,$mode,$callsign,$section,$operator

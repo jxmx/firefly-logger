@@ -7,11 +7,7 @@ function getPostVar($id) {
 
 $qkey = getPostVar("qkey");
 
-$db = mysqli_connect("localhost","ffdl","ffdl","ffdl");
-if($db->connect_errno){
-	echo "ERROR Failed to connect to MariaDB instance";
-	exit();	
-}
+include("db.php");
 
 $insqry = sprintf("SELECT COUNT(qkey) FROM qso WHERE qkey=%d", $qkey);
 if($res = $db->query($insqry)){
