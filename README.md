@@ -22,6 +22,20 @@ Goals / Design Philosophy
 - ADIF export for Logbook of the World (LoTW) or other logging programs
 - CSV export for spreadsheet manipulations
 
+## Immportant Security Note
+
+Please note that Firefly Field Day Logger does **NOT** have the
+required web application security to run over the open
+Internet. FFDL is intended to be a lightweight application for local use
+at an ARRL Field Day over a local LAN/WiFi connection with a group of
+well-behaved, well-meaning operators. It does not contain any authentication
+security, serious input sanitization, or significant anti-XSS protections.
+
+If you feel like you MUST implement this over the Internet, the best I can
+suggest is that the server implements HTTP Basic Authentication at the
+server-level. However **DO NOT** plan to actually do this - it is not
+recommended.
+
 ## Prerequisites 
 
 Firefly Field Day Logger, at least in its first version, is not a
@@ -39,12 +53,73 @@ knowledge of HTML5 and JavaScript would be helpful.
 
 ## Installation
 
-TBD
+Installation is fairly straight forward.
+
+1. Copy the entire package to your webserver's root directory 
+such as `/var/www/html`.
+
+2. Edit `api/db.php` and insert your MariaDB/MySQL connection information.
+For the purposes of the documentation, the database, user, and password
+are all assumed to be "ffdl".
+
+3. As the root user of MariaDB, execute the following commands - adjusted
+for your database, user, and password as well as the on-disk path
+to the web root:
+
+`CREATE DATABASE ffdl;
+GRANT ALL ON ffdl.* TO 'ffdl'@'localhost' IDENTIFIED BY 'ffdl';
+FLUSH PRIVILEGES;
+USE ffdl;
+SOURCE /var/www/html/load.sql;`
+
+4. Browse to the application URL
 
 ## Testing
 
-TBD
+To test that the system is installed properly:
+
+1. Add a QSO
+
+2. Edit a QSO
+
+3. Delete a QSO
+
+If those three operations work, you have a successful installation.
 
 ## Basic Use
+
+Firefly Field Day Logger is intended to be an intuitative logger
+system. It supports many concurrent users with a minimal footprint.
+For each operator, the basic use pattern should be followed:
+
+1. Open a web brower and point it to the hostname or IP address
+of your server.
+
+2. Set the station information at the top of the screen. The **callsign**
+is the overall callsign used for the activity. The **operator** is
+the particular station operator's personal callsign. Callsign and
+Operator can be the same call if it's a single-operator situation.
+
+3. Begin logging!
+
+## Customizations
+
+Any customizations currently have to be dealt with in the code. I can
+only foresee two needed customizations.
+
+To alter the ARRL section list, that is contained within
+a JavaScript array at the very top of the `js/index.js` file. Look
+for the `var section = [ ]` array. Add or remove sections as needed.
+
+To alter the Band or Mode drop downs, edit the `index.html` and search
+for either `<select id="band"` or `<select id="mode"` as desired.
+Add or remove `<option>` statements as needed. Make sure that the 
+`<option>` specifies both a `value=` and the name between the tags
+as the same information.
+
+## Issues
+
+For any discovered issues, please file an Issue within Github.
+
 
 TBD
