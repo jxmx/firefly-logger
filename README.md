@@ -22,7 +22,7 @@ Goals / Design Philosophy
 - ADIF export for Logbook of the World (LoTW) or other logging programs
 - CSV export for spreadsheet manipulations
 
-## Immportant Security Note
+## Important Security Note
 
 Please note that Firefly Field Day Logger does **NOT** have the
 required web application security to run over the open
@@ -67,9 +67,13 @@ for your database, user, and password as well as the on-disk path
 to the web root:
 
 `CREATE DATABASE ffdl;
+
 GRANT ALL ON ffdl.* TO 'ffdl'@'localhost' IDENTIFIED BY 'ffdl';
+
 FLUSH PRIVILEGES;
+
 USE ffdl;
+
 SOURCE /var/www/html/load.sql;`
 
 4. Browse to the application URL
@@ -120,6 +124,3 @@ as the same information.
 ## Issues
 
 For any discovered issues, please file an Issue within Github.
-
-
-TBD
