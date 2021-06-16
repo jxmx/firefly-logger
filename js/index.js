@@ -328,4 +328,7 @@ window.addEventListener("load", function(){
 	setInterval(updateDisplayLog, 15000);
 });
 
-
+// refresh the QSOs when the window comes back into focus (e.g. after edit)
+window.addEventListener("focus", function(){
+	updateDisplayLog();
+});

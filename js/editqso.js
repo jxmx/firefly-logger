@@ -16,11 +16,16 @@ function submitEdit() {
 }
 
 function handleSubmitEdit(msg) {
-	alert(msg);
+    if( msg === "OK" ){
+        goodStatusMsg(msg);
+		setTimeout(window.close, 2000);
+    } else {
+        alertStatusMsg(msg);
+    }
 }
 
 function abandonEdit() {
-	alert("not implemented");
+	window.close();
 }
 
 
