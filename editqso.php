@@ -23,7 +23,7 @@ $qry = "SELECT * FROM qso WHERE qkey=" . $qkey;
 	<title>Edit QSO - Firefly Field Day Logger</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/local.css" rel="stylesheet">
-	<link rel="shortcut icon" href="img/firefly-logo.jpg">
+	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
 	
 </head>
 <body>
