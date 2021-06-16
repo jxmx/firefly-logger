@@ -66,15 +66,13 @@ are all assumed to be "ffdl".
 for your database, user, and password as well as the on-disk path
 to the web root:
 
-`CREATE DATABASE ffdl;
-
+```sql
+CREATE DATABASE ffdl;
 GRANT ALL ON ffdl.* TO 'ffdl'@'localhost' IDENTIFIED BY 'ffdl';
-
 FLUSH PRIVILEGES;
-
 USE ffdl;
-
-SOURCE /var/www/html/load.sql;`
+SOURCE /var/www/html/load.sql;
+```
 
 4. Browse to the application URL
 
