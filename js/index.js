@@ -3,8 +3,8 @@
 //
 
 // Add/edit/delete the ARRL/RAC sections from this array as things change
-var sections = [
-"CT", "EMA", "ME", "NH", "RI", "VT", "WMA", "ENY", "NLI", "NNJ", "NNY", "SNJ", "WNY", "DE", "EPA", "MDC", "WPA", "AL", "GA", "KY", "NC", "NFL", "SC", "SFL", "WCF", "TN", "VA", "PR", "VI", "AR", "LA", "MS", "NM", "NTX", "OK", "STX", "WTX", "EB", "LAX", "ORG", "SB", "SCV", "SDG", "SF", "SJV", "SV", "PAC", "AZ", "EWA", "ID", "MT", "NV", "OR", "UT", "WWA", "WY", "AK", "MI", "OH", "WV", "IL", "IN", "WI", "CO", "IA", "KS", "MN", "MO", "NE", "ND", "SD", "MAR", "NL", "PE", "QC", "ONE", "ONN", "ONS", "GTA", "MB", "SK", "AB", "BC", "NT", "DX" ]; 
+// Keep everything ordered by size (i.e. 2 char sections first, then 3 char sections) and then alphabetical
+const sections = [ "AB","AK","AL","AR","AZ","BC","CO","CT","DE","DX","EB","GA","IA","ID","IL","IN","KS","KY","LA","MB","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NL","NM","NT","NV","OH","OK","OR","PE","PR","QC","RI","SB","SC","SD","SF","SK","SV","TN","UT","VA","VI","VT","WI","WV","WY","EMA","ENY","EPA","EWA","GTA","LAX","MAR","MDC","NFL","NLI","NNJ","NNY","NTX","ONE","ONN","ONS","ORG","PAC","SCV","SDG","SFL","SJV","SNJ","STX","WCF","WMA","WNY","WPA","WTX","WWA" ]
 
 
 //
