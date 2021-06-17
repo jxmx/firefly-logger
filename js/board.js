@@ -8,7 +8,7 @@ const fields = [ "total" , "phone" , "cw" , "digital"  , "sections" , "distinct"
 // load / timer
 window.addEventListener("load", function(){
 	doFieldUpdates();
-	setInterval(doFieldUpdates, 60000);
+	setInterval(doFieldUpdates, 15000);
 });
 
 
