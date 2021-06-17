@@ -187,8 +187,11 @@ function toggleLogButton(bbool) {
 document.onkeydown = function(k) {
 	switch(k.keyCode){
 		case 13:
-		logSubmit();
-		break;
+			logSubmit();
+			break;
+		case 27:
+			logReset();
+			break;			
 	}
 }
 
