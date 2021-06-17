@@ -6,11 +6,7 @@ function getGetVar($id) {
 
 $qkey = getGetVar("qkey");
 
-$db = mysqli_connect("localhost","ffdl","ffdl","ffdl");
-if($db->connect_errno){
-    echo "ERROR Failed to connect to MariaDB instance";
-    exit();
-}
+include("api/db.php");
 
 $qry = "SELECT * FROM qso WHERE qkey=" . $qkey;
 
