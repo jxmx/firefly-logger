@@ -183,6 +183,17 @@ function toggleLogButton(bbool) {
 // Submit LOG
 //
 
+// intercept the enter key
+document.onkeydown = function(k) {
+	switch(k.keyCode){
+		case 13:
+		logSubmit();
+		break;
+	}
+}
+
+
+// reset function status
 function resetSubmitOkStatus() {
 	submitOkCall = false;
 	submitOkClass = false;
@@ -191,6 +202,7 @@ function resetSubmitOkStatus() {
 	toggleLogButton(false);
 }
 
+// check if it's ready to submit
 function checkSubmitOkStatus() {
 	if( submitOkCall && submitOkClass && submitOkSection ){ // && submitOkDupe )
 		return true;
@@ -199,6 +211,7 @@ function checkSubmitOkStatus() {
 	}
 }
 
+// submit the log
 function logSubmit() {
 
 	if(!checkStationSetOkStatus()){
