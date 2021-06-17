@@ -90,6 +90,14 @@ SOURCE /var/www/html/load.sql;
 
 4. Browse to the application URL
 
+## URL Endpoints
+
+The following URL endpoints are the support "entries" into the system:
+
+`/index.html` - Main interface
+`/board.html` - Display "board" for a running tally display screen
+`/adif.php` - Download an ADIF export of all contacts (TBD)
+
 ## Testing
 
 To test that the system is installed properly:
