@@ -48,6 +48,20 @@ will be required.
 - MariaDB v10 or greater (also would work with MySQL)
 - Webserver that supports PHP via FastCGI
 
+In general on Debian/Raspian 10 you should get a ready stack by executing:
+
+```
+apt install apache2 php7.3-fpm mariadb-server php7.3-mysql
+systemctl enable php7.3-fpm
+systemctl start php7.3-fpm
+systemctl enable apache2
+systemctl start apache2
+systemctl enable mariadb
+systemctl start mariadb
+```
+
+For Debian/Raspian 11 everything will be the same except the packages for PHP will be php7.4.
+
 If you want to make any minor modifications, a minimal working
 knowledge of HTML5 and JavaScript would be helpful.
 
