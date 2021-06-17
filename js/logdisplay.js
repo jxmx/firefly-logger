@@ -3,10 +3,21 @@
 //
 
 // update function
-function updateDisplayLog(){
+function updateDisplayLog(hide){
+
+	var path = window.location.pathname;
+	var page = path.split("/").pop();
+	const hpages = [ "board.html" ];
+
+	if( hpages.includes(page) ){
+		var qsa = "?hidebuttons=y";
+	} else {
+		var qsa = "";
+	}
+
     $.ajax({
         type: "get",
-        url: "api/displaylog.php",
+        url: "api/displaylog.php" + qsa,
         success: function(output) {
             $("#logdisplay").html(output);
         },

@@ -1,0 +1,98 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Brag Board - Firefly Field Day Logger</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/jquery.typeahead.min.css" rel="stylesheet"> 
+	<link href="css/local.css" rel="stylesheet">
+	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
+</head>
+<body>
+<main>
+	<div class="container-fluid bg-secondary bg-gradient">
+		<div class="d-flex justify-content-between">
+			<div>
+				<center><img src="img/firefly.svg" height="45px"><b>Firefly Field Day Logger</b></center>
+			</div>
+			<div class="text-center fs-3 fw-bold">Current Metrics </div>
+			<div class="align-center">
+				<center><img src="img/firefly.svg" height="45px"><b>Firefly Field Day Logger</b></center>
+			</div>
+		</div>
+	</div> 
+	<div class="container-md">
+		<div class="row mt-5">
+			<div class="col-md m-1 shadow h-auto d-inline-block">
+				<div class="fs-1 text-center fw-bold">Total QSOs</div>
+				<div id="total" name="total" class="fs-1 text-center">0</div>
+			</div>
+			<div class="col-md m-1 shadow h-auto d-inline-block">
+				<div class="fs-1 text-center fw-bold">Voice</div>
+				<div id="phone" name="phone" class="fs-1 text-center">0</div>
+			</div>
+			<div class="col-md m-1 shadow h-auto d-inline-block">
+				<div class="fs-1 text-center fw-bold">CW</div>
+				<div id="cw" name="cw" class="fs-1 text-center">0</div>
+			</div>
+			<div class="col-md m-1 shadow h-auto d-inline-block">
+                <div class="fs-1 text-center fw-bold">Digtal</div>
+                <div id="digital" name="digital" class="fs-1 text-center">0</div>
+			</div>
+		</div>
+		<div class="row mt-5">
+			<div class="col-md m-1 shadow h-auto d-inline-block">
+				<div class="fs-1 text-center fw-bold">Total Pts</div>
+				<div id="total" name="total" class="fs-1 text-center">0</div>
+			</div>
+			<div class="col-md m-1 shadow h-auto d-inline-block">
+				<div class="fs-1 text-center fw-bold">Sections</div>
+				<div id="sections" name="sections" class="fs-1 text-center">0</div>
+			</div>
+			<div class="col-md m-1 shadow h-auto d-inline-block">
+				<div class="fs-1 text-center fw-bold">Distinct Calls</div>
+				<div id="distinct" name="distinct" class="fs-1 text-center">0</div>
+			</div>
+			<div class="col-md m-1 shadow h-auto d-inline-block">
+                <div class="fs-1 text-center fw-bold"></div>
+                <div class="fs-1 text-center"></div>
+			</div>
+		</div>
+	</div>
+	<div class="container-md shadow log-disp-container">
+		<div class="row">
+			<div class="col">
+				<div class="d-flex shadow bg-primary text-white p-2"><b>Last 10 QSOs</b></div>
+        	        <table class="table table-hover">
+	                    <thead>
+	                        <tr>
+	                            <th scope="col">Date/Time</th>
+	                            <th scope="col">Call</th>
+	                            <th scope="col">Class</th>
+	                            <th scope="col">Section</th>
+	                            <th scope="col">Band</th>
+	                            <th scope="col">Mode</th>
+	                            <th scope="col">Oper</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody id="logdisplay" name="logdisplay"></tbody>
+                </table>
+            </div>
+
+			
+			<div id="logdisplay"></div>
+		</div>
+		
+	</div>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery-3.6.0.min.js"></script>
+	<script src="js/typeahead.jquery.js"></script>
+	<script src="js/murmurhash3_unrolled_rp.js"></script>
+	<script src="js/logdisplay.js"></script>
+	<script src="js/board.js"></script>
+</main>
+<footer>
+	<div class="d-flex shadow m-5 p-2"><i>Powered by Firefly Field Day Logger by Jason McCormick N8EI - <a href="https://github.com/jxmx/ffdl">GitHub</a></i></div>
+</footer>
+</body>
+</html>
