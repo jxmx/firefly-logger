@@ -1,0 +1,19 @@
+-------------------------
+** v1.1.0 - 2021-06-18 **
+-------------------------
+
+- Align mode logic in logging with ADIF export. The
+  ADIF/LOTW mode needs to be "DATA" not "Digital"
+
+- All modes are now exclusively upper-case to match
+  ADIF/LOTW expectations
+
+- New HTML header to align station set form
+  and unify borders for a consistent look
+
+
+-------------------------
+** v1.0.0 - 2021-06-17 **
+-------------------------
+- First feature-complete release
+
