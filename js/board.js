@@ -3,7 +3,7 @@
 //
 
 // fields to populate
-const fields = [ "total" , "phone" , "cw" , "digital"  , "sections" , "distinct", "score" ];
+const fields = [ "total" , "phone" , "cw" , "data"  , "sections" , "distinct", "score" ];
 
 // load / timer
 window.addEventListener("load", function(){

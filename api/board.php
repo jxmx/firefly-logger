@@ -14,15 +14,15 @@ switch ($q){
 		$qry = "SELECT COUNT(qkey) FROM qso";
 		break;
 	case "phone":
-		$qry = "SELECT COUNT(qkey) FROM qso WHERE mode='Phone'";
+		$qry = "SELECT COUNT(qkey) FROM qso WHERE mode='PHONE'";
 		break;
 
 	case "cw":
 		$qry = "SELECT COUNT(qkey) FROM qso WHERE mode='CW'";
 		break;
 
-	case "digital":
-		$qry = "SELECT COUNT(qkey) FROM qso WHERE mode='Digital'";
+	case "data":
+		$qry = "SELECT COUNT(qkey) FROM qso WHERE mode='DATA'";
 		break;
 
 	case "distinct":
@@ -40,7 +40,7 @@ switch ($q){
 		$myurl = sprintf("%s%s%s?q=", $protocol, $_SERVER['SERVER_NAME'], $_SERVER['SCRIPT_NAME']);
 		$qsop  = file_get_contents($myurl . "phone");
 		$qsoc  = file_get_contents($myurl . "cw");
-		$qsod  = file_get_contents($myurl . "digital");
+		$qsod  = file_get_contents($myurl . "data");
 		printf("%d", $qsop + ( $qsoc * 2 ) + ( $qsod * 2 ));
 		exit;
 
