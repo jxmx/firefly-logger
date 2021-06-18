@@ -39,6 +39,21 @@ $qry = "SELECT * FROM qso WHERE qkey=" . $qkey;
   </symbol>
 </svg>
 <main>
+    <div class="bg-secondary" style="height: 75px;">
+        <table width="100%" height="100%">
+            <tr>
+                <td width="20%" style="vertical-align: middle; text-align: center;">
+                    <img src="img/firefly.svg" height="45px"><b>Firefly Field Day Logger</b>
+                </td>
+                <td width="60%" style="vertical-align: middle; text-align: center;">
+                    <span class="fs-1 fw-bold"><b>Edit QSO</b></span>
+                </td>
+                <td width="20%" style="vertical-align: middle; text-align: center;">
+                    <img src="img/firefly.svg" height="45px"><b>Firefly Field Day Logger</b>
+                </td>
+            </tr>
+        </table>
+    </div>
 	<div class="container-md qso-entry-container shadow">
 		<div class="row">
 			<div class="alert alert-warning"><b>NOTE:</b> There is NO field validation in this form. Edit carefully!</div>
