@@ -23,7 +23,7 @@ print "\t</HEADER>\n";
 print "\n";
 print "\t<RECORDS>\n";
 
-$qry = "SELECT * FROM qso";
+$qry = "SELECT * FROM qso ORDER BY date ASC";
 
 if($res = $db->query($qry)){
 	while( $row = $res->fetch_assoc()){
