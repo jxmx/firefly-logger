@@ -14,12 +14,12 @@ if($res = $db->query($insqry)){
 	while( $row = $res->fetch_assoc()){
 		print "<tr>\n";
 		printf("<td scope=\"row\" class=\"align-middle\">%s</td>\n", $row["date"]);
-		printf("<td class=\"align-middle\">%s</td>\n", $row["callsign"]);
-		printf("<td class=\"align-middle\">%s</td>\n", $row["class"]);;
-		printf("<td class=\"align-middle\">%s</td>\n", $row["section"]);
-		printf("<td class=\"align-middle\">%s</td>\n", $row["band"]);
-		printf("<td class=\"align-middle\">%s</td>\n", $row["mode"]);
-		printf("<td class=\"align-middle\">%s</td>\n", $row["operator"]);
+		printf("<td class=\"align-middle\">%s</td>\n", strtoupper($row["callsign"]));
+		printf("<td class=\"align-middle\">%s</td>\n", strtoupper($row["class"]));;
+		printf("<td class=\"align-middle\">%s</td>\n", strtoupper($row["section"]));
+		printf("<td class=\"align-middle\">%s</td>\n", strtoupper($row["band"]));
+		printf("<td class=\"align-middle\">%s</td>\n", strtoupper($row["mode"]));
+		printf("<td class=\"align-middle\">%s</td>\n", strtoupper($row["operator"]));
 		
 		if( $hidebuttons != "y" ){
 			print "<td class=\"align-middle\">\n";
