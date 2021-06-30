@@ -1,11 +1,14 @@
 <?php
-//header('Content-Type: application/octet-stream');
-//header('Content-disposition: inline; filename=fieldday.adx');
-header('Content-Type: text/plain');
+header('Content-Type: application/octet-stream');
+header('Content-disposition: inline; filename=fieldday.adi');
+//header('Content-Type: text/plain');
 
 function AL($tag, $val){
 	return sprintf("<%s:%d>%s\n",	$tag, strlen($val), $val);
 }
+
+$is_lsb = array("160M", "80M", "40M");
+$is_fm = array("2M");
 
 include("api/db.php");
 
@@ -22,7 +25,18 @@ if($res = $db->query($qry)){
 		print AL("TIME_ON", preg_replace('/:/', '', $dt[1]));
 		print AL("CALL", strtoupper($row['callsign']));
 		print AL("BAND", strtoupper($row['band'])); 			// see eumeration
-		print AL("MODE", strtoupper($row['mode']));			// see eumeration
+
+		if( strtoupper($row['mode']) == "PHONE" ){
+			if( in_array(strtoupper($row['band']), $is_lsb)){
+				print AL("MODE", "LSB");
+			} else if( in_array(strtoupper($row['band']), $is_fm)) {
+				print AL("MODE", "FM");
+			} else {
+				print AL("MODE", "USB");
+			}
+		} else {
+			print AL("MODE", strtoupper($row['mode']));			// see eumeration
+		}
 		print AL("STATION_CALLSIGN", strtoupper($row['station']));
 		print AL("OPERATOR", strtoupper($row['operator']));
 		print AL("ARRL_SECT", strtoupper($row['section']));
