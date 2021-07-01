@@ -98,7 +98,9 @@ The following URL endpoints are the support "entries" into the system:
 
 `/board.html` - Display "board" for a running tally display screen
 
-`/adif.php` - Download an ADIF export of all contacts (TBD)
+`/adif.php` - Download an ADIF export of all contacts
+
+`/cabrillo.php` - Download a Cabrillo log of all contacts (BETA - requires manual editing of file)
 
 ## Testing
 
