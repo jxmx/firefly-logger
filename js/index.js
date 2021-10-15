@@ -101,7 +101,7 @@ function isDupeQSO() {
     document.getElementById("opmode").value = opmode;
 
     var qsocall = document.getElementById("call").value;
-    var qkey = murmurhash3_32_rp( qsocall + opband + opmode, 17);
+    var qkey = parseFloat(murmurhash3_32_rp( qsocall + opband + opmode, 17));
 
     $.ajax({
         type:   "GET",
@@ -250,7 +250,7 @@ function logSubmit() {
 	document.getElementById("opmode").value = opmode;
 
 	var qsocall = document.getElementById("call").value;
-	var qkey = murmurhash3_32_rp( qsocall + opband + opmode, 17);
+	var qkey = parseFloat(murmurhash3_32_rp( qsocall + opband + opmode, 17));
 	document.getElementById("qkey").value = qkey;
 
 	var fd = new FormData(lform);
