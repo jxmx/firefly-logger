@@ -10,7 +10,7 @@ function set_cookie ( name, value, path, domain, secure ) {
 	cookie_date.setTime(cookie_date_num); // set my_date Date object forward ;
 	cookie_string += "; expires=" + cookie_date.toGMTString();
 
-	cookie_string += "; SameSite=None; Secure";
+	cookie_string += "; SameSite=Lax;";
 
 	document.cookie = cookie_string;
 };
