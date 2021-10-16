@@ -6,6 +6,7 @@
 // Keep everything ordered by size (i.e. 2 char sections first, then 3 char sections) and then alphabetical
 const sections = [ "AB","AK","AL","AR","AZ","BC","CO","CT","DE","DX","EB","GA","IA","ID","IL","IN","KS","KY","LA","MB","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NL","NM","NT","NV","OH","OK","OR","PE","PR","QC","RI","SB","SC","SD","SF","SK","SV","TN","UT","VA","VI","VT","WI","WV","WY","EMA","ENY","EPA","EWA","GTA","LAX","MAR","MDC","NFL","NLI","NNJ","NNY","NTX","ONE","ONN","ONS","ORG","PAC","SCV","SDG","SFL","SJV","SNJ","STX","WCF","WMA","WNY","WPA","WTX","WWA" ]
 
+var qsinceload = 0;
 
 //
 // Type-ahead searching for section box
@@ -276,8 +277,15 @@ function logSubmit() {
 	// Note the action
 	goodStatusMsg("Logged " + qsocall);
 
-	// finally reset the log and start over
+	// reset the log
 	logReset();
+
+	// See if we should reload since the DOM structure sometimes gets wonky after long use
+	qsinceload++;
+	if( parseInt(qsinceload) > 25){
+		setTimeout(window.location.reload(), 1000);
+	} 
+
 	return true;
 };
 
