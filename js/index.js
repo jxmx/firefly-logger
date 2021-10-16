@@ -265,26 +265,21 @@ function logSubmit() {
 		data:	fj,
 		success: function(msg) {
 			decayingGoodStatusMsg("Stored QSO for " + qsocall + "!  (QKEY: " + qkey + " , API Resp: " + msg + ")", 3);
+			qsinceload++;
+			
+			// See if we should reload since the DOM structure sometimes gets wonky after long use
+			if( parseInt(qsinceload) > 25){
+				setTimeout(window.location.reload(), 1000);
+			} 
+
+			// update the display and clear the entry
+			updateDisplayLog();
+			logReset();
 		},
 		failure: function(msg) {
 			alertStatusMsg("Failed to store QSO for " + qsocall + "! (QKEY: " + qkey + " , API Resp: " + msg + ")");
 		}
 	});
-
-	// Update the running log
-	updateDisplayLog();
-	
-	// Note the action
-	goodStatusMsg("Logged " + qsocall);
-
-	// reset the log
-	logReset();
-
-	// See if we should reload since the DOM structure sometimes gets wonky after long use
-	qsinceload++;
-	if( parseInt(qsinceload) > 25){
-		setTimeout(window.location.reload(), 1000);
-	} 
 
 	return true;
 };
