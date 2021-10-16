@@ -183,17 +183,11 @@ function toggleLogButton(bbool) {
 // Submit LOG
 //
 
-// intercept the enter key
-document.onkeydown = function(k) {
-	switch(k.keyCode){
-		case 13:
-			logSubmit();
-			break;
-		case 27:
-			logReset();
-			break;			
-	}
-}
+$(document).on('keyup', function(k) {
+	if(k.key == "Enter") logSubmit();
+	if(k.key == "Escape") logReset();
+	
+});
 
 
 // reset function status
