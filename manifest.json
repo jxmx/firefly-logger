@@ -1,0 +1,26 @@
+{
+  "background_color": "#ffffff",
+  "description": "Web-based logger for amateur radio field days",
+  "dir": "ltr",
+  "display": "fullscreen",
+  "name": "Firefly FDL",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "FFDL",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "categories": [],
+  "screenshots": [],
+  "icons": [
+    {
+      "src": "img/firefly.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": []
+}
