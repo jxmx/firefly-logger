@@ -65,13 +65,4 @@ function populateFormFromCookie (cookieName) {
 	};
 };
 
-// Handle the main cookie work
-//populateFormFromCookie('FireflyStation');
 
-//$('input[type=text], select, textarea', $('stationset')).on('change',function(e){
-//        populateCookieFromForm('FireflyStation');
-//});
-
-//$('input[type=text]', $('stationset')).on('input',function(e){     
-//	populateCookieFromForm('FireflyStation');
-//});
