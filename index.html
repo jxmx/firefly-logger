@@ -156,6 +156,35 @@
 			</div>
 		</div>
 	</div>
+	<div class="container-md shadow log-disp-container">
+		<div class="row">
+			<div class="col">
+				<div class="d-flex shadow bg-secondary text-white p-2"><b>Configuration</b></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<form id="stationset" name="stationset">
+				<table height="100%">
+	            <tr>
+                	<td style="vertical-align: middle; text-align: right;">
+	                    <label for="fdtype"><b>Field&nbsp;Day&nbsp;Type:&nbsp;</b></label>
+                	</td>
+                	<td style="vertical-align: middle; text-align: left;">				
+						<select id="fdtype" name="fdtype" class="form-control">
+							<option value="FD">ARRL Field Day</option>
+							<option value="WFD">Winter Field Day</option>
+						</select>
+					</td>
+					<td>
+						<button type="button" class="btn btn-primary btn-sm" onclick="saveStationData()">Save</button>
+					</td>
+				</tr>
+				</table>
+				</form>	
+			</div>
+		</div>
+	</div>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/jquery-3.6.0.min.js"></script>
 	<script src="js/typeahead.jquery.js"></script>

@@ -136,7 +136,14 @@ function handleIsDupeQSO(resp) {
 
 $('#opclass').on('input', function() {
     var input=$(this);
-    var re = /^[0-9]{1,2}[a-fA-F]$/;
+	var re;
+
+	if( document.getElementById("fdtype").value == "WFD"){
+		re = /^[0-9]{1,2}[hioHIO]$/;
+	} else {
+		re = /^[0-9]{1,2}[a-fA-F]$/;
+	}  
+
     var is_valid = re.test(input.val());
     if(is_valid){
 		submitOkClass = true;
@@ -149,7 +156,7 @@ $('#opclass').on('input', function() {
 
 $('#section').on('input', function() {
     var input=$(this);
-	input.value.toUpperCase();
+	document.getElementById("section").value = input.val().toUpperCase();
     if(sections.includes(input.val().toUpperCase())){
 		submitOkSection = true;		
         input.removeClass("is-invalid").addClass("is-valid");

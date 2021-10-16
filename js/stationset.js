@@ -81,7 +81,7 @@ function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
 	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000 ));
 	var expires = "expires=" + d.toUTCString();
-	document.cookie = cname + "=" + cvalue + ";" + expires + "; Secure";
+	document.cookie = cname + "=" + cvalue + ";" + expires + "; SameSite=Lax;";
 };
 
 // Generic get method
@@ -108,6 +108,7 @@ function saveStationData() {
 		setCookie("operator", document.getElementById("operator").value, 30);
 		setCookie("band", document.getElementById("band").value, 30);
 		setCookie("mode", document.getElementById("mode").value, 30);
+        setCookie("fdtype", document.getElementById("fdtype").value, 30);
 	} else {
 		alertStatusMsg("Station information not complete");
 	}
@@ -136,6 +137,11 @@ function setStationDataFromCookie() {
 
 	if( ( mode = getCookie("mode") ) && ( getCookie("mode") !== "X" ) ) {
 		document.getElementById("mode").value = mode;
+		submitOkMode = true;
+	}
+
+    if( fdtype = getCookie("fdtype") ) {
+		document.getElementById("fdtype").value = fdtype;
 		submitOkMode = true;
 	}
 }
