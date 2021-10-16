@@ -149,6 +149,7 @@ $('#opclass').on('input', function() {
 
 $('#section').on('input', function() {
     var input=$(this);
+	input.value.toUpperCase();
     if(sections.includes(input.val().toUpperCase())){
 		submitOkSection = true;		
         input.removeClass("is-invalid").addClass("is-valid");
