@@ -3,14 +3,32 @@ header('Content-Type: application/octet-stream');
 header('Content-disposition: inline; filename=fieldday.adi');
 //header('Content-Type: text/plain');
 
+function getPostVar($id) {
+	return filter_var(trim($_POST[$id]), FILTER_SANITIZE_STRING);
+}
+
 function AL($tag, $val){
 	return sprintf("<%s:%d>%s\n",	$tag, strlen($val), $val);
 }
 
 $is_lsb = array("160M", "80M", "40M");
-$is_fm = array("2M");
+$is_fm = array("2M", "70CM");
 
 include("api/db.php");
+
+$adif = array();
+foreach($_POST as $k => $v){
+	$adif[$k] = getPostVar($k);
+}
+
+$adifcomment = $adif['adifcomment'];
+$adifcontest = $adif['adifcontest'];
+
+if( $adifcontest == "WFD"){
+	$precontest = "Winter Field Day";
+} else {
+	$precontest = "ARRL Field Day";
+}
 
 print AL("adif_ver", "3.1.2");
 print AL("programid", "Firefly Field Day Logger");
@@ -41,9 +59,7 @@ if($res = $db->query($qry)){
 		print AL("OPERATOR", strtoupper($row['operator']));
 		print AL("ARRL_SECT", strtoupper($row['section']));
 		print AL("CLASS", strtoupper($row['class']));
-		print AL("COMMENT", 
-			"ARRL Field Day 2021 - " . strtoupper($row['class']) . " " . strtoupper($row['section']),
-			3);
+		print AL("COMMENT", $precontest . " - " . $adifcomment);
 		print "<EOR>\n\n";
 	}
 } else {
