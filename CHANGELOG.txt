@@ -1,7 +1,29 @@
 -------------------------
+** v2.0.0 - 2022-01-31 **
+-------------------------
+- Remove murmurhash32 for incompatabilities across
+  platforms I don't feel like figuring out. qkey Field
+  is now a string which changes the database schema.
+
+- ADIF export front end; implement user comment field
+
+- Cabrillo and ADIF exporters support WFD
+
+- Fixed Cabrillo field for time which had seconds which is not in spec (#16)
+
+-------------------------
+** v1.2.0 - 2021-10-16 **
+-------------------------
+- Implement Cabrillo export function
+
+- Add toggle for Winter Field Day
+
+- Bugs fixed: change key intercept function, fix cookie logic
+  fix murmurhash32 wrapper
+
+-------------------------
 ** v1.1.0 - 2021-06-18 **
 -------------------------
-
 - Align mode logic in logging with ADIF export. The
   ADIF/LOTW mode needs to be "DATA" not "Digital"
 
