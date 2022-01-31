@@ -7,11 +7,6 @@ function getPostVar($id) {
 	return filter_var(trim($_POST[$id]), FILTER_SANITIZE_STRING);
 }
 
-function AL($tag, $val){
-	return sprintf("<%s:%d>%s\n",	$tag, strlen($val), $val);
-}
-
-
 $cab = array();
 foreach($_POST as $k => $v){
 	$cab[$k] = getPostVar($k);
