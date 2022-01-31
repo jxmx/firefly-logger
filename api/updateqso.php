@@ -19,7 +19,7 @@ $mode = getPostVar("mode");
 include("db.php");
 
 $qry = sprintf("UPDATE qso SET callsign='%s', date='%s', band='%s', class='%s', mode='%s', " .
-	"station='%s', section='%s', operator='%s' WHERE qkey=%d;",
+	"station='%s', section='%s', operator='%s' WHERE qkey='%s';",
 	$callsign, $date, $band, $class, $mode, $station, $section, $operator, $qkey);
 
 $res = $db->query($qry);

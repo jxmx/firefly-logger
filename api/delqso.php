@@ -10,7 +10,7 @@ $qkey = getGetVar("qkey");
 
 include("db.php");
 
-$insqry = sprintf("DELETE FROM qso WHERE qkey=%s", $qkey);
+$insqry = sprintf("DELETE FROM qso WHERE qkey='%s'", $qkey);
 $res = $db->query($insqry);
 if($res){
 	echo "OK";

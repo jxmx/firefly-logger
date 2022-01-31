@@ -5,7 +5,7 @@
 DROP TABLE IF EXISTS `qso`;
 
 CREATE TABLE `qso` (
-  `qkey` int(10) unsigned NOT NULL,
+  `qkey` varchar(50) NOT NULL,
   `callsign` varchar(10) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `band` varchar(6) DEFAULT NULL,

@@ -9,6 +9,16 @@ const sections = [ "AB","AK","AL","AR","AZ","BC","CO","CT","DE","DX","EB","GA","
 var qsinceload = 0;
 
 //
+// QKey
+//
+function qkeyCalculate(qsocall, opband, opmode){
+	let a = qsocall.toUpperCase();
+	let b = opband.toUpperCase();
+	let c = opmode.toUpperCase();
+	return(a+b+c);
+}
+
+//
 // Type-ahead searching for section box
 //
 
@@ -102,7 +112,7 @@ function isDupeQSO() {
     document.getElementById("opmode").value = opmode;
 
     var qsocall = document.getElementById("call").value;
-    var qkey = parseFloat(murmurhash3_32_rp( qsocall + opband + opmode, 17));
+    var qkey = qkeyCalculate(qsocall, opband, opmode);
 
     $.ajax({
         type:   "GET",
@@ -236,10 +246,8 @@ function logSubmit() {
 	lform.action = "#";
 
 	// Generate and store the qkey hash 
-	// Note this is useing murmurhash because it's not security-related
- 	// also the seed value is irrelevant to anything
-
-	// I have no idea whyu these can't be directly assigned by value.... Javascript is annoying
+	
+ 	// I have no idea whyu these can't be directly assigned by value.... Javascript is annoying
 	var opcallsign=  document.getElementById("callsign").value;
 	document.getElementById("opcallsign").value = opcallsign;
 
@@ -253,7 +261,7 @@ function logSubmit() {
 	document.getElementById("opmode").value = opmode;
 
 	var qsocall = document.getElementById("call").value;
-	var qkey = parseFloat(murmurhash3_32_rp( qsocall + opband + opmode, 17));
+	var qkey = qkeyCalculate(qsocall, opband, opmode);
 	document.getElementById("qkey").value = qkey;
 
 	var fd = new FormData(lform);

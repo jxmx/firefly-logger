@@ -18,7 +18,7 @@ $mode = getPostVar("opmode");
 
 include("db.php");
 
-$insqry = sprintf("INSERT INTO qso VALUES(%d,'%s','%s','%s','%s','%s','%s','%s','%s');",
+$insqry = sprintf("INSERT INTO qso VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s');",
 	$qkey,$call,$logclock,$band,$opclass,$mode,$callsign,$section,$operator
 );
 

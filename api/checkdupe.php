@@ -9,7 +9,7 @@ $qkey = getPostVar("qkey");
 
 include("db.php");
 
-$insqry = sprintf("SELECT COUNT(qkey) FROM qso WHERE qkey=%d", $qkey);
+$insqry = sprintf("SELECT COUNT(qkey) FROM qso WHERE qkey='%s'", $qkey);
 if($res = $db->query($insqry)){
 	$row = $res->fetch_row();
 	if( $row[0] == 1 ){

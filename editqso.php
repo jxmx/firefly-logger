@@ -8,7 +8,7 @@ $qkey = getGetVar("qkey");
 
 include("api/db.php");
 
-$qry = "SELECT * FROM qso WHERE qkey=" . $qkey;
+$qry = sprintf("SELECT * FROM qso WHERE qkey='%s';", $qkey);
 
 ?>
 
@@ -89,7 +89,7 @@ if($res = $db->query($qry)){
 	print "</td></tr>\n";
 
 } else {
-	printf("<tr><td colspan=\"2\"><div class=\"alert alert-danger\">No such QSO ID %d</div></td></tr>", $qkey);
+	printf("<tr><td colspan=\"2\"><div class=\"alert alert-danger\">No such QSO ID %s</div></td></tr>", $qkey);
 }
 $db->close();
 ?>
