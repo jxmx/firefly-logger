@@ -123,7 +123,7 @@ The following URL endpoints are the support "entries" into the system:
 
 `/cabrillo.html` - Download a Cabrillo log of all contacts
 
-`/adif.php` - Download an ADIF export of all contacts
+`/adif.html` - Download an ADIF export of all contacts
 
 ## Testing
 
