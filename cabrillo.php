@@ -32,7 +32,7 @@ $band = array(
 include("api/db.php");
 
 print "START-OF-LOG: 3.0\n";
-print "CONTEST: ARRL-FD\n";
+printf("CONTEST: %s\n", $cab['cabcontest']);
 printf("CLUB: %s\n", $cab['cabclub']);
 printf("CALLSIGN: %s\n", $cab['cabcall']);
 printf("LOCATION: %s\n", $cab['cabsection']);
@@ -71,7 +71,7 @@ if($res = $db->query($qry)){
 			$band[strtoupper($row['band'])],
 			$m,
 			strtoupper($dt[0]),
-			preg_replace('/:/', '', $dt[1]),
+			substr(preg_replace('/:/', '', $dt[1]),0,4),
 			strtoupper($row['station']),
 			$cab['cabtransmitter']. strtoupper($cab['cabstation']),
 			strtoupper($cab['cabsection']),
