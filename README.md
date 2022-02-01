@@ -12,7 +12,7 @@ tablets like a Kindle Fire HD 10 with a bluetooth keyboard and mouse.
 ## Goals / Design Philosophy
 
 - Operate seamlessly across multiple, low-powered devices
-- - Client side is HTML5 + Javascript
+- Client side is HTML5 + Javascript
 - Server side is a very lightweight PHP + MariaDB (MySQL) system
 - Operate over a disconnected local LAN/WLAN - i.e. without Internet
 - Server operates with many clients served by a Pi3/4-type device
