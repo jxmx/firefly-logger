@@ -1,4 +1,5 @@
 {
     "stationCall": "W8WKY",
-    "fdType": "AFD"
+    "fdType": "AFD",
+    "multiOp": false
 }

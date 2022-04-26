@@ -36,30 +36,19 @@
 						<b>Station Info</b>
 					</td>
 					<td>
-						<input type="text" id="callsign" name="callsign" size="10" class="form-control" placeholder="Callsign" autocomplete="off">
+						<input type="text" id="callsign" name="callsign" size="10" class="form-control" placeholder="Callsign" autocomplete="off" readonly>
 					</td>
-					<td>
+					<td id="set-operator">
 						<input type="text" id="operator" name="operator" size="10" class="form-control" placeholder="Operator" autocomplete="off">
 					</td>
 					<td>
 						<select id="band" name="band" class="form-control">
 							<option value="X">Select Band...</option>
-							<option value="160M">160M</option>
-							<option value="80M">80M</option>
-							<option value="40M">40M</option>
-							<option value="20M">20M</option>
-							<option value="15M">15M</option>
-							<option value="10M">10M</option>
-							<option value="6M">6M</option>
-							<option value="2M">2M</option>
 						</select>
 					</td>
 					<td>
 						<select id="mode" name="mode" class="form-control">
 							<option value="X">Select Mode...</option>
-							<option value="PHONE">Phone (SSB, FM, DV)</option>
-							<option value="CW">CW</option>
-							<option value="DATA">Data (all Digital)</option>
 						</select>
 					</td>
 					<td style="text-align: center;" class="p-2">
@@ -157,40 +146,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="container-md shadow log-disp-container">
-		<div class="row">
-			<div class="col">
-				<div class="d-flex shadow bg-secondary text-white p-2"><b>Configuration</b></div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col">
-				<form id="stationset" name="stationset">
-				<table height="100%">
-	            <tr>
-                	<td style="vertical-align: middle; text-align: right;">
-	                    <label for="fdtype"><b>Field&nbsp;Day&nbsp;Type:&nbsp;</b></label>
-                	</td>
-                	<td style="vertical-align: middle; text-align: left;">				
-						<select id="fdtype" name="fdtype" class="form-control">
-							<option value="FD">ARRL Field Day</option>
-							<option value="WFD">Winter Field Day</option>
-						</select>
-					</td>
-					<td>
-						<button type="button" class="btn btn-primary btn-sm" onclick="saveStationData()">Save</button>
-					</td>
-				</tr>
-				</table>
-				</form>	
-			</div>
-		</div>
-	</div>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/jquery-3.6.0.min.js"></script>
 	<script src="js/typeahead.jquery.js"></script>
 	<script src="js/statusmsg.js"></script>
-	<script src="js/stationset.js"></script>
 	<script src="js/logdisplay.js"></script>
 	<script src="js/index.js"></script>
 </main>

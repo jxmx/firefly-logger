@@ -1,7 +1,7 @@
 {
-    "modes": [
-        { "PHONE": "Phone (All voice modes)" },
-        { "CW": "CW" },
-        { "DATA": "Data (All other modes)" }
+    "modes" : [
+        { "key" : "PHONE" , "value" : "Phone (All voice modes)" },
+        { "key" : "CW" , "value" : "CW" },
+        { "key" : "DATA" , "value" : "Data (All other modes)" }
     ]
 }
