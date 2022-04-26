@@ -49,7 +49,7 @@ of choice will be required.
 In general on Debian/Raspian 11 you should get a ready stack by executing:
 
 ```
-apt install apache2 php7.4-fpm mariadb-server php7.3-mysql
+apt install apache2 php7.4-fpm mariadb-server php7.4-mysql
 systemctl enable php7.4-fpm
 systemctl start php7.4-fpm
 systemctl enable apache2
@@ -58,7 +58,7 @@ systemctl enable mariadb
 systemctl start mariadb
 ```
 
-For Debian/Raspian 11 everything will be the same except the packages for PHP will be php7.3.
+For Debian/Raspian 10 everything will be the same except the packages for PHP will be php7.3.
 As of 2022, this application will run on both Debian/Raspbian 10 and 11.
 
 If you want to make any minor modifications, a minimal working
@@ -163,24 +163,23 @@ Operator can be the same call if it's a single-operator situation.
 
 ## Configuration
 
-There is minimal configuration necessary. The most important configuration
-item is the toggle between ARRL Field Day (default) and Winter Field Day.
-On EACH logging station, scroll to the bottom of the screen and change
-**Field Day Type** to the correct Field Day as appropriate. This must be
-done on every logger. The only thing the toggle changes is the logic
-for the class entry box.
+There is minimal configuration necessary. The `api/config_general.json`
+contains all generalized site-wide configuration. The following
+configuration keys are supported:
 
-To alter the ARRL section list, that is contained within
-a JavaScript array at the very top of the `js/index.js` file. Look
-for the `var section = [ ]` array. Add or remove sections as needed.
-In general, the ARRL Section List will be maintained over time
-with the application.
+| Key          | Options            |
+| ------------ | ------------------ |
+| stationCall  | The callsign underwhich the operation is being held |
+| fdType       | The type of Field Day event. Default is "AFD" for ARRL Field Day. Other supported option is "WFD" for Winter Field Day |
+| multiOp      | Permit each logging station to set their own local operator callsign for logging purposes. Values are "N" (default) or "Y". |
 
-To alter the Band or Mode drop downs, edit the `index.html` and search
-for either `<select id="band"` or `<select id="mode"` as desired.
-Add or remove `<option>` statements as needed. Make sure that the 
-`<option>` specifies both a `value=` and the name between the tags
-as the same information.
+To alter the ARRL section list, add or remove the appropriate
+settings in `api/config_sections.json`.
+
+To add additional bands, add or remove the bands in the list
+found in `api/config_bands.json`. Users of `adif.php` and `cabrillo.php`
+will also have to hand-edit those export functions to map added bands appropriately.
+A future release will fix this.
 
 ## Issues
 

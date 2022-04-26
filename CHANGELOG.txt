@@ -1,4 +1,20 @@
 -------------------------
+** v3.0.0 - 2022-??-??
+-------------------------
+- Station callsign and field day mode configuration moved
+  to the server side
+
+- Implement toggle to permit/fix the "Operator Callsign"
+  as a separate callsign or mirror the station callsign
+
+- Implemented easier-to-update centralized configuration
+    api/config_general.json - Core configuration
+    api/config_bands.json - List of bands
+    api/config_modes.json - List of modes
+    api/config_sections.json - List of ARRL/RAC sections
+    
+
+-------------------------
 ** v2.0.0 - 2022-01-31 **
 -------------------------
 - Remove murmurhash32 for incompatabilities across
