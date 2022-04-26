@@ -1,0 +1,12 @@
+{
+    "sections":[ "AB","AK","AL","AR","AZ","BC","CO","CT",
+        "DE","DX","EB","GA","IA","ID","IL","IN","KS","KY",
+        "LA","MB","ME","MI","MN","MO","MS","MT","NC","ND",
+        "NE","NH","NL","NM","NT","NV","OH","OK","OR","PE",
+        "PR","QC","RI","SB","SC","SD","SF","SK","SV","TN",
+        "UT","VA","VI","VT","WI","WV","WY","EMA","ENY","EPA",
+        "EWA","GTA","LAX","MAR","MDC","NFL","NLI","NNJ","NNY",
+        "NTX","ONE","ONN","ONS","ORG","PAC","SCV","SDG","SFL",
+        "SJV","SNJ","STX","WCF","WMA","WNY","WPA","WTX","WWA"
+    ]
+}

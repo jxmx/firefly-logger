@@ -1,0 +1,7 @@
+{
+    "modes": [
+        { "PHONE": "Phone (All voice modes)" },
+        { "CW": "CW" },
+        { "DATA": "Data (All other modes)" }
+    ]
+}
