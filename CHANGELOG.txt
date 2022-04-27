@@ -1,5 +1,5 @@
 -------------------------
-** v3.0.0 - 2022-??-??
+** v3.0.0 - 2022-04-27
 -------------------------
 - Station callsign and field day mode configuration moved
   to the server side
