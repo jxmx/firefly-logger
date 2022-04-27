@@ -15,16 +15,19 @@ let config = {
 	],
 	"bands": null,
 	"modes": null,
-	"sections": null,
+	"sections": {
+		"sections": [ "XX" ]
+	}
 };
 
 // statuses and counters
 var qsinceload = 0;
+var sectionsloaded = false;
 
 // load configuration from JSON files
 function getConfig(configType){
 	var xmlhttp = new XMLHttpRequest();
-	var url = APIPrefix + "/config_" + configType + ".json";
+	var url = `${APIPrefix}/config_${configType}.json`;
 	xmlhttp.onreadystatechange = function () {
 		if( this.readyState == 4 && this.status == 200 ){
 			var a = JSON.parse(this.responseText);
@@ -50,6 +53,7 @@ function getConfig(configType){
 				case "sections":
 					console.log("get config sections");
 					config.sections = a;
+					sectionsloaded = true;
 					break;
 			}
 		} else if( this.readyState == 4 && this.status != 200 ){
@@ -89,7 +93,7 @@ window.addEventListener("load", function(){
 	setGeneralConfig();
 	updateLogTime();
 	setInterval(updateLogTime,1000);
-	});
+});
 
 //
 // QKey
@@ -218,27 +222,16 @@ $('#opclass').on('input', function() {
 //
 // Type-ahead searching for section box
 //
-var substringMatcher = function(strs) {
-	return function findMatches(q, cb) {
-	  var matches, substringRegex;
-  
-	  // an array that will be populated with substring matches
-	  matches = [];
-  
-	  // regex used to determine if a string contains the substring `q`
-	  substrRegex = new RegExp(q, 'i');
-  
-	  // iterate through the pool of strings and for any string that
-	  // contains the substring `q`, add it to the `matches` array
-	  $.each(strs, function(i, str) {
-		if (substrRegex.test(str)) {
-		  matches.push(str);
+function sectionFindMatches(query, syncResults){
+	var matches = [];
+	var substrRegex = new RegExp(`^${query}`, 'i');
+	$.each(config.sections.sections, function(i, str){
+		if( substrRegex.test(str)){
+			matches.push(str)
 		}
-	  });
-  
-	  cb(matches);
-	};
-  };
+	});
+	syncResults(matches);
+}
 
 //
 // Validate the Section for correctness
@@ -250,7 +243,9 @@ $('#arrl-sections .typeahead').typeahead({
   },
   {
 	name: 'sections',
-	source: substringMatcher(config.sections)
+	source: sectionFindMatches,
+	async: false,
+	limit: 15
   });
 
 $('#section').on('input', function() {
