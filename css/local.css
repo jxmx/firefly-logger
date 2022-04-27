@@ -19,6 +19,15 @@
 	color: var(--coquelicot);
 }
 
+.footerbar {
+	background-color: var(--black-coral);
+	color: var(--coquelicot);
+}
+
+.footerbar a:link, .footerbar a:hover, .footerbar a:active, .footerbar a:visited {
+	color: var(--coquelicot);
+}
+
 .btn-edit {
 	color: black;
 	background-color: var(--titanium-yellow);
