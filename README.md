@@ -86,15 +86,48 @@ FLUSH PRIVILEGES;
 USE ffdl;
 SOURCE /var/www/html/load.sql;
 ```
+4. Enable the PHP handling in Apache:
 
-4. Browse to the application URL
+```
+a2enconf php7.4-fpm
+systemctl restart apache2
+```
+
+5. Browse to the application URL
+
+## HTTPS / TLS Considerations
+
+As the web evolves, the reliability of using cookies with sites not using
+the https:// (i.e. TLS-encrypted) connections is becoming problematic. It
+is strongly recommended that the server is configured to offer https://
+connections and clients use those connections. There are known issues
+with stock Chromium on Linux with non-TLS-protected cookies. Here's how to enable
+https:// connections for this application.
+
+1. Enable the SSL/TLS module and stock site for apache:
+
+```
+a2enmod ssl
+a2ensite default-ssl
+systemctl restart apache2
+```
+
+2. Test the TLS configuration by visiting the server on https://. For example
+if the hostname is logger.fd.local, browse to https://logger.fd.local. A
+warning about a certificate error will appear because the configuration
+is using the default "fake" certificate. This is OKAY for non-Internet-connected
+purposes. Accept the error and select the browser's equivalent of "trust this site"
+or "continue anyway" or "accept the risk and continue". The site should load.
+
+It is strongly recommended to enable HTTPS/TLS on all Firefly Logger installations
+to avoid potential cookie problems.
 
 ## Upgrading
 
 Upgrading from previous versions is as simple as:
 
 1. Remove all existing files with `rm -rf /var/www/html/*`. Note
-if customizations haev been made, save/move those first.
+if customizations have been made, save/move those first.
 
 2. Copy the entire package to your webserver's root directory 
 such as `/var/www/html`.
@@ -112,6 +145,9 @@ USE ffdl;
 DROP TABLE QSO;
 SOURCE /var/www/html/load.sql;
 ```
+
+In-place upgrades of existing databases are not supported. Ensure all data
+has been saved/exported before upgrading the system.
 
 ## URL Endpoints
 
