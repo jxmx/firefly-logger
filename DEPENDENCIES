@@ -4,5 +4,4 @@ css/bootstrap.* - MIT License @ https://getbootstrap.com
 css/jquery.typeahead.min.css - MIT License @ https://github.com/running-coder/jquery-typeahead
 js/bootstrap.* - MIT License @ https://getbootstrap.com
 js/jquery* - MIT License @ https://jquery.com
-js/murmurhash3_unrolled_rp.js - MIT License @ https://github.com/levitation-opensource/murmurhash-js
-js/typeahead.jquery.js - MIT License @ https://github.com/running-coder/jquery-typeahea
+js/typeahead.jquery.js - MIT License @ https://github.com/running-coder/jquery-typeahead
