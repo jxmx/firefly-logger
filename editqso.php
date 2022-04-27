@@ -39,21 +39,21 @@ $qry = sprintf("SELECT * FROM qso WHERE qkey='%s';", $qkey);
   </symbol>
 </svg>
 <main>
-    <div class="bg-secondary" style="height: 75px;">
-        <table width="100%" height="100%">
-            <tr>
-                <td width="20%" style="vertical-align: middle; text-align: center;">
-                    <img src="img/firefly.svg" height="45px"><b>Firefly Field Day Logger</b>
-                </td>
-                <td width="60%" style="vertical-align: middle; text-align: center;">
-                    <span class="fs-1 fw-bold"><b>Edit QSO</b></span>
-                </td>
-                <td width="20%" style="vertical-align: middle; text-align: center;">
-                    <img src="img/firefly.svg" height="45px"><b>Firefly Field Day Logger</b>
-                </td>
-            </tr>
-        </table>
-    </div>
+	<div class="titlebars" style="height: 75px;">
+		<table width="100%" height="100%">
+			<tr class="titlebars">
+				<td width="20%" style="vertical-align: middle; text-align: center;">
+					<img src="img/firefly.svg" height="45px"><span class="px-2">Firefly Logger</span>
+				</td>
+				<td width="60%" style="vertical-align: middle; text-align: center;">
+					<span class="fs-1 fw-bold"><b>Edit QSO</b></span>
+				</td>
+				<td width="20%" style="vertical-align: middle; text-align: center;">
+					<img src="img/firefly.svg" height="45px"><span class="px-2">Firefly Logger</span>
+				</td>
+			</tr>
+		</table>
+	</div>
 	<div class="container-md qso-entry-container shadow">
 		<div class="row">
 			<div class="alert alert-warning"><b>NOTE:</b> There is NO field validation in this form. Edit carefully!</div>
@@ -84,8 +84,8 @@ if($res = $db->query($qry)){
 		}
 	}
 	print "<tr><td colspan=\"2\">\n";
-	print "<button id=\"editsub\" name=\"editsub\" type=\"button\" class=\"btn btn-primary\" onclick=\"submitEdit()\">Save</button>";
-	print "<button id=\"abandonedit\" name=\"abandonedit\" type=\"button\" class=\"btn btn-secondary\" onclick=\"abandonEdit()\">Abandon</button>";
+	print "<button id=\"editsub\" name=\"editsub\" type=\"button\" class=\"btn btn-danger mx-2\" onclick=\"submitEdit()\">Save</button>";
+	print "<button id=\"abandonedit\" name=\"abandonedit\" type=\"button\" class=\"btn btn-misc mx-2\" onclick=\"abandonEdit()\">Abandon</button>";
 	print "</td></tr>\n";
 
 } else {
