@@ -151,13 +151,15 @@ $('#call').on('input', function() {
 // Note: this has to be async because of XHR and then call a different function to lock stuff out
 //
 function isDupeQSO() {
+	var qsocall = document.getElementById("call").value;
+	var re = /^[a-zA-Z0-9\/]{2,9}[a-zA-Z]$/;
+	var is_valid = re.test(qsocall);
+	if( !is_valid ){
+		submitOkCall= false;
+		return null;
+	}
     var opband = document.getElementById("band").value;
-    document.getElementById("opband").value = opband;
-
     var opmode = document.getElementById("mode").value;
-    document.getElementById("opmode").value = opmode;
-
-    var qsocall = document.getElementById("call").value;
     var qkey = qkeyCalculate(qsocall, opband, opmode);
 
     $.ajax({
