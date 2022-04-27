@@ -31,7 +31,7 @@ if($res = $db->query($insqry)){
 		if( $hidebuttons != "y" ){
 			print "<td class=\"align-middle\">\n";
 			print "<div cass=\"btn-group\" role=\"group\">\n";
-			printf("<button type=\"button\" class=\"btn btn-primary btn-warning btn-sm\" onclick=\"editQSO('%s')\" tabindex=\"-1\">Edit</button>\n", 
+			printf("<button type=\"button\" class=\"btn btn-primary btn-edit btn-sm\" onclick=\"editQSO('%s')\" tabindex=\"-1\">Edit</button>\n", 
 				$row["qkey"]);
 			printf("<button type=\"button\" class=\"btn btn-primary btn-danger btn-sm\" onclick=\"delQSO('%s','%s')\" tabindex=\"-1\">Del</button>\n", 
 			$row["qkey"], $row["callsign"]);

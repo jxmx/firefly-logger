@@ -1,3 +1,66 @@
+/* 
+ * Black Coral #465362 / rgb(70, 83, 98)
+ * Cultured #F4F4F6 / rgb(244, 244, 246)
+ * Coquelicot #F34213 / rgb(243, 66, 19)
+ * Titanium Yellow #F4E409 / rgb(244, 228, 9)
+ * Claret #840032 / rgb(132, 0, 50)
+ */
+
+ :root {
+	--black-coral: rgb(70, 83, 98);
+	--cultured: rgb(244, 244, 246);
+	--coquelicot: rgb(243, 66, 19);
+	--titanium-yellow: rgb(244, 228, 9);
+	--claret: rgb(132, 0, 50);
+}
+
+.titlebars {
+	background-color: var(--black-coral);
+	color: var(--coquelicot);
+}
+
+.btn-edit {
+	color: black;
+	background-color: var(--titanium-yellow);
+	border-color: var(--titanium-yellow);
+}
+
+.btn-edit:hover {
+	color: var(--titanium-yellow);
+	background-color: var(--cultured);
+	border-color: var(--titanium-yellow);
+}
+
+.btn-danger {
+	color: white;
+	background-color: var(--claret);
+	border-color: var(--claret);
+}
+
+.btn-danger:hover {
+	color: var(--claret);
+	background-color: var(--cultured);
+	border-color: var(--claret);
+}
+
+.btn-misc {
+	color: white;
+	background-color: var(--black-coral);
+	border-color: var(--black-coral);
+}
+
+.btn-misc:hover {
+	color: var(--black-coral);;
+	background-color: var(--cultured);
+	border-color: var(--black-coral);
+}
+
+.btn-success:hover {
+	color: green;
+	background-color: white;
+	border-color: green;
+}
+
 .qso-entry-container {
 	margin-top: 	30px;
 }
@@ -8,8 +71,8 @@
 }
 
 .tt-menu {
-	background-color:	rgb(11,96,220);
-	color:				white;
+	background-color:	var(--black-coral);
+	color:				var(--coquelicot);
 }
 
 .stationsett {
