@@ -23,6 +23,7 @@ let config = {
 // statuses and counters
 var qsinceload = 0;
 var sectionsloaded = false;
+var stationcookieexists = false;
 
 // load configuration from JSON files
 function getConfig(configType){
@@ -93,6 +94,7 @@ window.addEventListener("load", function(){
 	setGeneralConfig();
 	updateLogTime();
 	setInterval(updateLogTime,1000);
+	setInterval(testCookieExists,1000);
 });
 
 //
@@ -500,8 +502,6 @@ $('#mode').on('input', function() {
 
 
 // Read the data from the cookie and set it on page load
-
-
 // Generic set method
 function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
@@ -533,6 +533,7 @@ function saveStationData() {
 		setCookie("operator", document.getElementById("operator").value, 30);
 		setCookie("band", document.getElementById("band").value, 30);
 		setCookie("mode", document.getElementById("mode").value, 30);
+		stationcookieexists = true;
 	} else {
 		alertStatusMsg("Station information not complete");
 	}
@@ -557,5 +558,18 @@ function setStationDataFromCookie() {
 	if( ( mode = getCookie("mode") ) && ( getCookie("mode") !== "X" ) ) {
 		document.getElementById("mode").value = mode;
 		submitOkMode = true;
+	}
+
+	if( submitOkOperCall && submitOkBand && submitOkMode ){
+		stationcookieexists = true;
+	}
+}
+
+function testCookieExists(){
+	if( stationcookieexists ){
+		if(	getCookie("operator") === "" ||	getCookie("band") === "" ||	getCookie("mode") === "" ){
+			alert("SYSTEM ERROR: Configuration Cookie Vanished!\nAre you using https:// ?\nStop logging and talk to the person who runs this logging instance!");
+			stationcookieexists = false;
+		}
 	}
 }
