@@ -5,9 +5,8 @@ The design of this logger is to be a simple, effective logger that
 can be used on any device that can have a reasonably modern browser
 installed on it. This includes older laptops running Linux + Chromium,
 tablets with Chrome or Firefox, Rasperry Pi 3 or 4 with Raspian, etc.
-The first version will be tested thoroughly with full OS-type
-browsers however the intention is for it to work very well on lightweight
-tablets like a Kindle Fire HD 10 with a bluetooth keyboard and mouse.
+FFDL has been tested on Windows, Linux, iOS, and Android using the
+native browsers on each platform.
 
 ## Goals / Design Philosophy
 
@@ -46,7 +45,9 @@ of choice will be required.
 - MariaDB v10 or greater (also would work with MySQL)
 - Webserver that supports PHP via FastCGI
 
-In general on Debian/Raspian 11 you should get a ready stack by executing:
+These generalized installation directions use Debian 11 as most users will
+probably want to serve this up from a Raspberry Pi device. In general on
+Debian/Raspian 11 you should get a ready stack by executing:
 
 ```
 apt install apache2 php7.4-fpm mariadb-server php7.4-mysql
