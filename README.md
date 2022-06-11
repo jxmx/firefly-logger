@@ -8,6 +8,9 @@ tablets with Chrome or Firefox, Rasperry Pi 3 or 4 with Raspian, etc.
 FFDL has been tested on Windows, Linux, iOS, and Android using the
 native browsers on each platform.
 
+Project Home Page: https://mfamily.org/firefly-logger
+Live Demo: https://ffdl.packetwarriors.com
+
 ## Goals / Design Philosophy
 
 - Operate seamlessly across multiple, low-powered devices
