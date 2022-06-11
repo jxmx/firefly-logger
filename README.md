@@ -9,6 +9,7 @@ FFDL has been tested on Windows, Linux, iOS, and Android using the
 native browsers on each platform.
 
 Project Home Page: https://mfamily.org/firefly-logger
+
 Live Demo: https://ffdl.packetwarriors.com
 
 ## Goals / Design Philosophy
