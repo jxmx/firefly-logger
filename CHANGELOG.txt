@@ -1,4 +1,10 @@
 -------------------------
+** v3.1.0 - 2022-06-11
+-------------------------
+- Implement an interface for manual entry of logs with a
+  user-setable date and time
+
+-------------------------
 ** v3.0.0 - 2022-04-27
 -------------------------
 - Station callsign and field day mode configuration moved

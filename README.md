@@ -155,6 +155,8 @@ The following URL endpoints are the support "entries" into the system:
 
 `/index.html` - Main interface
 
+`/handkey.html` - Interface for hand-keying in a paper log
+
 `/board.html` - Display "board" for a running tally display screen
 
 `/cabrillo.html` - Download a Cabrillo log of all contacts
@@ -216,6 +218,15 @@ To add additional bands, add or remove the bands in the list
 found in `api/config_bands.json`. Users of `adif.php` and `cabrillo.php`
 will also have to hand-edit those export functions to map added bands appropriately.
 A future release will fix this.
+
+## Handkey Interface
+
+The `handkey.html` screen is for someone to hand-enter QSOs from people who 
+didn't want to log electronically. Obviously not using the live interface can
+cause potential dupes, etc. However this provides a way for someone to either
+bulk-enter someone's paper log or provide and interface to someone who likes 
+to write the QSO on paper then enter it and still the correct date/time. On 
+the main screen, the log time is not editable.
 
 ## Issues
 

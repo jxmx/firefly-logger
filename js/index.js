@@ -24,6 +24,10 @@ let config = {
 var qsinceload = 0;
 var sectionsloaded = false;
 var stationcookieexists = false;
+var thispage = location.href.split("/").slice(-1);
+
+if(thispage == "handkey.html")
+	var isHandKey = true;
 
 // load configuration from JSON files
 function getConfig(configType){
@@ -34,25 +38,20 @@ function getConfig(configType){
 			var a = JSON.parse(this.responseText);
 			switch(configType){
 				case "general":
-					console.log("get config general");
 					config.general = a;
-					console.log("set config general");
 					setGeneralConfig();
 					break;		
 				case "bands":
-					console.log("get config bands");
 					config.bands = a;
 					refreshBandList(config.bands.band);
 					setStationDataFromCookie();
 					break;
 				case "modes":
-					console.log("get config modes");
 					config.modes = a;
 					refreshModeList(config.modes.modes);
 					setStationDataFromCookie();
 					break;
 				case "sections":
-					console.log("get config sections");
 					config.sections = a;
 					sectionsloaded = true;
 					break;
@@ -91,10 +90,14 @@ window.addEventListener("load", function(){
 	getConfig("bands");
 	getConfig("modes");
 	getConfig("sections");
-	setGeneralConfig();
-	updateLogTime();
-	setInterval(updateLogTime,1000);
-	setInterval(testCookieExists,1000);
+
+	// Only things for the main form at index.html
+	if(thispage == "index.html" || thispage == ""){
+		setGeneralConfig();
+		updateLogTime();
+		setInterval(updateLogTime,1000);
+		setInterval(testCookieExists,1000);
+	}
 });
 
 //
@@ -135,6 +138,8 @@ var submitOkCall = false;
 var submitOkClass = false;
 var submitOkSection = false;
 var submitOkDupe = false;
+var submitOkLogClockDate = false;
+var submitOkLogClockTime = false;
 
 //
 // QSO Call Validation - is callsign well-formed
@@ -301,12 +306,21 @@ function resetSubmitOkStatus() {
 	submitOkClass = false;
 	submitOkSection = false;
 	submitOkDupe = false;
+	submitOkLogClockDate = false;
+	submitOkLogClockTime = false;
 	toggleLogButton(false);
 }
 
 // check if it's ready to submit
 function checkSubmitOkStatus() {
-	if( submitOkCall && submitOkClass && submitOkSection ){ // && submitOkDupe )
+	if( submitOkCall && submitOkClass && submitOkSection ){
+		if(isHandKey){
+			if(submitOkLogClockDate && submitOkLogClockTime){
+				return true;
+			} else {
+				return false;
+			}
+		}
 		return true;
 	} else {
 		return false;
@@ -331,7 +345,9 @@ function logSubmit() {
 	lform.method = "POST";
 	lform.action = "#";
 
-	// Generate and store the qkey hash 
+	// If this is the handkey.html version the date/time needs to be parsed out
+	if(isHandKey)
+		handkeyDateTime();
 	
  	// I have no idea whyu these can't be directly assigned by value.... Javascript is annoying
 	var opcallsign=  document.getElementById("callsign").value;
@@ -367,7 +383,8 @@ function logSubmit() {
 			} 
 
 			// update the display and clear the entry
-			updateDisplayLog();
+			if(!isHandKey)
+				updateDisplayLog();
 			logReset();
 		},
 		failure: function(msg) {
@@ -380,12 +397,91 @@ function logSubmit() {
 
 // reset the log form
 function logReset() {
-	clearStatusMsg();
+//	clearStatusMsg();
 	resetSubmitOkStatus();
+
+	// save the date for handkeying
+	if(isHandKey)
+		var lcd = document.getElementById("logclockdate").value;
+
     document.getElementById("log").reset();
+
     $('#log input').parent().find('input').removeClass("is-invalid").removeClass("is-valid");
-    document.getElementById("call").focus();
+
+	if(isHandKey){
+		document.getElementById("logclockdate").value = lcd;
+		document.getElementById("logclocktime").focus();
+	} else {
+	    document.getElementById("call").focus();
+	}
 };
+
+// handkey.html variant support
+function handkeyDateTime() {
+	var lcd = document.getElementById("logclockdate").value;
+	var lct = document.getElementById("logclocktime").value;
+	var logclock = lcd.concat(" ", lct.slice(0,2), ":", lct.slice(2,4), ":", "00");
+	document.getElementById("logclock").value = logclock;
+};
+
+$('#logclockdate').focusout(function() {
+    var input=$(this);
+	var re = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/;
+    var is_valid = true;
+	var dt = input.val();
+
+	if(re.test(input.val())){
+		var y = dt.slice(0,4);
+		var m = dt.slice(5,7);
+ 		var d = dt.slice(8,12);
+
+		// Y2K1 problem!
+		if(y < 2000 || y > 2100 ) is_valid = false;
+		if(m < 1 || m > 12 ) is_valid = false;
+		if(d < 1 || d > 31 ) is_valid = false;
+
+	} else {
+		is_valid = false;
+	}
+
+    if(is_valid){
+        input.removeClass("is-invalid").addClass("is-valid");
+		submitOkLogClockDate = true;
+    } else {
+        input.removeClass("is-valid").addClass("is-invalid");
+		submitOkLogClockDate = false;
+    }
+});
+
+$('#logclocktime').focusout(function() {
+    var input=$(this);
+	var re = /^[0-9]{3,4}$/;
+    var is_valid = true;
+	var t = input.val();
+
+	if(re.test(input.val())){
+		if(t.length == 3)
+			t = "0".concat(t);
+			document.getElementById("logclocktime").value = t;
+		var hh = t.slice(0,2);
+		var mm = t.slice(2,4);
+
+		if(hh < 0 || hh > 23) is_valid = false;
+		if(mm < 0 || mm > 59) is_valid = false;
+
+	} else {
+		is_valid = false;
+	}
+
+    if(is_valid){
+        input.removeClass("is-invalid").addClass("is-valid");
+		submitOkLogClockTime = true;
+    } else {
+        input.removeClass("is-valid").addClass("is-invalid");
+		submitOkLogClockTime = false;
+    }
+});
+
 
 // 
 // Manage QSOs
@@ -395,7 +491,7 @@ function editQSO(qkey){
 }
 
 function delQSO(qkey, qcall){
-	if( confirm("Are you sue your want to delete QSO with " + qcall + "?\n(QSO ID# " + qkey + ")") ){
+	if( confirm("Are you sure your want to delete QSO with " + qcall + "?\n(QSO ID# " + qkey + ")") ){
 	    $.ajax({
 	        type:   "GET",
 	        url:    "api/delqso.php?qkey=" + qkey,
