@@ -12,17 +12,16 @@ Project Home Page: https://mfamily.org/firefly-logger
 
 Live Demo: https://ffdl.packetwarriors.com
 
-## Goals / Design Philosophy
-
-- Operate seamlessly across multiple, low-powered devices
-- Client side is HTML5 + Javascript
-- Server side is a very lightweight PHP + MariaDB (MySQL) system
-- Operate over a disconnected local LAN/WLAN - i.e. without Internet
-- Server operates with many clients served by a Pi3/4-type device
-- Limited feature set necessary for ARRL Field Day and Winter Field Day operations only
+## Features
+- Full client in a browser; operates seamlessly across multiple, low-powered devices such as old laptops running lightweight Linux, Pis, low-cost tablets
+- Network environment for common operating picture
+- Realtime duplicates checking/avoidance
+- Format checking on all fields for high-accuracy logging
+- Ability to hand-key paper logs as needed
+- Does not require the Internet; Operate over a disconnected local network or WiFi
 - Display page for showing on a screen at Field Days to show score and points
 - ADIF export for Logbook of the World (LoTW) or other logging programs
-- CSV export for spreadsheet manipulations
+- Cabrillo export for score reporting
 
 ## Important Security Note
 
