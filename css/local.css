@@ -46,10 +46,12 @@
 	margin-top:		50px;
 }
 
+
 .tt-menu {
-	background-color:	var(--black-coral);
-	color:				var(--coquelicot);
+	background-color:	lightgrey;
+	color:				black;
 }
+
 
 .f-nav-header {
 	display: inline-flex;
