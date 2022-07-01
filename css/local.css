@@ -15,32 +15,8 @@
 }
 
 .titlebars {
-	background-color: var(--black-coral);
-	color: var(--coquelicot);
-}
-
-.btn-edit {
+	background-color: lightgray;
 	color: black;
-	background-color: var(--titanium-yellow);
-	border-color: var(--titanium-yellow);
-}
-
-.btn-edit:hover {
-	color: var(--titanium-yellow);
-	background-color: var(--cultured);
-	border-color: var(--titanium-yellow);
-}
-
-.btn-danger {
-	color: white;
-	background-color: var(--claret);
-	border-color: var(--claret);
-}
-
-.btn-danger:hover {
-	color: var(--claret);
-	background-color: var(--cultured);
-	border-color: var(--claret);
 }
 
 .btn-misc {
