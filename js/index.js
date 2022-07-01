@@ -25,6 +25,7 @@ var qsinceload = 0;
 var sectionsloaded = false;
 var stationcookieexists = false;
 var thispage = location.href.split("/").slice(-1);
+var inLogSubmit = false;
 
 if(thispage == "handkey.html")
 	var isHandKey = true;
@@ -294,7 +295,12 @@ function toggleLogButton(bbool) {
 
 // intercept enter and escape for log entry/clearing
 $(document).on('keyup', function(k) {
-	if(k.key == "Enter") logSubmit();
+	if(k.key == "Enter"){
+		if(!inLogSubmit){
+			logSubmit();
+		} 
+	}
+	
 	if(k.key == "Escape") logReset();
 	
 });
@@ -329,6 +335,13 @@ function checkSubmitOkStatus() {
 
 // submit the log
 function logSubmit() {
+
+	// Putting this in here so the onsubmit action from the form when
+	// enter is clicked and then the on(keyup) happens they don't
+	// collide -- probably a better way to do this.
+	if(inLogSubmit)
+		return false;
+	inLogSubmit = true;
 
 	if(!checkStationSetOkStatus()){
 		alertStatusMsg("Station information not set");
@@ -386,9 +399,11 @@ function logSubmit() {
 			if(!isHandKey)
 				updateDisplayLog();
 			logReset();
+			inLogSubmit = false;
 		},
 		failure: function(msg) {
 			alertStatusMsg("Failed to store QSO for " + qsocall + "! (QKEY: " + qkey + " , API Resp: " + msg + ")");
+			inLogSubmit = false;
 		}
 	});
 
