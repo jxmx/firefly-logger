@@ -405,6 +405,7 @@ function logReset() {
 		var lcd = document.getElementById("logclockdate").value;
 
     document.getElementById("log").reset();
+	document.getElementById("section").value = "";
 
     $('#log input').parent().find('input').removeClass("is-invalid").removeClass("is-valid");
 
