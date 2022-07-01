@@ -195,7 +195,7 @@ function handleIsDupeQSO(resp) {
 		callf.classList.remove("is-valid");
 		callf.classList.add("is-invalid");
 		callf.focus();
-		alertStatusMsg("Duplicate QSO: Callsign + Band + Mode already in log");
+		decayingAlertStatusMsg("Duplicate QSO: Callsign + Band + Mode already in log", 5);
 	} else {
 		submitOkDupe = true;
 		callf.classList.remove("is-invalid");
