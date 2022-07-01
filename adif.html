@@ -22,29 +22,25 @@
   </symbol>
 </svg>
 <main>
-    <div class="bg-secondary" style="height: 75px;">
+    <div class="titlebars" style="height: 75px;">
         <table width="100%" height="100%">
-            <tr>
+            <tr class="titlebars">
                 <td width="20%" style="vertical-align: middle; text-align: center;">
-                    <img src="img/firefly.svg" height="45px"><b>Firefly Field Day Logger</b>
+                    <img src="img/firefly.svg" height="45px"><span class="px-2">Firefly Logger</span>
                 </td>
                 <td width="60%" style="vertical-align: middle; text-align: center;">
-					Cabrillo Generator
+					ADIF Generator
                 </td>
                 <td width="20%" style="vertical-align: middle; text-align: center;">
-                    <img src="img/firefly.svg" height="45px"><b>Firefly Field Day Logger</b>
+                    <img src="img/firefly.svg" height="45px"><span class="px-2">Firefly Logger</span>
                 </td>
             </tr>
         </table>
     </div>
-	<div class="container-md shadow">
+	<div class="container-md mt-5 shadow">
 		<div class="row">
 				<form id="adif" name="adif" method="POST" action="adif.php">
 					<table class="table table-borderless">
-						<thead>
-							<th scope="col" style="width: 20%">Header Item</th>
-							<th scope="col" style="width: 80%">Value</th>
-						</thead>
 						<tbody>
 						<tr>
 							<td class="align-top">
@@ -79,7 +75,7 @@
 	<script src="js/jquery-3.6.0.min.js"></script>
 </main>
 <footer>
-	<div class="d-flex shadow m-5 p-2"><i>Powered by Firefly Field Day Logger by Jason McCormick N8EI - <a href="https://github.com/jxmx/ffdl" tabindex="-1">GitHub</a></i></div>
+	<div class="d-flex footerbar p-2 mt-5"><i>Powered by Firefly Field Day Logger by Jason McCormick N8EI - <a href="https://github.com/jxmx/ffdl" tabindex="-1">GitHub</a></i></div>
 </footer>
 </body>
 </html>
