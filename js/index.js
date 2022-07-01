@@ -562,7 +562,7 @@ $('#operator').on('input', function() {
 // Band Configuration Dropdown
 //
 function refreshBandList(blist){
-    var r = "<option value=\"X\">Select Band...</option>";
+    var r = "<option value=\"X\">Band...</option>";
     blist.forEach(
         function(v) {
             r += `<option value="${v}">${v}</option>`;
@@ -587,7 +587,7 @@ $('#band').on('input', function() {
 // Mode Configuration Dropdown
 //
 function refreshModeList(mlist){
-    var r = "<option value=\"X\">Select Mode...</option>";
+    var r = "<option value=\"X\">Mode...</option>";
     for( let m of mlist){
         r += `<option value="${m['key']}">${m['value']}</option>`;
     }
