@@ -2,7 +2,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>ADIF Export | Firefly Field Day Logger</title>
+	<title>CSV Export | Firefly Field Day Logger</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/local.css" rel="stylesheet">
 	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
@@ -32,7 +32,7 @@
 					<img src="img/firefly.svg" height="45px">
 				</div>
 				<div class="col-8 align-self-center text-center">
-					<h2>ADIF Export</h2>
+					<h2>CSV Export</h2>
 				</div>
 			  	<div class="col align-self-center text-end">
 				  <ul class="nav nav-pills f-nav-header">
@@ -46,7 +46,7 @@
 						  <li><a class="dropdown-item" href="handkey.html">Handkey Interface</a></li>
 						  <li><hr class="dropdown-divider"></li>
 						  <li><a class="dropdown-item" href="cabrillo.html">Export Cabrillo</a></li>
-						  <li><a class="dropdown-item" href="adif.html">Export ADIF</a></li>
+						  <li><a class="dropdown-item" href="CSV.html">Export CSV</a></li>
 						  <li><a class="dropdown-item" href="dupesheet.html">Export Dupesheet</a></li>
 						  <li><a class="dropdown-item" href="csv.html">Export CSV</a></li>
 						  </ul>
@@ -59,31 +59,12 @@
 <main>
 	<div class="container-md mt-5 shadow">
 		<div class="row">
-				<form id="adif" name="adif" method="POST" action="adif.php">
+				<form id="CSV" name="CSV" method="POST" action="csv.php">
 					<table class="table table-borderless">
 						<tbody>
 						<tr>
-							<td class="align-top">
-								<b>Comment Field Text</b><br>
-								<i>Appears after Field Day type label</i>
-							</td>
-							<td class="align-top">
-								<input type="text" size=20 name="adifcomment" id="adifcomment" class="form-control" autocomplete="off">
-							</td>
-						</tr><tr>
-							<td class="align-top">
-								<b>Field Day Type</b>
-							</td>
-							<td class="align-top">
-								<select size=1 name="adifcontest" id="adifcontest" class="form-control">
-									<option value="ARRL-FD" selected>ARRL Field Day</option>
-									<option value="WFD">Winter Field Day</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
 						<td colspan="2">
-							<button type="submit" class="btn btn-primary btn-sm">Generate ADIF File</button>
+							<button type="submit" class="btn btn-primary btn-sm">Generate CSV File</button>
 						</td>
 						</tr>
 						</tbody>
