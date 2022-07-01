@@ -19,15 +19,6 @@
 	color: var(--coquelicot);
 }
 
-.footerbar {
-	background-color: var(--black-coral);
-	color: var(--coquelicot);
-}
-
-.footerbar a:link, .footerbar a:hover, .footerbar a:active, .footerbar a:visited {
-	color: var(--coquelicot);
-}
-
 .btn-edit {
 	color: black;
 	background-color: var(--titanium-yellow);
@@ -84,6 +75,25 @@
 	color:				var(--coquelicot);
 }
 
-.stationsett {
-	margin-top:	10px;
+.f-nav-header {
+	display: inline-flex;
+}
+
+.nav-link, .nav-link:hover{ 
+	color: var(--coquelicot) !important;
+}
+
+header {
+	border-bottom: 3px solid var(--coquelicot);
+	margin-bottom: 15px;
+}
+
+footer {
+	margin-top: 25px;
+	color: var(--cultured);
+	background-color: var(--coquelicot);
+}
+
+.footerbar a:link, .footerbar a:hover, .footerbar a:active, .footerbar a:visited {
+	color: var(--cultured);;
 }

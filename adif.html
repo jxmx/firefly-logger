@@ -2,41 +2,60 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Firefly Field Day Logger</title>
+	<title>ADIF Export | Firefly Field Day Logger</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/jquery.typeahead.min.css" rel="stylesheet"> 
 	<link href="css/local.css" rel="stylesheet">
 	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
 	<link rel="manifest" href="manifest.json">
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-  <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
-    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-  </symbol>
-  <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
-    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-  </symbol>
-  <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-  </symbol>
-</svg>
+	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+		<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+		  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+		</symbol>
+		<symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+		  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+		</symbol>
+		<symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+		  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+		</symbol>
+		<symbol id="s-menu-drop-down" fill="currentColor" viewBox="0 0 512 512">
+		  <path d="M256 0C114.6 0 0 114.6 0 256c0 141.4 114.6 256 256 256s256-114.6 256-256C512 114.6 397.4 0 256 0zM390.6 246.6l-112 112C272.4 364.9 264.2 368 256 368s-16.38-3.125-22.62-9.375l-112-112c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L256 290.8l89.38-89.38c12.5-12.5 32.75-12.5 45.25 0S403.1 234.1 390.6 246.6z"/>
+		</symbol>
+	  </svg>
+	  
+	  
+	<header class="shadow-sm bg-body">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col align-self-center text-start">
+					<img src="img/firefly.svg" height="45px">
+				</div>
+				<div class="col-8 align-self-center text-center">
+					<h2>ADIF Export</h2>
+				</div>
+			  	<div class="col align-self-center text-end">
+				  <ul class="nav nav-pills f-nav-header">
+					  <li class="nav-item dropdown">
+						  <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+							  Screens <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#s-menu-drop-down"/></svg>
+						  </a>
+						  <ul class="dropdown-menu">
+						  <li><a class="dropdown-item" href="index.html">Logger</a></li>
+						  <li><a class="dropdown-item" href="board.html">Display Board</a></li>
+						  <li><a class="dropdown-item" href="handkey.html">Handkey Interface</a></li>
+						  <li><hr class="dropdown-divider"></li>
+						  <li><a class="dropdown-item" href="cabrillo.html">Export Cabrillo</a></li>
+						  <li><a class="dropdown-item" href="adif.html">Export ADIF</a></li>
+						  <li><a class="dropdown-item" href="dupesheet.html">Export Dupesheet</a></li>
+						  </ul>
+					  </li>
+				  </ul>
+			  </div>
+		  </div>
+		</div>
+	</header>
 <main>
-    <div class="titlebars" style="height: 75px;">
-        <table width="100%" height="100%">
-            <tr class="titlebars">
-                <td width="20%" style="vertical-align: middle; text-align: center;">
-                    <img src="img/firefly.svg" height="45px"><span class="px-2">Firefly Logger</span>
-                </td>
-                <td width="60%" style="vertical-align: middle; text-align: center;">
-					ADIF Generator
-                </td>
-                <td width="20%" style="vertical-align: middle; text-align: center;">
-                    <img src="img/firefly.svg" height="45px"><span class="px-2">Firefly Logger</span>
-                </td>
-            </tr>
-        </table>
-    </div>
 	<div class="container-md mt-5 shadow">
 		<div class="row">
 				<form id="adif" name="adif" method="POST" action="adif.php">
