@@ -1,4 +1,19 @@
 -------------------------
+** v4.0.0 - 2022-07-17
+-------------------------
+
+New Features:
+- ARRL Field Day Dupesheet generator
+- CSV log export
+- Configuration Manager
+
+Bugs/Issues:
+- Fix Linux + Chromium bugs
+- Deconflict race conditions in status messages on log submit
+- Fix the score generator script that fails when running in https:// environment
+- Revert certain UI/UX changes implemented in v3.x
+
+-------------------------
 ** v3.1.0 - 2022-06-11
 -------------------------
 - Implement an interface for manual entry of logs with a
