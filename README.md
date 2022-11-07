@@ -26,9 +26,9 @@ Live Demo: https://ffdl.packetwarriors.com
 ## Important Security Note
 
 Please note that Firefly Field Day Logger does **NOT** have the
-required web application security to run over the open
+required web application security to run over the public
 Internet. FFDL is intended to be a lightweight application for local use
-at an ARRL Field Day over a local LAN/WiFi connection with a group of
+at a Field Day operation over a local LAN/WiFi connection with a group of
 well-behaved, well-meaning operators. It does not contain any authentication
 security, serious input sanitization, or significant anti-XSS protections.
 
@@ -73,7 +73,9 @@ knowledge of HTML5 and JavaScript would be helpful.
 Installation is fairly straight forward.
 
 1. Copy the entire package to your webserver's root directory 
-such as `/var/www/html`.
+such as `/var/www/html`. The files and directory should be 
+owned by the user running the webserver. For Debian this user is `www-data`
+and for Fedora/Red Hat this is `apache`. A quick fix is `chown -R www-data:www-data /var/www/html`.
 
 2. Edit `api/db.php` and insert your MariaDB/MySQL connection information.
 For the purposes of the documentation, the database, user, and password
@@ -90,6 +92,10 @@ FLUSH PRIVILEGES;
 USE ffdl;
 SOURCE /var/www/html/load.sql;
 ```
+
+Entering the root user of MariaDB uses the command `mysql -u root ffdl`. If your
+database has a password, include `-p` after the word `root`.
+
 4. Enable the PHP handling in Apache:
 
 ```
@@ -134,7 +140,8 @@ Upgrading from previous versions is as simple as:
 if customizations have been made, save/move those first.
 
 2. Copy the entire package to your webserver's root directory 
-such as `/var/www/html`.
+such as `/var/www/html`. Set the ownership as specified in the 
+install directions.
 
 3. Edit `api/db.php` and insert your MariaDB/MySQL connection information.
 For the purposes of the documentation, the database, user, and password
@@ -153,19 +160,18 @@ SOURCE /var/www/html/load.sql;
 In-place upgrades of existing databases are not supported. Ensure all data
 has been saved/exported before upgrading the system.
 
-## URL Endpoints
+## Screens
 
-The following URL endpoints are the support "entries" into the system:
+The following screens are available in the system:
 
-`/index.html` - Main interface
+* **Logger** - The main logger interface
+* **Display Board** - The "brag board" for displaying on a screen
+* **Handkey Interface** - A manual entry screen (see below)
+* **Export Cabrillo** - Export the log as a Cabrillo-formatted file for score submissions
+* **Export ADIF** - Export the log as a ADIF-formatted file for log recording in LOTW or import into other loggers
+* **Export Dupesheet** - Export the ARRL-required "dupe sheet" format for subsmissions
+* **Export CVS** - Export the log as a comma-separated values file editable by Excel, Google Sheets, Apple Numbers, etc.
 
-`/handkey.html` - Interface for hand-keying in a paper log
-
-`/board.html` - Display "board" for a running tally display screen
-
-`/cabrillo.html` - Download a Cabrillo log of all contacts
-
-`/adif.html` - Download an ADIF export of all contacts
 
 ## Testing
 
@@ -205,30 +211,41 @@ Operator can be the same call if it's a single-operator situation.
 
 ## Configuration
 
-There is minimal configuration necessary. The `api/config_general.json`
-contains all generalized site-wide configuration. The following
-configuration keys are supported:
+There is minimal configuration necessary. 
 
-| Key          | Options            |
-| ------------ | ------------------ |
-| stationCall  | The callsign underwhich the operation is being held |
-| fdType       | The type of Field Day event. Default is "AFD" for ARRL Field Day. Other supported option is "WFD" for Winter Field Day |
-| multiOp      | Permit each logging station to set their own local operator callsign for logging purposes. Values are "N" (default) or "Y". |
+### General Configuration
+Options needed for all installations are in the **Screens** -> 
+**Config Mgr**. The options should be self-explanatory.
+The **Log Multiple Operators** toggle simple enables or disables the feature
+where each entry has a separate Station Call and Operator Call. This feature
+is useful when operators want to see their performance but it can get scrambled
+if people are not diligent about setting a new operator callsign.
 
-To alter the ARRL section list, add or remove the appropriate
-settings in `api/config_sections.json`.
+### ARRL/RAC Section List
+The ARRL/RAC section list is statically stored in a JSON file for 
+performance reasons. The ARRL/RAC list is maintained by the project. However,
+to alter the ARRL section list, add or remove the appropriate
+items in `api/config_sections.json`. The formatting and captialization
+of the file is important.
 
-To add additional bands, add or remove the bands in the list
-found in `api/config_bands.json`. Users of `adif.php` and `cabrillo.php`
-will also have to hand-edit those export functions to map added bands appropriately.
-A future release will fix this.
+### Bands List
+The band list s statically stored in a JSON file for performance reasons.
+To add or remove the bands in the list, edit the file `api/config_bands.json`.
+Users of `adif.php` and `cabrillo.php` will also have to hand-edit those 
+export functions to map added bands appropriately. A future release will 
+use the centralized configuration.
+
+### Modes List
+The mode list is statically stored in a JSON file for performance reasons.
+It is not recommended to edit this list unless you're an experienced
+developer. The list is `api/config_modes.json`.
 
 ## Handkey Interface
 
-The `handkey.html` screen is for someone to hand-enter QSOs from people who 
+The Handkey Interface screen is for someone to hand-enter QSOs from people who 
 didn't want to log electronically. Obviously not using the live interface can
 cause potential dupes, etc. However this provides a way for someone to either
-bulk-enter someone's paper log or provide and interface to someone who likes 
+bulk-enter someone's paper log or provide an interface to someone who likes 
 to write the QSO on paper then enter it and still the correct date/time. On 
 the main screen, the log time is not editable.
 
