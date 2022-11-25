@@ -37,6 +37,10 @@ suggest is that the server implements HTTP Basic Authentication at the
 server-level. However **DO NOT** plan to actually do this - it is not
 recommended.
 
+## Jumpstart Installer
+Firefly Field Day Logger has a companion project [FFDL Jumpstart](https://github.com/jxmx/ffdl-jumpstart)
+to create a seamless installation experience on a Raspberry Pi running Raspberry Pi OS (Raspian) 11.
+
 ## Prerequisites 
 
 Firefly Field Day Logger, is not a a turnkey-complete system. Some 
