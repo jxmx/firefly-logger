@@ -23,11 +23,16 @@ $insqry = sprintf("INSERT INTO qso VALUES('%s','%s','%s','%s','%s','%s','%s','%s
 	$qkey,$call,$logclock,$band,$opclass,$mode,$callsign,$section,$operator
 );
 
-$res = $db->query($insqry);
-if($res){
-	echo "OK";
-} else {
-	echo "ERROR " . $db->error;
+try {
+	$res = $db->query($insqry);
+	if($res){
+		echo "OK";
+	} else {
+		echo "ERROR " . $db->error;
+	}
+} catch(Exception $e) {
+	echo "ERROR - DB - " . $e->getMessage();
+} finally {
+	$db->close();
 }
-$db->close();
 ?>
