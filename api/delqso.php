@@ -1,14 +1,13 @@
 <?php
 header('Content-Type: text/plain');
-
-// helpers
-function getGetVar($id) {
-	return filter_var(trim($_GET[$id]), FILTER_SANITIZE_STRING);
-}
+include_once("functions.php");
+include("db.php");
 
 $qkey = getGetVar("qkey");
-
-include("db.php");
+if(!$qkey){
+	echo "ERROR missing qkey var";
+	exit;
+}
 
 $insqry = sprintf("DELETE FROM qso WHERE qkey='%s'", $qkey);
 $res = $db->query($insqry);

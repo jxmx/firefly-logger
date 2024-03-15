@@ -1,10 +1,6 @@
 <?php
 header('Content-Type: text/plain');
-
-// helpers
-function getPostVar($id) {
-	return filter_var(trim($_POST[$id]), FILTER_SANITIZE_STRING);
-}
+include_once("functions.php");
 
 $qkey = getPostVar("qkey");
 $logclock = getPostVar("logclock");

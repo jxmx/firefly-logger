@@ -1,9 +1,6 @@
 <?php
 header('Content-Type: text/plain');
-
-function getGetVar($id) {
-	return filter_var(trim($_GET[$id]), FILTER_SANITIZE_STRING);
-}
+include_once("functions.php");
 
 function getElement($qq){
 	include("db.php");

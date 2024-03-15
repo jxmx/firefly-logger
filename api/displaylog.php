@@ -1,18 +1,10 @@
 <?php
-
-function getGetVar($id) {
-	if(isset($_GET[$id])){
-		return filter_var(trim($_GET[$id]), FILTER_SANITIZE_STRING);
-	}
-    return FALSE;
-}
+include_once("functions.php");
 
 $hidebuttons = getGetVar("hidebuttons");
-if( !isset($hidebuttons)){
+if( $hidebuttons ){
 	$hidebuttons = "N";	
 }
-
-
 
 include("db.php");
 

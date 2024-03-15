@@ -1,15 +1,6 @@
 <?php
 header('Content-Type: text/html');
-
-
-// helpers
-function getPostVar($id) {
-	if( isset($_POST[$id]) ){
-		return filter_var(trim($_POST[$id]), FILTER_SANITIZE_STRING);
-	} else {
-		return false;
-	}
-}
+include_once("functions.php");
 
 $stationCall = getPostVar("stationCall");
 $fdType = getPostVar("fdType");
