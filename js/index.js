@@ -300,12 +300,10 @@ $(document).on('keyup', function(k) {
 });
 
 $('#logsubmit').mouseover(function(){
-	console.log("IN!");
 	document.getElementById("logsubmit").setAttribute("onclick", "logSubmit()");
 });
 
 $('#logsubmit').mouseout(function(){
-	console.log("OUT!");
 	document.getElementById("logsubmit").setAttribute("onclick", "");
 });
 
