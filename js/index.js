@@ -30,41 +30,36 @@ if(thispage == "handkey.html")
 	var isHandKey = true;
 
 // load configuration from JSON files
-function getConfig(configType){
-	var xmlhttp = new XMLHttpRequest();
+async function getConfig(configType){
 	var url = `${APIPrefix}/config_${configType}.json`;
-	xmlhttp.onreadystatechange = function () {
-		if( this.readyState == 4 && this.status == 200 ){
-			var a = JSON.parse(this.responseText);
-			switch(configType){
-				case "general":
-					config.general = a;
-					setGeneralConfig();
-					break;		
-				case "bands":
-					config.bands = a;
-					refreshBandList(config.bands.band);
-					setStationDataFromCookie();
-					break;
-				case "modes":
-					config.modes = a;
-					refreshModeList(config.modes.modes);
-					setStationDataFromCookie();
-					break;
-				case "sections":
-					config.sections = a;
-					sectionsloaded = true;
-					break;
-			}
-		} else if( this.readyState == 4 && this.status != 200 ){
-			console.log("Failed to retreive configuration: " + url);
-			console.log("Ready State: " + this.readyState);
-			console.log("HTTP Status: " + this.status);
-			alert("Error retriving configuration file - check console");
+	let response = await fetch(url);
+	if(response.ok){
+		let a = await response.json();
+		switch(configType){
+			case "general":
+				config.general = a;
+				setGeneralConfig();
+				break;		
+			case "bands":
+				config.bands = a;
+				refreshBandList(config.bands.band);
+				setStationDataFromCookie();
+				break;
+			case "modes":
+				config.modes = a;
+				refreshModeList(config.modes.modes);
+				setStationDataFromCookie();
+				break;
+			case "sections":
+				config.sections = a;
+				sectionsloaded = true;
+				break;
 		}
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
+		return true;
+	}
+
+	console.log(`getConfig() error status ${response.status} ${response.statusText}`);
+	return false;
 }
 
 //
@@ -75,7 +70,7 @@ function setGeneralConfig(){
 	document.getElementById("callsign").value = config.general.stationCall;
 
 	// show/hit the Operator box
-	if( config.general.multiOp == false){
+	if(config.general.multiOp === "false"){
 		document.getElementById("operator").readOnly = true;
 		document.getElementById("operator").value = config.general.stationCall;
 		submitOkOperCall = true;
@@ -85,11 +80,11 @@ function setGeneralConfig(){
 //
 // On the load
 //
-window.addEventListener("load", function(){
-	getConfig("general");
-	getConfig("bands");
-	getConfig("modes");
-	getConfig("sections");
+window.addEventListener("load", async function(){
+	await getConfig("general");
+	await getConfig("bands");
+	await getConfig("modes");
+	await getConfig("sections");
 
 	// Only things for the main form at index.html
 	if(thispage == "index.html" || thispage == ""){
