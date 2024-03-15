@@ -1,4 +1,4 @@
-var APIPrefix = "/api";	
+var APIPrefix = "api";	
 
 let config = {
     "stationCall": null,
