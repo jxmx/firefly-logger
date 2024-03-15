@@ -12,7 +12,7 @@ $DBHOST = "localhost";
 // MariaDB Database
 $DBDB = "ffdl";
 
-$db = mysqli_connect("localhost","ffdl","ffdl","ffdl");
+$db = mysqli_connect($DBHOST, $DBUSER, $DBPASS, $DBDB);
 if($db->connect_errno){
 	echo "ERROR Failed to connect to MariaDB instance";
 	exit();	
