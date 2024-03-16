@@ -51,20 +51,20 @@ debchange:
 debprep:	debclean
 	-find . -type d -name __pycache__ -exec rm -rf {} \;
 	(cd .. && \
-		rm -f allmon3-$(RELVER) && \
-		rm -f allmon3-$(RELVER).tar.gz && \
-		rm -f allmon3_$(RELVER).orig.tar.gz && \
-		ln -s Allmon3 allmon3-$(RELVER) && \
-		tar --exclude=".git" -h -zvcf allmon3-$(RELVER).tar.gz allmon3-$(RELVER) && \
-		ln -s allmon3-$(RELVER).tar.gz allmon3_$(RELVER).orig.tar.gz )
+		rm -f $(PKGNAME)-$(RELVER) && \
+		rm -f $(PKGNAME)-$(RELVER).tar.gz && \
+		rm -f $(PKGNAME)_$(RELVER).orig.tar.gz && \
+		cp -r $(PKGNAME) $(PKGNAME)-$(RELVER) && \
+		tar --exclude=".git" -h -zvcf $(PKGNAME)-$(RELVER).tar.gz $(PKGNAME)-$(RELVER) && \
+		ln -s $(PKGNAME)-$(RELVER).tar.gz $(PKGNAME)_$(RELVER).orig.tar.gz )
 
 debclean:
-	rm -f ../$(PKGNAME)_$(RELVER)*
-	rm -f ../$(PKGNAME)-$(RELVER)*
+	rm -rf ../$(PKGNAME)_$(RELVER)*
+	rm -rf ../$(PKGNAME)-$(RELVER)*
 	rm -rf debian/$(PKGNAME)
 	rm -f debian/files
 	rm -rf debian/.debhelper/
 	rm -f debian/debhelper-build-stamp
 	rm -f debian/*.substvars
-	rm -rf debian/mfamily-scripts/ debian/.debhelper/
+	rm -rf debian/$(PKGNAME)/ debian/.debhelper/
 	rm -f debian/debhelper-build-stamp debian/files debian/mfamily-scripts.substvars
