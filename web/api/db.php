@@ -4,7 +4,7 @@
 $DBUSER = "ffdl";
 
 // Password
-$DBPASS = "ffdl";
+$DBPASS = "changeme";
 
 // Database Hostname 
 $DBHOST = "localhost";

@@ -6,6 +6,7 @@ DEBVER = 1
 PKGNAME = firefly-logger
 
 BUILDABLES = \
+	bin \
 	conf \
 	web
 
@@ -19,7 +20,7 @@ bin_prefix ?= $(exec_prefix)/bin
 mandir ?= $(prefix)/share/man
 docdir ?= $(prefix)/share/doc/$(PKGNAME)
 
-ROOT_FILES = LICENSE README.md SECURITY.md CHANGELOG.txt
+ROOT_FILES = LICENSE README.md SECURITY.md CHANGELOG.txt load.sql
 ROOT_INSTALLABLES = $(patsubst %, $(DESTDIR)$(docdir)/%, $(ROOT_FILES))
 
 default:
