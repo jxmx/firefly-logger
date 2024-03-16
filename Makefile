@@ -6,14 +6,21 @@ DEBVER = 1
 PKGNAME = firefly-logger
 
 BUILDABLES = \
+	conf \
 	web
 
 ifdef ${DESTDIR}
 DESTDIR=${DESTDIR}
 endif
 
+prefix ?= /usr
+exec_prefix ?= $(prefix)
+bin_prefix ?= $(exec_prefix)/bin
+mandir ?= $(prefix)/share/man
+docdir ?= $(prefix)/share/doc/$(PKGNAME)
+
 ROOT_FILES = LICENSE README.md SECURITY.md CHANGELOG.txt
-ROOT_INSTALLABLES = $(patsubst %, $(DESTDIR)$(docdir)/%)
+ROOT_INSTALLABLES = $(patsubst %, $(DESTDIR)$(docdir)/%, $(ROOT_FILES))
 
 default:
 	@echo This does nothing because of dpkg-buildpkg - use 'make install'
