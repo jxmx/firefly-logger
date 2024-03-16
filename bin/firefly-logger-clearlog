@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+if [ $(whoami) != "root" ]; then
+	echo "ERROR: must be run as root or with sudo as root"
+	exit 1
+fi
+
+echo "This process will clear all logged QSOs"
+echo "in the Firefly Logger database 'ffdl'"
+echo ""
+read -p "DO YOU WANT TO CONTINUE (Y/N)??  " answer
+case ${answer:0:1} in
+	y|Y)
+	;;
+
+	*)
+		exit 0
+	;;
+esac
+
+mysql -u root ffdl<<EOM
+delete from qso;
+EOM

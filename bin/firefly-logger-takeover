@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+
+if [ $(whoami) != "root" ]; then
+	echo "ERROR: must be run as root or with sudo as root"
+	exit 1
+fi
+
+echo "This program will 'take over' the web"
+echo "configuration of this host so that Firefly Logger"
+echo "is running as the primary/only website. Only"
+echo "run this if this server is not otherwise configured"
+echo "for any other website!!"
+echo ""
+echo "ANY OTHER APACHE2 OR WEBSITE DATA WILL BE DESTROYED!"
+echo ""
+read -p "DO YOU WANT TO CONTINUE (Y/N)??  " answer
+case ${answer:0:1} in
+	y|Y)
+	;;
+
+	*)
+		exit 0
+	;;
+esac
+
+systemctl enable apache2
+systemctl start apache2
+systemctl enable mariadb
+systemctl start mariadb
+a2enmod ssl
+a2ensite default-ssl
+systemctl restart apache2

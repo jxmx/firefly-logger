@@ -1,0 +1,64 @@
+#!/usr/bin/bash
+
+if [ $(whoami) != "root" ]; then
+	echo "ERROR: must be run as root or with sudo as root"
+	exit 1
+fi
+
+if [ ! -f /usr/share/doc/firefly-logger/load.sql ]; then
+	echo "ERROR: missing /usr/share/doc/firefly-logger/load.sql"
+	exit 1
+fi
+
+NOTRERUN=false
+
+if [ -d /var/lib/mysql/ffdl ]; then
+	echo "This process will create the default Firefly"
+	echo "Logger database and create a user with a"
+	echo "randomized password for the web application"
+	echo "(configuring the password in the webapp)."
+	echo ""
+	echo "WARNING! You appear to already have a MySQL"
+	echo "database named 'ffdl'. This database WILL BE"
+	echo "erased and the 'ffdl' user password will"
+	echo "be changed if you continue!!"
+	echo ""
+	read -p "DO YOU WANT TO CONTINUE (Y/N)??  " answer
+	case ${answer:0:1} in
+		y|Y)
+			NOTRERUN=true
+		;;
+
+		*)
+			exit 0
+		;;
+	esac
+fi
+
+DBPASS=$(openssl rand -hex 6)
+
+mysql -u root <<EOM
+DROP DATABASE IF EXISTS ffdl;
+CREATE DATABASE ffdl;
+GRANT ALL ON ffdl.* TO 'ffdl'@'localhost' IDENTIFIED BY "$DBPASS";
+FLUSH PRIVILEGES;
+USE ffdl;
+SOURCE /usr/share/doc/firefly-logger/load.sql;
+EOM
+
+perl -pi -e "s/changeme/$DBPASS/g" /var/www/firefly-logger/api/db.php
+
+if $NOTRERUN ; then
+	echo ""
+	echo "If there we no errors above this line, everything"
+	echo "worked fine. However check the password listed in"
+	echo "/var/www/firefly-logger/api/db.php and ensure it"
+	echo "is configured to be:"
+	echo ""
+	echo "     $DBPASS"
+	echo ""
+	echo "If it is not, please edit the file to set that as"
+	echo "the password."
+	echo ""
+fi
+
