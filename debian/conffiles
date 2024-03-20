@@ -1,2 +1,5 @@
 /var/www/firefly-logger/api/db.php
-/var/www/firefly-logger/api/*.json
+/var/www/firefly-logger/api/config_bands.json
+/var/www/firefly-logger/api/config_general.json
+/var/www/firefly-logger/api/config_modes.json
+/var/www/firefly-logger/api/config_sections.json
