@@ -30,3 +30,23 @@ systemctl start mariadb
 a2enmod ssl
 a2ensite default-ssl
 systemctl restart apache2
+
+cat - > /etc/apache2/sites-available/000-default.conf <<EOF
+<VirtualHost *:80>
+  ServerAdmin webmaster@firefly-logger
+  DocumentRoot /var/www/html
+
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^.* https://%{HTTP_HOST}%{REQUEST_URI} [R,L,QSA]
+</VirtualHost>
+EOF
+
+cat - > /var/www/html/index.html <<EOF
+<meta http-equiv="refresh" content="0; url=/firefly-logger/index.html" />
+EOF
+
+systemctl restart apache2
