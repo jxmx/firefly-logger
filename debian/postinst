@@ -27,7 +27,7 @@ do_configure() {
 		apache2_invoke enconf firefly-logger || exit $?
 
 		PHP_FPM=$(a2query -c | grep php | grep fpm | tail -n1 | awk '{print $1}')
-		apache2_invoke enmod $PHP_FPM
+		apache2_invoke enconf $PHP_FPM|| echo $?
 	fi
 
 	chown -R www-data:www-data /var/www/firefly-logger
