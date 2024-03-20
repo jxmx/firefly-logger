@@ -13,7 +13,7 @@ endif
 ROOT_FILES = $(wildcard *.html *.php *.ico) 
 
 CSS_FILES = $(wildcard $(CSS_DIR)/*.css)
-IMG_FILES = $(wildcard $(IMG_DIR)/*.png)
+IMG_FILES = $(wildcard $(IMG_DIR)/*.png $(IMG_DIR)/*.svg)
 JS_FILES = $(wildcard $(JS_DIR)/*.js)
 API_FILES = $(wildcard $(API_DIR)/*)
 
