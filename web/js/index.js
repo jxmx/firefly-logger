@@ -4,7 +4,7 @@
 
 
 // top level configuration variables
-var APIPrefix = "/api";			// prefix for where the API is located on the webserver
+var APIPrefix = "api";			// prefix for where the API is located on the webserver
 
 // master configuration for the application itself
 let config = {					
