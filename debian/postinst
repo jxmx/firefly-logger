@@ -23,7 +23,11 @@ do_configure() {
 	## Apache Management
 	if [ -e /usr/sbin/apache2 ]; then
 		apache2_invoke enmod rewrite || exit $?
+		apache2_invoke enmod proxy_fcgi || exit $?
 		apache2_invoke enconf firefly-logger || exit $?
+
+		PHP_FPM=$(a2query -c | grep php | grep fpm | tail -n1 | awk '{print $1}')
+		apache2_invoke enmod $PHP_FPM
 	fi
 
 	chown -R www-data:www-data /var/www/firefly-logger
