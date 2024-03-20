@@ -31,6 +31,10 @@ do_configure() {
 	fi
 
 	chown -R www-data:www-data /var/www/firefly-logger
+
+	if [ ! -d /var/lib/mysql/ffdl ]; then
+		/usr/bin/firefly-logger-loaddb	
+	fi
 }
 
 case "$1" in
