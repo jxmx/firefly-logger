@@ -1,6 +1,7 @@
 # Firefly Field Day Logger
 Firefly Field Day Logger is an HTML + AJAX web "application" for use 
 at [ARRL Field Day](http://www.arrl.org/field-day) operating events. 
+It can also be used for [WFDA Winter Field Day](https://winterfieldday.org/).
 The design of this logger is to be a simple, effective logger that 
 can be used on any device that can have a reasonably modern browser
 installed on it. This includes older laptops running Linux + Chromium,
@@ -8,7 +9,7 @@ tablets with Chrome or Firefox, Rasperry Pi 3 or 4 with Raspian, etc.
 FFDL has been tested on Windows, Linux, iOS, and Android using the
 native browsers on each platform.
 
-Project Home Page: https://mfamily.org/firefly-logger
+Project Home Page: https://packetwarriors/firefly-logger
 
 Live Demo: https://ffdl.packetwarriors.com
 
@@ -22,6 +23,7 @@ Live Demo: https://ffdl.packetwarriors.com
 - Display page for showing on a screen at Field Days to show score and points
 - ADIF export for Logbook of the World (LoTW) or other logging programs
 - Cabrillo export for score reporting
+- WSJT intergration (with [companion wjst2ffdl](https://github.com/jxmx/wsjt2ffdl/) package)
 
 ## Important Security Note
 
@@ -37,27 +39,60 @@ suggest is that the server implements HTTP Basic Authentication at the
 server-level. However **DO NOT** plan to actually do this - it is not
 recommended.
 
-## Jumpstart Installer
-Firefly Field Day Logger has a companion project [FFDL Jumpstart](https://github.com/jxmx/ffdl-jumpstart)
-to create a seamless installation experience on a Raspberry Pi running Raspberry Pi OS (Raspian) 11.
+## Installation Types
 
-## Prerequisites 
+### Full Raspberry Pi Image
+**COMING SOON**
 
-Firefly Field Day Logger, is not a a turnkey-complete system. Some 
-Linux experience will be needed to setup a Pi (or other Linux or whatever)
-server that runsMariaDB and PHP. The following components on your platform
-of choice will be required.
+### Debian Installation
+Installation is supported on in-support versions of Debian (currently
+Debian 12 Bookworm and Debial 11 Bullseye) through use of apt/deb
+and the PacketWarriors software repository. Installation on a
+supported Debian release is as follows.
 
-- PHP v7.3 or greater
-- MariaDB v10 or greater (also would work with MySQL)
+1. Install the PacketWarriors software repository:
+```
+wget -O/packetwarriors-repo.deb https://repo.packetwarriors.com/packetwarriors-repo.deb
+dpkg -i /tmp/packetwarriors-repo.deb
+apt update
+```
+
+2. Install the logger with apt:
+```
+apt install firefly-logger
+```
+
+3. That's it! The logger should be available on the system at `/firefly-logger`. For
+example if on the local Pi it would be http://localhost/firefly-logger.
+
+4. (Optional) To create a "turnkey" system where Firefly Logger is the only
+web application and to force Apache to redirect to it, execute:
+```
+firefly-logger-takeover
+```
+Note that this will force redirection to a TLS-enabled site (for cookie support)
+and you will be prompted for a certificate warning or a "Potential Security Risk
+Area" or something of the like. It is safe to accept the warning.
+
+### Other Linux Installation
+Firefly Logger should work on any reasonable Linux system with relatively
+modern packages available:
+
+- PHP v8.1 or greater
+- MariaDB v10 or greater (should also would work with MySQL 8 unless these platforms diverge further)
 - Webserver that supports PHP via FastCGI
 
-These generalized installation directions use Debian 11 as most users will
-probably want to serve this up from a Raspberry Pi device. In general on
-Debian/Raspian 11 you should get a ready stack by executing:
+This installation assumes the user is reasonably familiar with Linux
+and can follow non-step-by-step directions.
 
+1. Install the appropriate pre-requisites: apache 2.4, PHP 8.1+, PHP-FPM, MariaDB 10+
+
+2. Download the latest release .zip file, uncompress, and `cd` to the distribution.
+
+3. Execute `make install`
+
+4. Enable the approriate system services similar to:
 ```
-apt install apache2 php7.4-fpm mariadb-server php7.4-mysql
 systemctl enable php7.4-fpm
 systemctl start php7.4-fpm
 systemctl enable apache2
@@ -66,48 +101,26 @@ systemctl enable mariadb
 systemctl start mariadb
 ```
 
-For Debian/Raspian 10 everything will be the same except the packages for PHP will be php7.3.
-As of 2022, this application will run on both Debian/Raspbian 10 and 11.
+5. The script `firefly-logger-loaddb` may work to setup the database
+depending on the specifics of the system configuration. If not:
 
-If you want to make any minor modifications, a minimal working
-knowledge of HTML5 and JavaScript would be helpful.
-
-## Installation
-
-Installation is fairly straight forward.
-
-1. Copy the entire package to your webserver's root directory 
-such as `/var/www/html`. The files and directory should be 
-owned by the user running the webserver. For Debian this user is `www-data`
-and for Fedora/Red Hat this is `apache`. A quick fix is `chown -R www-data:www-data /var/www/html`.
-
-2. Edit `api/db.php` and insert your MariaDB/MySQL connection information.
-For the purposes of the documentation, the database, user, and password
-are all assumed to be "ffdl".
-
-3. As the root user of MariaDB, execute the following commands - adjusted
-for your database, user, and password as well as the on-disk path
-to the web root:
-
-```sql
+* Create a database and database user for Firefly then
+load `/var/www/firefly-logger/load.sql` into the database.
+For example:
+```
 CREATE DATABASE ffdl;
 GRANT ALL ON ffdl.* TO 'ffdl'@'localhost' IDENTIFIED BY 'ffdl';
 FLUSH PRIVILEGES;
 USE ffdl;
 SOURCE /var/www/html/load.sql;
 ```
+* Configure the database appropriately in `/var/www/firefly-logger/api/db.php`
+
+6. The logger should be available on the system at `/firefly-logger`. For
+example if on the local Pi it would be http://localhost/firefly-logger.
 
 Entering the root user of MariaDB uses the command `mysql -u root ffdl`. If your
 database has a password, include `-p` after the word `root`.
-
-4. Enable the PHP handling in Apache:
-
-```
-a2enconf php7.4-fpm
-systemctl restart apache2
-```
-
-5. Browse to the application URL
 
 ## HTTPS / TLS Considerations
 
@@ -118,15 +131,7 @@ connections and clients use those connections. There are known issues
 with stock Chromium on Linux with non-TLS-protected cookies. Here's how to enable
 https:// connections for this application.
 
-1. Enable the SSL/TLS module and stock site for apache:
-
-```
-a2enmod ssl
-a2ensite default-ssl
-systemctl restart apache2
-```
-
-2. Test the TLS configuration by visiting the server on https://. For example
+Test the TLS configuration by visiting the server on https://. For example
 if the hostname is logger.fd.local, browse to https://logger.fd.local. A
 warning about a certificate error will appear because the configuration
 is using the default "fake" certificate. This is OKAY for non-Internet-connected
@@ -136,35 +141,7 @@ or "continue anyway" or "accept the risk and continue". The site should load.
 It is strongly recommended to enable HTTPS/TLS on all Firefly Logger installations
 to avoid potential cookie problems.
 
-## Upgrading
-
-Upgrading from previous versions is as simple as:
-
-1. Remove all existing files with `rm -rf /var/www/html/*`. Note
-if customizations have been made, save/move those first.
-
-2. Copy the entire package to your webserver's root directory 
-such as `/var/www/html`. Set the ownership as specified in the 
-install directions.
-
-3. Edit `api/db.php` and insert your MariaDB/MySQL connection information.
-For the purposes of the documentation, the database, user, and password
-are all assumed to be "ffdl".
-
-4. As the root user of MariaDB, execute the following commands - adjusted
-for your database, user, and password as well as the on-disk path
-to the web root:
-
-```sql
-USE ffdl;
-DROP TABLE QSO;
-SOURCE /var/www/html/load.sql;
-```
-
-In-place upgrades of existing databases are not supported. Ensure all data
-has been saved/exported before upgrading the system.
-
-## Screens
+# Screens
 
 The following screens are available in the system:
 
@@ -252,6 +229,33 @@ cause potential dupes, etc. However this provides a way for someone to either
 bulk-enter someone's paper log or provide an interface to someone who likes 
 to write the QSO on paper then enter it and still the correct date/time. On 
 the main screen, the log time is not editable.
+
+## Upgrading
+Depending on installation method...
+
+### Image
+Replace the image with a new release image
+
+### Debian Packages
+firefly-logger (and wsjt2ffdl) will update with a standard `apt update`
+followed by `apt upgrade`.
+
+### Manual Instlattion
+Repeate the installation directions after first deleteing
+the existing database. It is not recommended to upgrade the database
+in-place and is not supported given that any one log is useful
+for only up to 48 hours. For the database:
+
+```sql
+USE ffdl;
+DROP TABLE QSO;
+SOURCE /var/www/html/load.sql;
+```
+
+In-place upgrades of existing databases are not supported. Ensure all data
+has been saved/exported before upgrading the system.
+
+#
 
 ## Issues
 
