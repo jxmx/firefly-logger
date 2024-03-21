@@ -4,15 +4,15 @@ Priority: optional
 Maintainer: Jason McCormick <jason@mfamily.org>
 Build-Depends: make, debhelper-compat (=13)
 Standards-Version: 4.5.1
-Homepage: https://github.com/AllStarLink/Allmon3
-Vcs-Browser: https://github.com/AllStarLink/Allmon3
-Vcs-Git: https://github.com/AllStarLink/Allmon3.git
+Homepage: https://packetwarriors.com/firefly-logger
+Vcs-Browser: https://github.com/jxmx/firefly-logger
+Vcs-Git: https://github.com/jxmx/firefly-logger
 Rules-Requires-Root: binary-targets
 
 Package: firefly-logger
 Architecture: all
-Depends: ${misc:Depends}, apache2, php-fpm, mariadb-client,
- mariadb-server, php-mysql
+Depends: ${misc:Depends}
+Pre-Depends:  apache2, php-fpm, mariadb-client, mariadb-server, php-mysql
 Description: Firefly Logger webapp for use at ARRL Field Day operating events.
  The design of this logger is to be a simple, effective logger that can be
  used on any device that can have a reasonably modern browser installed on 
