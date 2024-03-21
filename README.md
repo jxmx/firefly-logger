@@ -167,12 +167,7 @@ To test that the system is installed properly:
 If those three operations work, you have a successful installation.
 
 To clear out test QSOs and/or to reset the log, as the root user of
-MariaDB, execute the following commands:
-
-```sql
-USE ffdl;
-DELETE FROM QSO;
-```
+MariaDB, execute `firefly-logger-clearlog`.
 
 ## Basic Use
 
