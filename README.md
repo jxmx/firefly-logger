@@ -93,8 +93,8 @@ and can follow non-step-by-step directions.
 
 4. Enable the approriate system services similar to:
 ```
-systemctl enable php7.4-fpm
-systemctl start php7.4-fpm
+systemctl enable php8.2-fpm
+systemctl start php8.2-fpm
 systemctl enable apache2
 systemctl start apache2
 systemctl enable mariadb
