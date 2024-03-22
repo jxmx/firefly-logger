@@ -10,6 +10,13 @@ if [ ! -f /usr/share/doc/firefly-logger/load.sql ]; then
 	exit 1
 fi
 
+if [ -e /firefly-not-installed ]; then
+	# this is to bail out for Pi image building where /firefly-not-installed
+	# is touched at build time so that a firstboot script can
+	# setup the database
+	exit 0
+fi
+
 NOTRERUN=false
 
 if [ -d /var/lib/mysql/ffdl ]; then
@@ -61,4 +68,4 @@ if $NOTRERUN ; then
 	echo "the password."
 	echo ""
 fi
-
+exit 0
