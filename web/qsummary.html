@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Dupesheet Export | Firefly Field Day Logger</title>
+	<title>Summary Export | Firefly Field Day Logger</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/local.css" rel="stylesheet">
 	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
@@ -33,7 +33,7 @@
 					<img src="img/firefly.svg" height="45px">
 				</div>
 				<div class="col-8 align-self-center text-center">
-					<h2>Dupesheet Export</h2>
+					<h2>Summary Export</h2>
 				</div>
 			  	<div class="col align-self-center text-end">
 				  <ul class="nav nav-pills f-nav-header">
@@ -48,7 +48,7 @@
 						  <li><hr class="dropdown-divider"></li>
 						  <li><a class="dropdown-item" href="cabrillo.html">Export Cabrillo</a></li>
 						  <li><a class="dropdown-item" href="adif.html">Export ADIF</a></li>
-						  <li><a class="dropdown-item" href="dupesheet.html">Export Dupesheet</a></li>
+						  <li><a class="dropdown-item" href="qsummary.html">Export Summary</a></li>
 						  <li><a class="dropdown-item" href="csv.html">Export CSV</a></li>
 						  <li><hr class="dropdown-divider"></li>
 						  <li><a class="dropdown-item" href="configmgr.html">Config Mgr</a></li>
@@ -62,7 +62,7 @@
 <main>
 	<div class="container-md mt-5 shadow">
 		<div class="row">
-				<form id="dupe" name="dupe" method="POST" action="dupesheet.php">
+				<form id="dupe" name="dupe" method="POST" action="qsummary.php">
 					<table class="table table-borderless">
 						<thead>
 							<th scope="col" style="width: 20%">Header Item</th>
@@ -90,7 +90,7 @@
 						</tr>
 						<tr>
 						<td colspan="2">
-							<button type="submit" class="btn btn-primary btn-sm">Generate Dupe Sheet</button>
+							<button type="submit" class="btn btn-primary btn-sm">Generate Summary Sheet</button>
 						</td>
 						</tr>
 						</tbody>

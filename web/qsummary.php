@@ -20,7 +20,7 @@ $qry = "SELECT DISTINCT(band) FROM qso ORDER BY CASE band
 
 if($resb = $db->query($qry)){
 
-	printf("%s - Dupe Sheet Table\n", $dupe['dupecontest']);
+	printf("%s - Summary Sheet Table\n", $dupe['dupecontest']);
 	printf("Generated: %s\n", date("c"));
 	print("--------------------------------------------------------\n");
 	printf("%6s %15s %15s %15s\n", "Band", "CW", "Data", "Phone");
