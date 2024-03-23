@@ -1,8 +1,8 @@
-firefly-logger (5.1-1) UNRELEASED; urgency=medium
+firefly-logger (5.1-2) unstable; urgency=medium
 
   * Improvements for Pi image building
 
- -- Jason McCormick <jason@mfamily.org>  Fri, 22 Mar 2024 19:20:15 -0400
+ -- Jason McCormick <jason@mfamily.org>  Sat, 23 Mar 2024 09:30:19 -0400
 
 firefly-logger (5.0-8) unstable; urgency=medium
 
