@@ -5,7 +5,7 @@ if [ $(whoami) != "root" ]; then
 	exit 1
 fi
 
-if [ "$1" == "force-this" ]; then
+if [ "$1" != "force-this" ]; then
 	echo "This program will 'take over' the web"
 	echo "configuration of this host so that Firefly Logger"
 	echo "is running as the primary/only website. Only"
