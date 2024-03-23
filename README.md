@@ -24,6 +24,6 @@ native browsers on each platform.
 # Installation & Documentation
 Home Page: https://packetwarriors/firefly-logger
 
-Documentation: https://www.packetwarriors.com/docs/firefly-logger/
+Documentation: https://www.packetwarriors.com/firefly-logger/
 
 Live Demo: https://ffdl.packetwarriors.com
