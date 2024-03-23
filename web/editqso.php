@@ -1,12 +1,10 @@
 <?php
 
-function getGetVar($id) {
-    return filter_var(trim($_GET[$id]), FILTER_SANITIZE_STRING);
-}
+
+include_once("api/functions.php");
+include("api/db.php");
 
 $qkey = getGetVar("qkey");
-
-include("api/db.php");
 
 $qry = sprintf("SELECT * FROM qso WHERE qkey='%s';", $qkey);
 

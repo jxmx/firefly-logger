@@ -3,9 +3,7 @@ header('Content-Type: application/octet-stream');
 header('Content-disposition: inline; filename=fieldday.log');
 //header('Content-Type: text/plain');
 
-function getPostVar($id) {
-	return filter_var(trim($_POST[$id]), FILTER_SANITIZE_STRING);
-}
+include_once("api/functions.php");
 
 $cab = array();
 foreach($_POST as $k => $v){

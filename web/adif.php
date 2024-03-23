@@ -3,9 +3,7 @@ header('Content-Type: application/octet-stream');
 header('Content-disposition: inline; filename=fieldday.adi');
 //header('Content-Type: text/plain');
 
-function getPostVar($id) {
-	return filter_var(trim($_POST[$id]), FILTER_SANITIZE_STRING);
-}
+include_once("api/functions.php");
 
 function AL($tag, $val){
 	return sprintf("<%s:%d>%s\n",	$tag, strlen($val), $val);
