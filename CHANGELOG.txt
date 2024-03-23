@@ -1,4 +1,34 @@
 -------------------------
+** v5.2 - 2023-06-08
+-------------------------
+Version 5.2 is the first production-ready version of the 
+5.x codebase. The 5.x codebase has been modernized and
+re-organized for installation and appliance builds.
+
+New Features:
+- Package is completely re-organized to support automatic installation and use with full system image
+- Introduction of management scripts - firefly-logger-loaddb, firefly-logger-clearlog, and firefly-logger-takeover
+- Implementation of full Makefile installation
+- Support for .deb packaging
+- All new documentation at https://packetwarriors.com/firefly-logger
+- Repository renamed firefly-logger in GitHub
+- Now supports integration with WSJT-X (see https://github.com/jxmx/wsjt2ffdl)
+
+Bugs/Issues:
+- Fix validation issues with the HandKey screen (#35)
+- Fix issues with setting station information (#36)
+- Adjust certain paths to support relative path installations (#37)
+- Fix nonsensical ignoring of variables in db.php (#38)
+- Handle duplicate keys in storeqso.php better for wsjt2ffdl (#39)
+- Removed deprecated PHP functions
+
+-------------------------
+** v4.0.1 - 2023-06-08
+-------------------------
+Miscellaneous:
+- Updated ARRL W/VE sections for 2023
+
+-------------------------
 ** v4.0.0 - 2022-07-17
 -------------------------
 
