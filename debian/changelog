@@ -1,3 +1,15 @@
+firefly-logger (5.1-1) UNRELEASED; urgency=medium
+
+  * Improvements for Pi image building
+
+ -- Jason McCormick <jason@mfamily.org>  Fri, 22 Mar 2024 19:20:15 -0400
+
+firefly-logger (5.0-8) unstable; urgency=medium
+
+  * Fix typo in Apache configuration
+
+ -- Jason McCormick <jason@mfamily.org>  Thu, 21 Mar 2024 10:14:58 -0400
+
 firefly-logger (5.0-7) unstable; urgency=medium
 
   * Release of Firefly Logger v5.0

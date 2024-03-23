@@ -1,8 +1,8 @@
 #
 # Build variables
 #
-RELVER = 5.0
-DEBVER = 7
+RELVER = 5.1
+DEBVER = 1
 PKGNAME = firefly-logger
 
 BUILDABLES = \
