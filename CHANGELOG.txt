@@ -1,5 +1,5 @@
 -------------------------
-** v5.2 - 2023-06-08
+** v5.2 - 2024-03-23
 -------------------------
 Version 5.2 is the first production-ready version of the 
 5.x codebase. The 5.x codebase has been modernized and
@@ -21,6 +21,11 @@ Bugs/Issues:
 - Fix nonsensical ignoring of variables in db.php (#38)
 - Handle duplicate keys in storeqso.php better for wsjt2ffdl (#39)
 - Removed deprecated PHP functions
+
+Miscellaneous:
+- Upgraded to jquery 3.7.1
+- Upgraded to Bootstrap 5.3.3
+- Removed unused bits of jquery.typeahead
 
 -------------------------
 ** v4.0.1 - 2023-06-08
