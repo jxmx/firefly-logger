@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/octet-stream');
-header('Content-disposition: inline; filename=fd-dupesheet.txt');
+header('Content-disposition: inline; filename=fd-summary.txt');
 //header('Content-Type: text/plain');
 
 include_once("api/functions.php");
