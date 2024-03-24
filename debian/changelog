@@ -1,8 +1,8 @@
-firefly-logger (5.2-1) unstable; urgency=medium
+firefly-logger (5.2-2) unstable; urgency=medium
 
-  * First production release of 5.2. See CHANGELOG.txt.
+  * First production release of 5.x. See CHANGELOG.txt.
 
- -- Jason McCormick <jason@mfamily.org>  Sat, 23 Mar 2024 15:46:54 -0400
+ -- Jason McCormick <jason@mfamily.org>  Sun, 24 Mar 2024 13:48:09 -0400
 
 firefly-logger (5.1-2) unstable; urgency=medium
 
