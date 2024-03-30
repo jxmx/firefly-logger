@@ -3,8 +3,10 @@
 # Build variables
 #
 RELVER = 5.2
-DEBVER = 2
+DEBVER = 3
+ifndef ${RELPLAT}
 RELPLAT = deb$(shell lsb_release -rs 2> /dev/null)
+endif
 PKGNAME = firefly-logger
 
 BUILDABLES = \
@@ -39,7 +41,7 @@ verset:
 	perl -pi -e 's/\@\@HEAD-DEVELOP\@\@/$(RELVER)/g' `grep -rl @@HEAD-DEVELOP@@ src/ web/`
 
 deb:	debclean debprep
-	debchange --distribution unstable --package $(PKGNAME) \
+	debchange --distribution stable --package $(PKGNAME) \
 		--newversion $(RELVER)-$(DEBVER).$(RELPLAT) "Autobuild of $(RELVER)-$(DEBVER) for $(RELPLAT)"
 	debuild
 	git checkout debian/changelog
