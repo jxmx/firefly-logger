@@ -1,8 +1,10 @@
 #
+#
 # Build variables
 #
 RELVER = 5.2
 DEBVER = 2
+RELPLAT = deb$(shell lsb_release -rs 2> /dev/null)
 PKGNAME = firefly-logger
 
 BUILDABLES = \
@@ -37,17 +39,14 @@ verset:
 	perl -pi -e 's/\@\@HEAD-DEVELOP\@\@/$(RELVER)/g' `grep -rl @@HEAD-DEVELOP@@ src/ web/`
 
 deb:	debclean debprep
-	debuild
-
-docker-deb:	debclean debprep
 	debchange --distribution unstable --package $(PKGNAME) \
-		--newversion $(RELVER)-$(DEBVER).$(RELPLAT) "Autobuil of $(RELVER)-$(DEBVER) for $(RELPLAT)"
-	dpkg-buildpackage $(DPKG_BUILTOPTS)
+		--newversion $(RELVER)-$(DEBVER).$(RELPLAT) "Autobuild of $(RELVER)-$(DEBVER) for $(RELPLAT)"
+	debuild
+	git checkout debian/changelog
 
 debchange:
 	debchange -v $(RELVER)-$(DEBVER)
 	debchange -r
-
 
 debprep:	debclean
 	-find . -type d -name __pycache__ -exec rm -rf {} \;
