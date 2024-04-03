@@ -28,3 +28,15 @@ async function getConfig(){
 window.addEventListener("load", async function(){
     await getConfig();
 });
+
+function clearBrowserConfig(){
+    let d = new Date();
+    d.setTime(0);
+    let expires = "expires=" + d.toUTCString();
+	let cElements = [ "operator" , "band" , "mode" ];
+	for(let i in cElements){
+    	document.cookie = cElements[i] + "=" + null + ";" + expires + "; SameSite=Lax;";
+	}
+	alert("The local browser configuration for this logger has been deleted. You will be returned to the main page.");
+	window.location.replace("index.html");
+}
