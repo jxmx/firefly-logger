@@ -25,5 +25,5 @@ $f = fopen("config_general.json", "w");
 fwrite($f, json_encode($j));
 fclose($f);
 
-header('Location: /configmgr.html');
+header('Location: ../configmgr.html');
 ?>
