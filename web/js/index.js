@@ -32,7 +32,7 @@ if(thispage == "handkey.html")
 // load configuration from JSON files
 async function getConfig(configType){
 	var url = `${APIPrefix}/config_${configType}.json`;
-	let response = await fetch(url);
+	let response = await fetch(url, { cache : "no-store" } );
 	if(response.ok){
 		let a = await response.json();
 		switch(configType){
