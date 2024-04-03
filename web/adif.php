@@ -10,7 +10,7 @@ function AL($tag, $val){
 }
 
 $is_lsb = array("160M", "80M", "40M");
-$is_fm = array("2M", "70CM");
+$is_fm = array("2M", "1.25M", "70CM");
 
 include("api/db.php");
 
