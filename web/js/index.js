@@ -412,6 +412,8 @@ function logReset() {
 
 	if(isHandKey){
 		document.getElementById("logclockdate").value = lcd;
+		document.getElementById("logclockdate").classList.add("is-valid");
+		submitOkLogClockDate = true;
 		document.getElementById("logclocktime").focus();
 	} else {
 	    document.getElementById("call").focus();
