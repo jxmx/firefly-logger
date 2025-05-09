@@ -16,7 +16,8 @@ include("db.php");
 
 $qry = sprintf("UPDATE qso SET callsign='%s', date='%s', band='%s', class='%s', mode='%s', " .
 	"station='%s', section='%s', operator='%s' WHERE qkey='%s';",
-	$callsign, $date, $band, $class, $mode, $station, $section, $operator, $qkey);
+	strtoupper($callsign), $date, strtoupper($band), strtoupper($class), strtoupper($mode), 
+	strtoupper($station), strtoupper($section), strtoupper($operator), strtoupper($qkey));
 
 $res = $db->query($qry);
 if($res){
