@@ -1,14 +1,23 @@
 -------------------------
-** v5.3 - 2024-04-03
-
-New Features:
-- Config Manager screen now has a button to clear the 
-local browser configuration
-- Add 1.25M/220 MHz band per request
+** v5.4 - 2025-05-10
+-------------------------
 
 Bugs/Issues:
-- Browser caching of .json configuration files 'busted'
-- Non-relative-safe redirection in configmgr.php fixed
+- Fix date rekey/revaliate issue with handkey (#45)
+- Force uppercase for some fields to fix browser variations (#46)
+
+-------------------------
+** v5.3 - 2024-04-03
+-------------------------
+
+new features:
+- config manager screen now has a button to clear the 
+local browser configuration
+- add 1.25m/220 mhz band per request
+
+bugs/issues:
+- browser caching of .json configuration files 'busted'
+- non-relative-safe redirection in configmgr.php fixed
 
 
 

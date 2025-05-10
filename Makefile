@@ -2,8 +2,8 @@
 #
 # Build variables
 #
-RELVER = 5.3
-DEBVER = 2
+RELVER = 5.4
+DEBVER = 1
 ifndef ${RELPLAT}
 RELPLAT = deb$(shell lsb_release -rs 2> /dev/null)
 endif

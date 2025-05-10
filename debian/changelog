@@ -1,3 +1,9 @@
+firefly-logger (5.4-1) unstable; urgency=medium
+
+  * Minor fixes for FD25. See CHANGELOG.txt.
+
+ -- Jason McCormick <jason@mfamily.org>  Sat, 10 May 2025 11:00:53 -0400
+
 firefly-logger (5.2-2) unstable; urgency=medium
 
   * First production release of 5.x. See CHANGELOG.txt.
