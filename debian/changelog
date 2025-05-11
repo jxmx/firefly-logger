@@ -1,3 +1,9 @@
+firefly-logger (5.5-1) unstable; urgency=medium
+
+  * Minor fixes for Debian 12 compatability; no features 
+
+ -- Jason McCormick <jason@mfamily.org>  Sun, 11 May 2025 11:23:36 -0400
+
 firefly-logger (5.4-1) unstable; urgency=medium
 
   * Minor fixes for FD25. See CHANGELOG.txt.
