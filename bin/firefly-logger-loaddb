@@ -47,7 +47,8 @@ DBPASS=$(openssl rand -hex 6)
 mysql -u root <<EOM
 DROP DATABASE IF EXISTS ffdl;
 CREATE DATABASE ffdl;
-GRANT ALL ON ffdl.* TO 'ffdl'@'localhost' IDENTIFIED BY "$DBPASS";
+CREATE USER 'ffdl'@'localhost' IDENTIFIED BY "${DBPASS}";
+GRANT ALL ON ffdl.* TO 'ffdl'@'localhost';
 FLUSH PRIVILEGES;
 USE ffdl;
 SOURCE /usr/share/doc/firefly-logger/load.sql;
