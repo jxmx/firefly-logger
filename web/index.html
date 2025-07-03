@@ -43,7 +43,7 @@
 							  <input type="text" id="callsign" name="callsign" size="10" class="form-control" placeholder="Callsign" autocomplete="off" readonly>
 						  </td>
 						  <td id="set-operator">
-							  <input type="text" id="operator" name="operator" size="10" class="form-control" placeholder="Operator" autocomplete="off">
+							  <input type="text" id="operator" name="operator" size="10" class="form-control" placeholder="Operator" autocomplete="off" onkeyup="this.value = this.value.toUpperCase();" >
 						  </td>
 						  <td>
 							  <select id="band" name="band" class="form-control">
