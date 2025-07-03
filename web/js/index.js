@@ -405,10 +405,11 @@ function logReset() {
 	if(isHandKey)
 		var lcd = document.getElementById("logclockdate").value;
 
-    document.getElementById("log").reset();
-	document.getElementById("section").value = "";
-
+	// clear the rest of the elements
     $('#log input').parent().find('input').removeClass("is-invalid").removeClass("is-valid");
+	$('#section').typeahead('val', '').typeahead('close');
+    document.getElementById("log").reset();
+
 
 	if(isHandKey){
 		document.getElementById("logclockdate").value = lcd;
