@@ -206,7 +206,7 @@ $('#opclass').on('input', function() {
 	var re;
 
 	if( config.general.fdType == "WFD"){
-		re = /^[0-9]{1,2}[hioHIO]$/;
+		re = /^[0-9]{1,2}[himoHIOM]$/;
 	} else {
 		re = /^[0-9]{1,2}[a-fA-F]$/;
 	}  
