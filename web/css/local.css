@@ -1,4 +1,4 @@
-/* 
+/*
  * Black Coral #465362 / rgb(70, 83, 98)
  * Cultured #F4F4F6 / rgb(244, 244, 246)
  * Coquelicot #F34213 / rgb(243, 66, 19)
@@ -12,6 +12,21 @@
 	--coquelicot: rgb(243, 66, 19);
 	--titanium-yellow: rgb(244, 228, 9);
 	--claret: rgb(132, 0, 50);
+}
+
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+.ff-page-wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	flex: 1; /* push footer down */
 }
 
 .titlebars {
@@ -57,7 +72,7 @@
 	display: inline-flex;
 }
 
-.nav-link, .nav-link:hover{ 
+.nav-link, .nav-link:hover{
 	color: var(--coquelicot) !important;
 }
 
@@ -66,12 +81,12 @@ header {
 	margin-bottom: 15px;
 }
 
-footer {
+.ff-footer {
 	margin-top: 25px;
 	color: var(--cultured);
 	background-color: var(--coquelicot);
 }
 
-.footerbar a:link, .footerbar a:hover, .footerbar a:active, .footerbar a:visited {
+.ff-footerbar a:link, .ff-footerbar a:hover, .ff-footerbar a:active, .ff-footerbar a:visited {
 	color: var(--cultured);;
 }

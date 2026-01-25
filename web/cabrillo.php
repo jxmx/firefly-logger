@@ -1,83 +1,189 @@
-<?php
-header('Content-Type: application/octet-stream');
-header('Content-disposition: inline; filename=fieldday.log');
-//header('Content-Type: text/plain');
-
-include_once("api/functions.php");
-
-$cab = array();
-foreach($_POST as $k => $v){
-	$cab[$k] = getPostVar($k);
-}
-
-$band = array(
-	"160M" => "1800",
-	"80M" => "3500",
-	"40M" => "7000",
-	"20M" => "14000",
-	"15M" => "21000",
-	"10M" => "28000",
-	"6M" => "50",
-	"2M" => "144",
-	"1.25M" => "220",
-	"70CM" => "432"
-);
-
-include("api/db.php");
-
-print "START-OF-LOG: 3.0\n";
-printf("CONTEST: %s\n", $cab['cabcontest']);
-printf("CLUB: %s\n", $cab['cabclub']);
-printf("CALLSIGN: %s\n", $cab['cabcall']);
-printf("LOCATION: %s\n", $cab['cabsection']);
-printf("CATEGORY-OPERATOR: %s\n", $cab['cabop']);
-printf("CATEGORY-STATION: %s\n", $cab['cabstation']);
-printf("CATEGORY-TRANSMITTER: %s\n", $cab['cabtransmitter']);
-printf("CLAIMED-SCORE: %s\n", $cab['cabscore']);
-printf("NAME: %s\n", $cab['cabname']);
-printf("ADDRESS: %s\n", $cab['cabstreet']);
-printf("ADDRESS-CITY: %s\n", $cab['cabcity']);
-printf("ADDRESS-STATE-PROVINCE: %s\n", $cab['cabstate']);
-printf("ADDRESS-POSTALCODE: %s\n", $cab['cabzip']);
-printf("ADDRESS-COUNTRY: %s\n", $cab['cabcountry']);
-printf("EMAIL: %s\n", $cab['cabemail']);
-print "CREATED-BY: Firefly Field Day Logger\n";
-print "\n";
-
-$qry = "SELECT * FROM qso ORDER BY date ASC";
-
-if($res = $db->query($qry)){
-	while( $row = $res->fetch_assoc()){
-
-		$dt = explode(" ", $row['date']);
-
-		if( $row['mode'] == "PHONE" ){
-			$m = "PH";
-		} else if($row ['mode'] == "DATA" ){
-			$m = "DG";
-		} else {
-			$m = "CW";
-		}
-
-		// QSO: ***** ** yyyy-mm-dd nnnn ************* nnn ****** ************* nnn ****** n
-		
-		printf("QSO: %5s %2s %10s %4s %13s %3s %6s %13s %3s %6s 0\n",
-			$band[strtoupper($row['band'])],
-			$m,
-			strtoupper($dt[0]),
-			substr(preg_replace('/:/', '', $dt[1]),0,4),
-			strtoupper($row['station']),
-			$cab['cabtransmitter']. strtoupper($cab['cabstation']),
-			strtoupper($cab['cabsection']),
-			strtoupper($row['callsign']),
-			strtoupper($row['class']),
-			strtoupper($row['section'])
-		);
-	}
-	print "END-OF-LOG:\n";
-} else {
-	print "DB ERROR";
-}
-$db->close();
-
-?>
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cabrillo Export | Firefly Field Day Logger</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/local.css" rel="stylesheet">
+	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
+	<link rel="manifest" href="manifest.json">
+</head>
+<body>
+	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+	<symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+	  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+	</symbol>
+	<symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+	  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+	</symbol>
+	<symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+	  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+	</symbol>
+	<symbol id="s-menu-drop-down" fill="currentColor" viewBox="0 0 512 512">
+	  <path d="M256 0C114.6 0 0 114.6 0 256c0 141.4 114.6 256 256 256s256-114.6 256-256C512 114.6 397.4 0 256 0zM390.6 246.6l-112 112C272.4 364.9 264.2 368 256 368s-16.38-3.125-22.62-9.375l-112-112c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L256 290.8l89.38-89.38c12.5-12.5 32.75-12.5 45.25 0S403.1 234.1 390.6 246.6z"/>
+	</symbol>
+  </svg>
+<header class="shadow-sm bg-body">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col align-self-center text-start">
+				<img src="img/firefly.svg" height="45px">
+			</div>
+			<div class="col-8 align-self-center text-center">
+				<h2>Cabrillo Export</h2>
+			</div>
+			  <div class="col align-self-center text-end">
+			  <ul class="nav nav-pills f-nav-header">
+				  <li class="nav-item dropdown">
+					  <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+						  Screens <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#s-menu-drop-down"/></svg>
+					  </a>
+					  <ul class="dropdown-menu">
+					  <li><a class="dropdown-item" href="index.html">Logger</a></li>
+					  <li><a class="dropdown-item" href="board.html">Display Board</a></li>
+					  <li><a class="dropdown-item" href="handkey.html">Handkey Interface</a></li>
+					  <li><hr class="dropdown-divider"></li>
+					  <li><a class="dropdown-item" href="cabrillo.html">Export Cabrillo</a></li>
+					  <li><a class="dropdown-item" href="adif.html">Export ADIF</a></li>
+					  <li><a class="dropdown-item" href="qsummary.html">Export Summary</a></li>
+					  <li><a class="dropdown-item" href="csv.html">Export CSV</a></li>
+					  <li><hr class="dropdown-divider"></li>
+					  <li><a class="dropdown-item" href="configmgr.html">Config Mgr</a></li>
+					  </ul>
+				  </li>
+			  </ul>
+		  </div>
+	  </div>
+	</div>
+</header>
+<main>
+	<div class="container-md mt-5 shadow">
+		<div class="row">
+				<form id="cabrillo" name="cabrillo" method="POST" action="cabrillo.php">
+					<table class="table table-borderless">
+						<thead>
+							<th scope="col" style="width: 20%">Header Item</th>
+							<th scope="col" style="width: 80%">Value</th>
+						</thead>
+						<tbody>
+						<tr>
+							<td class="align-top">
+								<b>Club Name</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabclub" id="cabclub" class="form-control" autocomplete="off">
+							</td>
+						</tr><tr>		
+							<td class="align-top">
+								<b>Callsign</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabcall" id="cabcall" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>Name</b><br>of the submitter
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabname" id="cabname" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>							
+							<td class="align-top">
+								<b>Email</b><br>for the submitter
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabemail" id="cabemail" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>Category Station</b><br>Field Day: A-F, WFD: H,I,O
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabstation" id="cabstation" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>Category # Transmitters</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabtransmitter" id="cabtransmitter" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>ARRL Section Code</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabsection" id="cabsection" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>Claimed Score</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabscore" id="cabscore" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>Street Address</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabstreet" id="cabstreet" class="form-control" autocomplete="off">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>City</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabcity" id="cabcity" class="form-control" autocomplete="off">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>State / Province</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabstate" id="cabstate" class="form-control" autocomplete="off">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>Zip / Postal Code</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabzip" id="cabzip" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>Country</b>
+							</td>
+							<td class="align-top">
+								<input type="text" size=20 name="cabcountry" id="cabcountry" class="form-control" autocomplete="off" autocapitalize="on">
+							</td>
+						</tr><tr>
+							<td class="align-top">
+								<b>Field Day Type</b>
+							</td>
+							<td class="align-top">
+								<select size=1 name="cabcontest" id="cabcontest" class="form-control">
+									<option value="ARRL-FD" selected>ARRL Field Day</option>
+									<option value="WFD">Winter Field Day</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+						<td colspan="2">
+							<button type="submit" class="btn btn-primary btn-sm">Generate Cabrillo File</button>
+						</td>
+						</tr>
+						</tbody>
+					</table>
+				</form>
+		</div>
+	</div>
+	<script src="js/bootstrap.bundle.min.js"></script>
+	<script src="js/jquery-3.7.1.min.js"></script>
+</main>
+<footer>
+	<div class="d-flex footerbar p-2 mt-5"><i>Powered by Firefly Field Day Logger by Jason McCormick N8EI - <a href="https://github.com/jxmx/ffdl" tabindex="-1">GitHub</a></i></div>
+</footer>
+</body>
+</html>
