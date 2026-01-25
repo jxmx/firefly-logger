@@ -17,16 +17,16 @@ $ff_station_info_form = <<<EOT
 				</td>
 				<td>
 					<select id="band" name="band" class="form-control">
-						<option value="X">Band...</option>
+						<option value="">Band...</option>
 					</select>
 				</td>
 				<td>
 					<select id="mode" name="mode" class="form-control">
-						<option value="X">Mode...</option>
+						<option value="">Mode...</option>
 					</select>
 				</td>
 				<td style="text-align: center;" class="p-2">
-					<button type="button" class="btn btn-misc btn-sm" onclick="saveStationData()">Set</button>
+					<button type="submit" class="btn btn-misc btn-sm">Set</button>
 				</td>
 			</tbody>
 		</table>

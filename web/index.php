@@ -40,7 +40,7 @@ include("header.php");
 						</td>
 						<td class="align-top">
 							<input id="call" name="call" type="text" size="10" class="form-control"
-								onkeyup="this.value = this.value.toUpperCase();" onblur="isDupeQSO()" autocomplete="off">
+								onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
 						</td>
 						<td class="align-top">
 							<input id="opclass" name="opclass" type="text" size="10" class="form-control"

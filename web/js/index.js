@@ -1,10 +1,15 @@
-//
-// Configuration Helpers
-//
+
+/**
+* Configuration
+*/
 
 
 // top level configuration variables
-var APIPrefix = "api";			// prefix for where the API is located on the webserver
+// prefix for where the API is located on the webserver
+var APIPrefix = "api";
+
+// Is the session cookie there?
+var stationcookieexists = false;
 
 // master configuration for the application itself
 let config = {
@@ -22,8 +27,6 @@ let config = {
 
 // statuses and counters
 var qsinceload = 0;
-var sectionsloaded = false;
-var stationcookieexists = false;
 var thispage = location.href.split("/").slice(-1);
 
 if(thispage == "handkey.html")
@@ -52,7 +55,6 @@ async function getConfig(configType){
 				break;
 			case "sections":
 				config.sections = a;
-				sectionsloaded = true;
 				break;
 		}
 		return true;
@@ -65,16 +67,18 @@ async function getConfig(configType){
 //
 // apply general configuration - used inside getConfig() only because it's async
 //
-function setGeneralConfig(){
-	// set the station callsign
-	document.getElementById("callsign").value = config.general.stationCall;
+function setGeneralConfig() {
+    const { stationCall, multiOp } = config.general;
 
-	// show/hit the Operator box
-	if(config.general.multiOp === "false"){
-		document.getElementById("operator").readOnly = true;
-		document.getElementById("operator").value = config.general.stationCall;
-		submitOkOperCall = true;
-	}
+    // Set station callsign
+    $("#callsign").val(stationCall);
+
+    // Handle operator field for single‑op mode
+    if (multiOp === "false") {
+        $("#operator")
+            .prop("readOnly", true)
+            .val(stationCall);
+    }
 }
 
 //
@@ -112,51 +116,7 @@ function updateLogTime() {
 }
 
 
-//
-// Duplicate checking logic
-// Note: this has to be async because of XHR and then call a different function to lock stuff out
-//
-function isDupeQSO() {
-	var qsocall = document.getElementById("call").value;
-	var re = /^[a-zA-Z0-9\/]{2,9}[a-zA-Z]$/;
-	var is_valid = re.test(qsocall);
-	if( !is_valid ){
-		submitOkCall= false;
-		return null;
-	}
-    var opband = document.getElementById("band").value;
-    var opmode = document.getElementById("mode").value;
-    var qkey = qkeyCalculate(qsocall, opband, opmode);
 
-    $.ajax({
-        type:   "GET",
-        url:    "api/checkdupe.php?qkey=" + qkey,
-        success: function(output) {
-			handleIsDupeQSO(output);
-        },
-        failure: function(msg)  {
-			alertStatusMsg("Unable to contact server with error: " + msg);
-        }
-    });
-
-}
-
-function handleIsDupeQSO(resp) {
-
-	callf = document.getElementById("call")
-
-	if(resp === "DUPE"){
-		submitOkDupe = false;
-		callf.classList.remove("is-valid");
-		callf.classList.add("is-invalid");
-		callf.focus();
-		decayingAlertStatusMsg("Duplicate QSO: Callsign + Band + Mode already in log", 5);
-	} else {
-		submitOkDupe = true;
-		callf.classList.remove("is-invalid");
-		callf.classList.add("is-valid");
-	}
-}
 
 //
 // Typehead for Section
@@ -194,7 +154,15 @@ $(document).on('keyup', function(k) {
 	if(k.key == "Escape") logReset();
 });
 
-// For index.php / form id=log
+/**
+ *
+ * This is the block for JQuery Validate to test the inputs
+ *
+ */
+
+//
+// Duplicate checking logic
+//
 
 // Add a custom rule called "callsign"
 const callsignRegex = /^(?:[A-Z]{1,2}|[0-9][A-Z])\d{1,2}[A-Z]{1,4}$/i;
@@ -203,7 +171,7 @@ const callsignRegex = /^(?:[A-Z]{1,2}|[0-9][A-Z])\d{1,2}[A-Z]{1,4}$/i;
 $(function () {
     $.validator.addMethod("callsign", function(value, element) {
         return this.optional(element) || callsignRegex.test(value);
-    }, "Enter valid callsign");
+    });
 });
 
 // Validation function for the operator class
@@ -229,15 +197,28 @@ $(function (){
     }, "Enter valid class");
 });
 
-// Actual validation of the form
+// Actual validation of the forms
 $(document).ready(function () {
-    $("#log").validate({
-        //debug: true,
-        rules: {
-            "call": {
-                required: true,
-                callsign: true
-            },
+	$("#log").validate({
+		//debug: true,
+		rules: {
+			call: {
+				required: true,
+				callsign: true,
+				remote: {
+					url: "api/checkdupe.php",
+					type: "GET",
+					data: {
+						qkey: function () {
+							return qkeyCalculate(
+								$("#call").val(),
+								$("#band").val(),
+								$("#mode").val()
+							);
+						}
+					}
+				}
+			},
             "opclass": {
                 required: true,
                 opclass: true
@@ -247,6 +228,13 @@ $(document).ready(function () {
                 section: true
             }
         },
+		messages: {
+        	call: {
+				required: "Callsign is required",
+				callsign: "Enter a valid callsign",
+				remote: "Duplicate QSO in log"
+        	}
+    	},
         highlight: function (element) {
             $(element).addClass("is-invalid").removeClass("is-valid");
         },
@@ -263,17 +251,48 @@ $(document).ready(function () {
             logSubmit();
         }
     });
+
+	$("#stationset").validate({
+		//debug: true,
+		rules: {
+			"callsign": {
+				required: true,
+				callsign: true,
+			},
+			"operator": {
+				required: true,
+				callsign: true
+			},
+            "band": {
+                required: true,
+            },
+            "mode": {
+                required: true,
+            }
+        },
+		errorPlacement: function () {},
+		messages: {
+			callsign: "",
+			operator: "",
+			band: "",
+			mode: ""
+		},
+        highlight: function (element) {
+            $(element).addClass("is-invalid").removeClass("is-valid");
+        },
+        unhighlight: function (element) {
+            $(element).addClass("is-valid").removeClass("is-invalid");
+        },
+        submitHandler: function(form) {
+           saveStationData();
+        }
+    });
 });
 
 // submit the log from above
 function logSubmit() {
 	if(!checkStationSetOkStatus()){
 		alertStatusMsg("Station information not set");
-		return false;
-	}
-
-	if(!checkSubmitOkStatus()){
-		decayingAlertStatusMsg("Entry not complete", 1);
 		return false;
 	}
 
@@ -286,22 +305,12 @@ function logSubmit() {
 	if(isHandKey)
 		handkeyDateTime();
 
- 	// I have no idea whyu these can't be directly assigned by value.... Javascript is annoying
-	var opcallsign=  document.getElementById("callsign").value;
-	document.getElementById("opcallsign").value = opcallsign;
+	["callsign","operator","band","mode"].forEach(id =>
+    	$("#op" + id).val($("#" + id).val())
+	);
 
-	var opoperator = document.getElementById("operator").value;
-	document.getElementById("opoperator").value = opoperator
-
-	var opband = document.getElementById("band").value;
-	document.getElementById("opband").value = opband;
-
-	var opmode = document.getElementById("mode").value;
-	document.getElementById("opmode").value = opmode;
-
-	var qsocall = document.getElementById("call").value;
-	var qkey = qkeyCalculate(qsocall, opband, opmode);
-	document.getElementById("qkey").value = qkey;
+	const qsocall = $("#call").val();
+	$("#qkey").val(qkeyCalculate(qsocall, $("#band").val(), $("#mode").val()));
 
 	var fd = new FormData(lform);
 	var fj = Object.fromEntries(fd.entries());
@@ -333,11 +342,6 @@ function logSubmit() {
 
 // reset the log form
 function logReset() {
-
-	// save the date for handkeying
-	if(isHandKey)
-		var lcd = document.getElementById("logclockdate").value;
-
 	// clear the rest of the elements
     $('#log input').parent().find('input').removeClass("is-invalid").removeClass("is-valid");
     document.getElementById("log").reset();
@@ -351,73 +355,6 @@ function logReset() {
 	    document.getElementById("call").focus();
 	}
 };
-
-// handkey.html variant support
-function handkeyDateTime() {
-	var lcd = document.getElementById("logclockdate").value;
-	var lct = document.getElementById("logclocktime").value;
-	var logclock = lcd.concat(" ", lct.slice(0,2), ":", lct.slice(2,4), ":", "00");
-	document.getElementById("logclock").value = logclock;
-};
-
-$('#logclockdate').focusout(function() {
-    var input=$(this);
-	var re = /^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/;
-    var is_valid = true;
-	var dt = input.val();
-
-	if(re.test(input.val())){
-		var y = dt.slice(0,4);
-		var m = dt.slice(5,7);
- 		var d = dt.slice(8,12);
-
-		// Y2K1 problem!
-		if(y < 2000 || y > 2100 ) is_valid = false;
-		if(m < 1 || m > 12 ) is_valid = false;
-		if(d < 1 || d > 31 ) is_valid = false;
-
-	} else {
-		is_valid = false;
-	}
-
-    if(is_valid){
-        input.removeClass("is-invalid").addClass("is-valid");
-		submitOkLogClockDate = true;
-    } else {
-        input.removeClass("is-valid").addClass("is-invalid");
-		submitOkLogClockDate = false;
-    }
-});
-
-$('#logclocktime').focusout(function() {
-    var input=$(this);
-	var re = /^[0-9]{3,4}$/;
-    var is_valid = true;
-	var t = input.val();
-
-	if(re.test(input.val())){
-		if(t.length == 3)
-			t = "0".concat(t);
-			document.getElementById("logclocktime").value = t;
-		var hh = t.slice(0,2);
-		var mm = t.slice(2,4);
-
-		if(hh < 0 || hh > 23) is_valid = false;
-		if(mm < 0 || mm > 59) is_valid = false;
-
-	} else {
-		is_valid = false;
-	}
-
-    if(is_valid){
-        input.removeClass("is-invalid").addClass("is-valid");
-		submitOkLogClockTime = true;
-    } else {
-        input.removeClass("is-valid").addClass("is-invalid");
-		submitOkLogClockTime = false;
-    }
-});
-
 
 //
 // Manage QSOs
@@ -441,97 +378,31 @@ function delQSO(qkey, qcall){
 	}
 }
 
-function handleDelQSO(output, qkey, qcall){
-	if( output === "OK" ){
-		decayingAlertStatusMsg("Deleted QSO with " + qcall + " (key: " + qkey + ")", 3);
-		updateDisplayLog();
-	} else {
-		alertStatusMsg("Error deleting QSO: " + output + " (key: " + qkey + ")");
-	}
-}
 
-//
-// All of the Station Setup information
-//
+/**
+ *
+ * All of the Station Setup information
+ */
 
-//
-// Field validators
-//
-
-var submitOkOperCall = false;
-var submitOkBand = false;
-var submitOkMode = false;
-
-// Is the station info completed
-function checkStationSetOkStatus() {
-	if( submitOkOperCall && submitOkBand && submitOkMode ){
-		return true;
-	} else {
-		return false;
-	}
-}
-
-// Operator Callsign
-$('#operator').on('input', function() {
-    var input=$(this);
-    var re = /^[a-zA-Z0-9\/]{2,9}[a-zA-Z]$/;
-    var is_valid = re.test(input.val());
-    if(is_valid){
-        submitOkOperCall = true;
-        input.removeClass("is-invalid");
-    } else {
-        submitOkOperCall= false;
-        input.addClass("is-invalid");
-    }
-});
-
-//
 // Band Configuration Dropdown
-//
 function refreshBandList(blist){
-    var r = "<option value=\"X\">Band...</option>";
+    var r = "<option value=\"\">Band...</option>";
     blist.forEach(
         function(v) {
             r += `<option value="${v}">${v}</option>`;
         }
     )
-
     document.getElementById("band").innerHTML = r;
 }
 
-$('#band').on('input', function() {
-    var input=$(this);
-    if(input.val() !== "X" ){
-        submitOkBand = true;
-        input.removeClass("is-invalid");
-    } else {
-        submitOkBand= false;
-        input.addClass("is-invalid");
-    }
-});
-
-//
 // Mode Configuration Dropdown
-//
 function refreshModeList(mlist){
-    var r = "<option value=\"X\">Mode...</option>";
+    var r = "<option value=\"\">Mode...</option>";
     for( let m of mlist){
         r += `<option value="${m['key']}">${m['value']}</option>`;
     }
     document.getElementById("mode").innerHTML = r;
 }
-
-$('#mode').on('input', function() {
-    var input=$(this);
-    if(input.val() !== "X" ){
-        submitOkMode = true;
-        input.removeClass("is-invalid");
-    } else {
-        submitOkMode= false;
-        input.addClass("is-invalid");
-    }
-});
-
 
 // Read the data from the cookie and set it on page load
 // Generic set method
@@ -559,44 +430,31 @@ function getCookie(cname) {
   return "";
 }
 
+
+
 // Set Station from Form
 function saveStationData() {
-	if( checkStationSetOkStatus() ){
-		setCookie("operator", document.getElementById("operator").value, 30);
-		setCookie("band", document.getElementById("band").value, 30);
-		setCookie("mode", document.getElementById("mode").value, 30);
-		stationcookieexists = true;
-	} else {
-		alertStatusMsg("Station information not complete");
-	}
+	setCookie("operator", document.getElementById("operator").value, 30);
+	setCookie("band", document.getElementById("band").value, 30);
+	setCookie("mode", document.getElementById("mode").value, 30);
+	stationcookieexists = true;
 };
-
 
 // Set Station from Cookie on Load
 function setStationDataFromCookie() {
-
 	var re = /^[a-zA-Z0-9\/]{2,9}[a-zA-Z]$/;
-
 	if( ( operator = getCookie("operator") ) && re.test(getCookie("operator")) ) {
 		document.getElementById("operator").value = operator;
-		submitOkOperCall = true;
 	}
-
 	if( ( band = getCookie("band") ) && ( getCookie("band") !== "X" ) ) {
 		document.getElementById("band").value = band;
-		submitOkBand = true;
 	}
-
 	if( ( mode = getCookie("mode") ) && ( getCookie("mode") !== "X" ) ) {
 		document.getElementById("mode").value = mode;
-		submitOkMode = true;
-	}
-
-	if( submitOkOperCall && submitOkBand && submitOkMode ){
-		stationcookieexists = true;
 	}
 }
 
+// Test for the cookie
 function testCookieExists(){
 	if( stationcookieexists ){
 		if(	getCookie("operator") === "" ||	getCookie("band") === "" ||	getCookie("mode") === "" ){
