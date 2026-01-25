@@ -5,6 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?php print($ff_page_title); ?> | Firefly Field Day Logger</title>
 	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<?php
+		if(isset($ff_additional_css)){
+			print($ff_additional_css);
+		}
+	?>
 	<link href="css/local.css" rel="stylesheet">
 	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
 </head>

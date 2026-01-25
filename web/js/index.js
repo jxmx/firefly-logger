@@ -7,8 +7,8 @@
 var APIPrefix = "api";			// prefix for where the API is located on the webserver
 
 // master configuration for the application itself
-let config = {					
-	"general": [ 
+let config = {
+	"general": [
 		{"stationCall" : "" },
 		{ "fdType": ""},
 		{ "multiOp": ""}
@@ -39,7 +39,7 @@ async function getConfig(configType){
 			case "general":
 				config.general = a;
 				setGeneralConfig();
-				break;		
+				break;
 			case "bands":
 				config.bands = a;
 				refreshBandList(config.bands.band);
@@ -85,14 +85,12 @@ window.addEventListener("load", async function(){
 	await getConfig("bands");
 	await getConfig("modes");
 	await getConfig("sections");
+	setGeneralConfig();
+	updateLogTime();
+	initSectionSelect();
+	setInterval(updateLogTime,1000);
+	setInterval(testCookieExists,1000);
 
-	// Only things for the main form at index.html
-	if(thispage == "index.html" || thispage == ""){
-		setGeneralConfig();
-		updateLogTime();
-		setInterval(updateLogTime,1000);
-		setInterval(testCookieExists,1000);
-	}
 });
 
 //
@@ -105,52 +103,14 @@ function qkeyCalculate(qsocall, opband, opmode){
 	return(a+b+c);
 }
 
-// 
+//
 // Logging clock for QSOs
 //
-function currentTimestamp() {
-	function pad(n) { return n<10 ? '0'+n : n }
-	var d = new Date();
-	return d.getUTCFullYear()+'-'
-         + pad(d.getUTCMonth()+1)+'-'
-         + pad(d.getUTCDate())+' '
-         + pad(d.getUTCHours())+':'
-         + pad(d.getUTCMinutes())+':'
-         + pad(d.getUTCSeconds())+' ';
-};
-
 function updateLogTime() {
-	document.getElementById("logclock").value = currentTimestamp();
+	let now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+	document.getElementById("logclock").value = now;
 }
 
-
-
-//
-// Field Validators
-//
-
-var submitOkCall = false;
-var submitOkClass = false;
-var submitOkSection = false;
-var submitOkDupe = false;
-var submitOkLogClockDate = false;
-var submitOkLogClockTime = false;
-
-//
-// QSO Call Validation - is callsign well-formed
-//
-$('#call').on('input', function() {
-	var input=$(this);
-	var re = /^[a-zA-Z0-9\/]{2,9}[a-zA-Z]$/;
-	var is_valid = re.test(input.val());
-	if(is_valid){
-		submitOkCall = true;
-		input.removeClass("is-invalid").addClass("is-valid");
-	} else {
-		submitOkCall= false;
-		input.removeClass("is-valid").addClass("is-invalid");
-	}
-});
 
 //
 // Duplicate checking logic
@@ -186,7 +146,7 @@ function handleIsDupeQSO(resp) {
 	callf = document.getElementById("call")
 
 	if(resp === "DUPE"){
-		submitOkDupe = false;	
+		submitOkDupe = false;
 		callf.classList.remove("is-valid");
 		callf.classList.add("is-invalid");
 		callf.focus();
@@ -199,138 +159,113 @@ function handleIsDupeQSO(resp) {
 }
 
 //
-// Validate the Operating Class for wellformedness
+// Typehead for Section
 //
-$('#opclass').on('input', function() {
-    var input=$(this);
-	var re;
+function initSectionSelect() {
+	const sections = config.sections.sections; // your uppercase array
+	const input = document.getElementById('section');
+	const hint  = document.getElementById('section-hint');
 
-	if( config.general.fdType == "WFD"){
-		re = /^[0-9]{1,2}[himoHIOM]$/;
-	} else {
-		re = /^[0-9]{1,2}[a-fA-F]$/;
-	}  
+	input.addEventListener('input', function () {
+		const q = input.value.toUpperCase();
 
-    var is_valid = re.test(input.val());
-    if(is_valid){
-		submitOkClass = true;
-        input.removeClass("is-invalid").addClass("is-valid");
-    } else {
-		submitOkClass= false;
-        input.removeClass("is-valid").addClass("is-invalid");
-    }
-});
-
-//
-// Type-ahead searching for section box
-//
-function sectionFindMatches(query, syncResults){
-	var matches = [];
-	var substrRegex = new RegExp(`^${query}`, 'i');
-	$.each(config.sections.sections, function(i, str){
-		if( substrRegex.test(str)){
-			matches.push(str)
+		if (!q) {
+			hint.textContent = '';
+			return;
 		}
+
+		const match = sections.find(s => s.startsWith(q));
+
+		hint.textContent = match || '';
 	});
-	syncResults(matches);
+
+	input.addEventListener('blur', function () {
+	    hint.textContent = '';
+	});
 }
-
-//
-// Validate the Section for correctness
-//
-$('#arrl-sections .typeahead').typeahead({
-	hint: true,
-	highlight: true,
-	minLength: 1
-  },
-  {
-	name: 'sections',
-	source: sectionFindMatches,
-	async: false,
-	limit: 15
-  });
-
-$('#section').on('input', function() {
-    var input=$(this);
-	document.getElementById("section").value = input.val().toUpperCase();
-	config.sections.includes
-    if(config.sections.sections.includes(input.val().toUpperCase())){
-		submitOkSection = true;		
-        input.removeClass("is-invalid").addClass("is-valid");
-    } else {
-		submitOkSection = false;
-        input.removeClass("is-valid").addClass("is-invalid");
-    }
-});
 
 //
 // Store contact in log functions
 //
 
-// Prevent logging button from working if QSO isn't complete/valid
-$('#log').on('input', function() {
-	if(checkSubmitOkStatus() && checkStationSetOkStatus()){
-		toggleLogButton(true);
-	} else {
-		toggleLogButton(false);
-	}
-});
-
-function toggleLogButton(bbool) {
-	var logbutton = document.getElementById("logsubmit");
-	if (bbool) {
-		logbutton.classList.remove("btn-danger");
-		logbutton.classList.add("btn-success");
-	} else {
-		logbutton.classList.remove("btn-success");
-		logbutton.classList.add("btn-danger");
-	}
-};
-
 // intercept enter and escape for log entry/clearing
 $(document).on('keyup', function(k) {
 	if(k.key == "Enter") logSubmit();
 	if(k.key == "Escape") logReset();
-	
 });
 
-$('#logsubmit').mouseover(function(){
-	document.getElementById("logsubmit").setAttribute("onclick", "logSubmit()");
+// For index.php / form id=log
+
+// Add a custom rule called "callsign"
+const callsignRegex = /^(?:[A-Z]{1,2}|[0-9][A-Z])\d{1,2}[A-Z]{1,4}$/i;
+
+// Validation function for the callsign
+$(function () {
+    $.validator.addMethod("callsign", function(value, element) {
+        return this.optional(element) || callsignRegex.test(value);
+    }, "Enter valid callsign");
 });
 
-$('#logsubmit').mouseout(function(){
-	document.getElementById("logsubmit").setAttribute("onclick", "");
+// Validation function for the operator class
+$(function (){
+    $.validator.addMethod("opclass", function(value, element) {
+        if( config.general.fdType == "WFD"){
+            re = /^[0-9]{1,2}[himoHIOM]$/;
+        } else {
+            re = /^[0-9]{1,2}[a-fA-F]$/;
+        }
+        return this.optional(element) || re.test(value);
+    }, "Enter valid class");
 });
 
+// Validation function for the section
+$(function (){
+    $.validator.addMethod("section", function(value, element) {
+        let retval = false;
+        if(config.sections.sections.includes(value.toUpperCase())){
+            retval = true;
+        }
+        return this.optional(element) || retval;
+    }, "Enter valid class");
+});
 
-// reset function status
-function resetSubmitOkStatus() {
-	submitOkCall = false;
-	submitOkClass = false;
-	submitOkSection = false;
-	submitOkDupe = false;
-	submitOkLogClockDate = false;
-	submitOkLogClockTime = false;
-	toggleLogButton(false);
-}
+// Actual validation of the form
+$(document).ready(function () {
+    $("#log").validate({
+        //debug: true,
+        rules: {
+            "call": {
+                required: true,
+                callsign: true
+            },
+            "opclass": {
+                required: true,
+                opclass: true
+            },
+            "section": {
+                required: true,
+                section: true
+            }
+        },
+        highlight: function (element) {
+            $(element).addClass("is-invalid").removeClass("is-valid");
+        },
+        unhighlight: function (element) {
+            $(element).addClass("is-valid").removeClass("is-invalid");
+        },
+        errorPlacement: function (error, element) {
+            error.addClass("invalid-feedback");
+            error.insertAfter(element);
+        },
 
-// check if it's ready to submit
-function checkSubmitOkStatus() {
-	if( submitOkCall && submitOkClass && submitOkSection ){
-		if(isHandKey){
-			if(submitOkLogClockDate && submitOkLogClockTime){
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return true;
-	} else {
-		return false;
-	}
-}
+        submitHandler: function(form) {
+           // form is valid → run your existing logic
+            logSubmit();
+        }
+    });
+});
 
-// submit the log
+// submit the log from above
 function logSubmit() {
 	if(!checkStationSetOkStatus()){
 		alertStatusMsg("Station information not set");
@@ -350,7 +285,7 @@ function logSubmit() {
 	// If this is the handkey.html version the date/time needs to be parsed out
 	if(isHandKey)
 		handkeyDateTime();
-	
+
  	// I have no idea whyu these can't be directly assigned by value.... Javascript is annoying
 	var opcallsign=  document.getElementById("callsign").value;
 	document.getElementById("opcallsign").value = opcallsign;
@@ -378,11 +313,11 @@ function logSubmit() {
 		success: function(msg) {
 			decayingGoodStatusMsg("Stored QSO for " + qsocall + "!  (QKEY: " + qkey + " , API Resp: " + msg + ")", 3);
 			qsinceload++;
-			
+
 			// See if we should reload since the DOM structure sometimes gets wonky after long use
 			if( parseInt(qsinceload) > 25){
 				setTimeout(window.location.reload(), 1000);
-			} 
+			}
 
 			// update the display and clear the entry
 			if(!isHandKey)
@@ -398,8 +333,6 @@ function logSubmit() {
 
 // reset the log form
 function logReset() {
-//	clearStatusMsg();
-	resetSubmitOkStatus();
 
 	// save the date for handkeying
 	if(isHandKey)
@@ -407,9 +340,7 @@ function logReset() {
 
 	// clear the rest of the elements
     $('#log input').parent().find('input').removeClass("is-invalid").removeClass("is-valid");
-	$('#section').typeahead('val', '').typeahead('close');
     document.getElementById("log").reset();
-
 
 	if(isHandKey){
 		document.getElementById("logclockdate").value = lcd;
@@ -488,7 +419,7 @@ $('#logclocktime').focusout(function() {
 });
 
 
-// 
+//
 // Manage QSOs
 //
 function editQSO(qkey){
@@ -507,7 +438,7 @@ function delQSO(qkey, qcall){
 	            alertStatusMsg("Unable to contact server with error: " + msg);
 	        }
 	    });
-	} 
+	}
 }
 
 function handleDelQSO(output, qkey, qcall){
@@ -516,7 +447,7 @@ function handleDelQSO(output, qkey, qcall){
 		updateDisplayLog();
 	} else {
 		alertStatusMsg("Error deleting QSO: " + output + " (key: " + qkey + ")");
-	}		
+	}
 }
 
 //

@@ -7,60 +7,69 @@ $ff_page_title = "Log Entry";
 require_once("station-info-form.php");
 $ff_header_content = $ff_station_info_form;
 
+$ff_additional_scripts = <<<EOT
+	<script src="js/jquery.validate-1.22.0.min.js"></script>
+	<script src="js/statusmsg.js"></script>
+	<script src="js/logdisplay.js"></script>
+	<script src="js/index.js"></script>
+EOT;
+
+//$ff_additional_css = <<<EOT
+//EOT;
+
 include("header.php");
 ?>
 <main>
 	<div class="container-md qso-entry-container shadow">
 		<div class="row">
-				<form id="log" name="log">
-					<table class="table table-borderless">
-						<thead>
-							<th scope="col" style="width: 20%">Date/Time</th>
-							<th scope="col" style="width: 15%">Callsign</th>
-							<th scope="col" style="width: 15%">Class</th>
-							<th scope="col" style="width: 10%">Section</th>
-							<th scope="col" style="width: 10%">&nbsp;</th>
-							<th scope="col" style="width: 10%">&nbsp;</th>
-							<th scope="col" style="width: 30%"></th>
-
-
-						</thead>
-						<tbody>
-							<td class="align-top">
-								<input type="text" size=15 name="logclock" id="logclock" class="form-control"
-									tabindex="-1" autocomplete="off">
-							</td>
-							<td class="align-top">
-								<input id="call" name="call" type="text" size="10" class="form-control"
-									onkeyup="this.value = this.value.toUpperCase();" onblur="isDupeQSO()" autocomplete="off">
-							</td>
-							<td class="align-top">
-								<input id="opclass" name="opclass" type="text" size="10" class="form-control"
-									 onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
-							</td>
-							<td class="align-top">
-	 							<div id="arrl-sections">
-								<input id="section" name="section" class="typeahead form-control" type="text"
-										size="10" autocomplete="off"  onkeyup="this.value = this.value.toUpperCase();">
-								</div>
-							</td>
-							<td class="align-top" align="center">
-								<button id="logsubmit" name="logsubmit" type="button" class="btn btn-danger"
-									onclick="">Log</button>
-							</td>
-							<td class="align-top" align="left">
-								<button id="logclear" name="logclear" type="button" class="btn btn-misc"
-									onclick="logReset()" tabindex="-1">Clear</button>
-							</td>
-							<td><!-- future --> </td>
-					</tbody>
-					</table>
-					<input type="hidden" id="opcallsign" name="opcallsign" value="">
-					<input type="hidden" id="opoperator" name="opoperator" value="">
-					<input type="hidden" id="opband" name="opband" value="">
-					<input type="hidden" id="opmode" name="opmode" value="">
-					<input type="hidden" id="qkey" name="qkey" value="">
-				</form>
+			<form id="log" name="log" role="form" class="needs-validation" novalidate>
+				<table class="table table-borderless">
+					<thead>
+						<th scope="col" style="width: 20%">Date/Time</th>
+						<th scope="col" style="width: 15%">Callsign</th>
+						<th scope="col" style="width: 15%">Class</th>
+						<th scope="col" style="width: 10%">Section</th>
+						<th scope="col" style="width: 10%">&nbsp;</th>
+						<th scope="col" style="width: 10%">&nbsp;</th>
+						<th scope="col" style="width: 30%"></th>
+					</thead>
+					<tbody>
+						<td class="align-top">
+							<input type="text" size=15 name="logclock" id="logclock" class="form-control"
+								tabindex="-1" autocomplete="off">
+						</td>
+						<td class="align-top">
+							<input id="call" name="call" type="text" size="10" class="form-control"
+								onkeyup="this.value = this.value.toUpperCase();" onblur="isDupeQSO()" autocomplete="off">
+						</td>
+						<td class="align-top">
+							<input id="opclass" name="opclass" type="text" size="10" class="form-control"
+									onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
+						</td>
+						<td class="align-top">
+							<div id="arrl-sections" class="position-relative">
+							<input id="section" name="section" class="form-control" type="text"
+									size="10" autocomplete="off">
+							<div id="section-hint" class="hint-overlay"></div>
+							</div>
+						</td>
+						<td class="align-top text-center">
+							<button id="logsubmit" name="logsubmit"
+								type="submit" class="btn btn-primary">Log</button>
+						</td>
+						<td class="align-top text-center">
+							<button id="logclear" name="logclear" type="button" class="btn btn-misc"
+								onclick="logReset()" tabindex="-1">Clear</button>
+						</td>
+						<td><!-- future --> </td>
+				</tbody>
+				</table>
+				<input type="hidden" id="opcallsign" name="opcallsign" value="">
+				<input type="hidden" id="opoperator" name="opoperator" value="">
+				<input type="hidden" id="opband" name="opband" value="">
+				<input type="hidden" id="opmode" name="opmode" value="">
+				<input type="hidden" id="qkey" name="qkey" value="">
+			</form>
 		</div>
 		<div class="row">
 			<div id="d-flex">
