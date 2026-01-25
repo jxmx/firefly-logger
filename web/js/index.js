@@ -10,6 +10,7 @@ var APIPrefix = "api";
 
 // Is the session cookie there?
 var stationcookieexists = false;
+var stationInfoSet = false;
 
 // master configuration for the application itself
 let config = {
@@ -115,9 +116,6 @@ function updateLogTime() {
 	document.getElementById("logclock").value = now;
 }
 
-
-
-
 //
 // Typehead for Section
 //
@@ -149,9 +147,12 @@ function initSectionSelect() {
 //
 
 // intercept enter and escape for log entry/clearing
-$(document).on('keyup', function(k) {
-	if(k.key == "Enter") logSubmit();
-	if(k.key == "Escape") logReset();
+// Only handle Enter/Escape inside the #log form
+$("#log").on("keydown", function (k) {
+    if (k.key === "Escape") {
+        k.preventDefault();
+        logReset();
+    }
 });
 
 /**
@@ -159,10 +160,6 @@ $(document).on('keyup', function(k) {
  * This is the block for JQuery Validate to test the inputs
  *
  */
-
-//
-// Duplicate checking logic
-//
 
 // Add a custom rule called "callsign"
 const callsignRegex = /^(?:[A-Z]{1,2}|[0-9][A-Z])\d{1,2}[A-Z]{1,4}$/i;
@@ -183,7 +180,7 @@ $(function (){
             re = /^[0-9]{1,2}[a-fA-F]$/;
         }
         return this.optional(element) || re.test(value);
-    }, "Enter valid class");
+    });
 });
 
 // Validation function for the section
@@ -194,7 +191,7 @@ $(function (){
             retval = true;
         }
         return this.optional(element) || retval;
-    }, "Enter valid class");
+    });
 });
 
 // Actual validation of the forms
@@ -233,7 +230,15 @@ $(document).ready(function () {
 				required: "Callsign is required",
 				callsign: "Enter a valid callsign",
 				remote: "Duplicate QSO in log"
-        	}
+        	},
+			opclass: {
+				required: "Class is required",
+				opclass: "Invalid Class"
+			},
+			section: {
+				required: "Section is required",
+				section: "Invalid Section"
+			}
     	},
         highlight: function (element) {
             $(element).addClass("is-invalid").removeClass("is-valid");
@@ -245,10 +250,9 @@ $(document).ready(function () {
             error.addClass("invalid-feedback");
             error.insertAfter(element);
         },
-
         submitHandler: function(form) {
-           // form is valid → run your existing logic
-            logSubmit();
+			// form is valid → run your existing logic
+			logSubmit();
         }
     });
 
@@ -285,13 +289,14 @@ $(document).ready(function () {
         },
         submitHandler: function(form) {
            saveStationData();
+		   stationInfoSet = true;
         }
     });
 });
 
 // submit the log from above
 function logSubmit() {
-	if(!checkStationSetOkStatus()){
+	if(!stationInfoSet){
 		alertStatusMsg("Station information not set");
 		return false;
 	}
@@ -301,9 +306,6 @@ function logSubmit() {
 	lform.method = "POST";
 	lform.action = "#";
 
-	// If this is the handkey.html version the date/time needs to be parsed out
-	if(isHandKey)
-		handkeyDateTime();
 
 	["callsign","operator","band","mode"].forEach(id =>
     	$("#op" + id).val($("#" + id).val())
@@ -320,17 +322,15 @@ function logSubmit() {
 		url:	"api/storeqso.php",
 		data:	fj,
 		success: function(msg) {
-			decayingGoodStatusMsg("Stored QSO for " + qsocall + "!  (QKEY: " + qkey + " , API Resp: " + msg + ")", 3);
+			disp_message = "Stored QSO for " + qsocall + "!  (QKEY: " + qkey + " , API Resp: " + msg + ")";
+			decayingGoodStatusMsg(disp_message, 3);
+			console.log(disp_message);
 			qsinceload++;
 
 			// See if we should reload since the DOM structure sometimes gets wonky after long use
 			if( parseInt(qsinceload) > 25){
 				setTimeout(window.location.reload(), 1000);
 			}
-
-			// update the display and clear the entry
-			if(!isHandKey)
-				updateDisplayLog();
 			logReset();
 		},
 		failure: function(msg) {
@@ -342,19 +342,13 @@ function logSubmit() {
 
 // reset the log form
 function logReset() {
-	// clear the rest of the elements
-    $('#log input').parent().find('input').removeClass("is-invalid").removeClass("is-valid");
-    document.getElementById("log").reset();
+    var form = $("#log");
+    form[0].reset();
+    form.validate().resetForm();
+    form.find("input").removeClass("is-valid is-invalid");
+    setTimeout(() => $("#call").focus(), 0);
+}
 
-	if(isHandKey){
-		document.getElementById("logclockdate").value = lcd;
-		document.getElementById("logclockdate").classList.add("is-valid");
-		submitOkLogClockDate = true;
-		document.getElementById("logclocktime").focus();
-	} else {
-	    document.getElementById("call").focus();
-	}
-};
 
 //
 // Manage QSOs
@@ -452,6 +446,7 @@ function setStationDataFromCookie() {
 	if( ( mode = getCookie("mode") ) && ( getCookie("mode") !== "X" ) ) {
 		document.getElementById("mode").value = mode;
 	}
+	stationInfoSet = true;
 }
 
 // Test for the cookie

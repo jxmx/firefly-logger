@@ -22,8 +22,9 @@ include("header.php");
 <main>
 	<div class="container-md qso-entry-container shadow">
 		<div class="row">
+			<div class="col-12 justify-content-center">
 			<form id="log" name="log" role="form" class="needs-validation" novalidate>
-				<table class="table table-borderless">
+				<table class="table table-borderless" width="100%">
 					<thead>
 						<th scope="col" style="width: 20%">Date/Time</th>
 						<th scope="col" style="width: 15%">Callsign</th>
@@ -70,6 +71,7 @@ include("header.php");
 				<input type="hidden" id="opmode" name="opmode" value="">
 				<input type="hidden" id="qkey" name="qkey" value="">
 			</form>
+			</div>
 		</div>
 		<div class="row">
 			<div id="d-flex">
