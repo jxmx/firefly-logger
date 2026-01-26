@@ -47,7 +47,7 @@ function getFieldData(field){
 		error: function(xhr, status, error) {
 			msg = `AJAX error: ${status}, ${error}`;
 			$("#modal-ajax-error").text(msg);
-			msg = `XHR reponse: ${xhr.responseText}`;
+			msg = `XHR response: ${xhr.responseText}`;
 			$("#modal-xhr-error").text(msg);
 			const modal = new bootstrap.Modal(document.getElementById("errorModal"));
 			modal.show();

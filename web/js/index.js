@@ -20,6 +20,8 @@ const logclockMode = document.querySelector("main").dataset.logclockMode;
 // statuses and counters
 var qsinceload = 0;
 
+
+
 // master configuration for the application itself
 let config = {
 	"general": [
@@ -86,6 +88,19 @@ function setGeneralConfig() {
 //
 // On the load
 //
+
+// in-page timers
+const timers = [];
+function stopTimers() {
+    for (const id of timers) {
+        clearInterval(id);
+        clearTimeout(id);
+    }
+    timers.length = 0;
+	logdisplay_stopTimers();
+}
+
+
 window.addEventListener("load", async function(){
 	await getConfig("general");
 	await getConfig("bands");
@@ -94,10 +109,11 @@ window.addEventListener("load", async function(){
 	setGeneralConfig();
 	updateLogTime();
 	initSectionSelect();
-	setInterval(testCookieExists,1000);
+	timers.push(setInterval(testCookieExists,1000));
+	timers.push(setInterval(pingServer,15000));
 
 	if(logclockMode === "auto") {
-		setInterval(updateLogTime,1000);
+		timers.push(setInterval(updateLogTime,1000));
 	}
 });
 
@@ -242,7 +258,7 @@ $(document).ready(function () {
 				required: true,
 				callsign: true,
 				remote: {
-					url: "api/checkdupe.php",
+					url: `${APIPrefix}/checkdupe.php`,
 					type: "GET",
 					data: {
 						qkey: function () {
@@ -360,28 +376,42 @@ function logSubmit() {
 
 	const qsocall = $("#call").val();
 	$("#qkey").val(qkeyCalculate(qsocall, $("#band").val(), $("#mode").val()));
+	const qkey = $("#qkey").val();
 
 	var fd = new FormData(lform);
 	var fj = Object.fromEntries(fd.entries());
 
 	$.ajax({
 		type:	"post",
-		url:	"api/storeqso.php",
+		url:	`${APIPrefix}/storeqso.php`,
+		cache: false,
 		data:	fj,
 		success: function(msg) {
-			disp_message = "Stored QSO for " + qsocall + "!  (QKEY: " + qkey + " , API Resp: " + msg + ")";
-			decayingGoodStatusMsg(disp_message, 3);
-			console.log(disp_message);
-			qsinceload++;
-
+			if(msg.ok){
+				disp_message = `Stored QSO for ${qsocall}!`;
+				decayingGoodStatusMsg(disp_message, 5);
+				qsinceload++;
+			} else {
+				disp_message = `Failed to store QSO for ${qsocall}! (${msg.error})`;
+				alertStatusMsg(disp_message);
+			}
 			// See if we should reload since the DOM structure sometimes gets wonky after long use
 			if( parseInt(qsinceload) > 25){
 				setTimeout(window.location.reload(), 1000);
 			}
 			logReset();
 		},
-		failure: function(msg) {
-			alertStatusMsg("Failed to store QSO for " + qsocall + "! (QKEY: " + qkey + " , API Resp: " + msg + ")");
+		error: function(xhr, status, error) {
+			let msg = "";
+			if( xhr.status === 0){
+				msg = "Network error. Cannot connect to server? Offline?";
+			} else {
+				msg = `AJAX error: ${status}, ${error}`;
+			}
+			$("#modal-ajax-error").text(msg);
+			const modal = new bootstrap.Modal(document.getElementById("errorModal"));
+			modal.show();
+			stopTimers();
 		}
 	});
 	return true;
@@ -408,17 +438,52 @@ function delQSO(qkey, qcall){
 	if( confirm("Are you sure your want to delete QSO with " + qcall + "?\n(QSO ID# " + qkey + ")") ){
 	    $.ajax({
 	        type:   "GET",
-	        url:    "api/delqso.php?qkey=" + qkey,
+	        url:    `${APIPrefix}/delqso.php?qkey=${qkey}`,
+			cache: false,
 	        success: function(output) {
-	            handleDelQSO(output, qkey, qcall);
+				if(output.ok){
+					decayingAlertStatusMsg(`Deleted QSO with ${qcall}`, 3);
+					updateDisplayLog();
+				} else {
+					alertStatusMsg(`Error deleting QSO ${qcall}: ${output.error}`);
+				}
 	        },
-	        failure: function(msg)  {
-	            alertStatusMsg("Unable to contact server with error: " + msg);
-	        }
+			error: function(xhr, status, error) {
+				let msg = "";
+				if( xhr.status === 0){
+					msg = "Network error. Cannot connect to server? Offline?";
+				} else {
+					msg = `AJAX error: ${status}, ${error}`;
+				}
+				$("#modal-ajax-error").text(msg);
+				const modal = new bootstrap.Modal(document.getElementById("errorModal"));
+				modal.show();
+				stopTimers();
+			}
 	    });
 	}
 }
 
+function pingServer(){
+	$.ajax({
+		type:   "GET",
+		url:    `${APIPrefix}/ping.json`,
+		cache: false,
+		error: function(xhr, status, error) {
+			let msg = "";
+			if( xhr.status === 0){
+				msg = "Ping lost to server. Network error. Offline?";
+			} else {
+				msg = `AJAX error: ${status}, ${error}`;
+			}
+			$("#modal-ajax-error").text(msg);
+			const modal = new bootstrap.Modal(document.getElementById("errorModal"));
+			modal.show();
+			stopTimers();
+		}
+	});
+
+}
 
 /**
  *

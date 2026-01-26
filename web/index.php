@@ -143,4 +143,24 @@ include("header.php");
 		</div>
 	</div>
 </main>
+
+<div class="modal fade" id="errorModal"
+	data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="errorModalLabel">Backend Data Service Error</h5>
+      </div>
+      <div class="modal-body">
+        <p class="text-danger">An unexpected error occurred. Information is not updating. Check server and reload.</p>
+		<div id="modal-ajax-error"></div>
+		<div id="modal-xhr-error"></div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php require_once("footer.php"); ?>
