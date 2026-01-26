@@ -23,5 +23,21 @@ function getPostVar($id){
 	}
 }
 
+/* JSON helpers for errors */
+function returnOK($msg){
+	$a = [
+		'ok' => $msg
+	];
+	return json_encode($a);
+}
+
+function returnError($msg){
+	$a = [
+		'error' => $msg
+	];
+	return json_encode($a);
+}
+
+require_once(__DIR__ . "/db.php");
 
 ?>

@@ -7,7 +7,7 @@ function updateDisplayLog(hide){
 
 	var path = window.location.pathname;
 	var page = path.split("/").pop();
-	const hpages = [ "board.html" ];
+	const hpages = [ "board.php" ];
 
 	if( hpages.includes(page) ){
 		var qsa = "?hidebuttons=y";
@@ -27,10 +27,25 @@ function updateDisplayLog(hide){
     });
 }
 
+const logdisplay_timers = [];
+
+function logdisplay_startTimers() {
+    logdisplay_timers.push(setInterval(updateDisplayLog, 15000));
+}
+
+function logdisplay_stopTimers() {
+    for (const id of logdisplay_timers) {
+        clearInterval(id);
+        clearTimeout(id);
+    }
+    logdisplay_timers.length = 0;
+}
+
+
 // set the timer
 window.addEventListener("load", function(){
     updateDisplayLog();
-    setInterval(updateDisplayLog, 15000);
+    logdisplay_startTimers();
 });
 
 // refresh the QSOs when the window comes back into focus (e.g. after edit)

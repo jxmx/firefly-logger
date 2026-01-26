@@ -1,9 +1,12 @@
 <?php
 include_once("api/functions.php");
-include("api/db.php");
 
 $qkey = getGetVar("qkey");
-$qry = sprintf("SELECT * FROM qso WHERE qkey='%s';", $qkey);
+
+if( $qkey == ""){
+	print(returnError("missing qkey parameter"));
+	exit;
+}
 
 // This is the page title in <head>>. It's followed by "| Firefly"
 $ff_page_title = "Edit QSO";
@@ -27,49 +30,55 @@ include("header.php");
         <form id="editqso" name="editqso" class="row g-3">
 <?php
 
-if($res = $db->query($qry)){
-	while( $row = $res->fetch_assoc()){
-		foreach($row as $key => $val){
-			if( $key == "qkey" ){
-				print <<<EOT
-					<input type="hidden" id="oldqkey" name="oldqkey" value="{$qkey}">
-					<input type="hidden" id="newqkey" name="newqkey" value="{$qkey}">
-				EOT;
-			} else {
-				print <<<EOT
-					<!-- {$key} -->
-					<div class="col-md-6">
-						<label for="{$key}" class="form-label fw-bold">{$key}</label>
-						<input id="{$key}" name="{$key}" type="text" class="form-control"
-							autocomplete="off" value="{$val}">
-					</div>
-				EOT;
+try {
+	$qry = "SELECT * FROM qso WHERE qkey = ?";
+	$qry_params = [ $qkey ];
+	$stmt = $db->pdo()->prepare($qry);
+	$stmt->execute($qry_params);
+	$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	if( count($rows) == 1 ){
+		foreach( $rows as $row){
+			foreach($row as $key => $val){
+				if( $key == "qkey" ){
+					print <<<EOT
+						<input type="hidden" id="oldqkey" name="oldqkey" value="{$qkey}">
+						<input type="hidden" id="newqkey" name="newqkey" value="{$qkey}">
+					EOT;
+				} else {
+					print <<<EOT
+						<!-- {$key} -->
+						<div class="col-md-6">
+							<label for="{$key}" class="form-label fw-bold">{$key}</label>
+							<input id="{$key}" name="{$key}" type="text" class="form-control"
+								autocomplete="off" value="{$val}">
+						</div>
+					EOT;
+				}
 			}
 		}
+		print <<<EOT
+			<div class="col-12 mt-3">
+				<button id="editsub" name="editsub" type="submit"
+					class="btn btn-danger me-2">Save</button>
+				<button id="abandonedit" name="abandonedit" type="button"
+					class="btn btn-misc" onclick="abandonEdit()">Abandon</button>
+			</div>
+			<!-- Status area -->
+			<div class="col-12">
+				<div class="d-flex">
+					<div id="statusarea"
+						class="invisible alert d-flex align-items-center alert-dismissable fade show"
+						role="alert"></div>
+				</div>
+			 </div>
+			EOT;
+	} else {
+		printf("<tr><td colspan=\"2\"><div class=\"alert alert-danger\">No such QSO ID %s</div></td></tr>", $qkey);
 	}
-?>
-            <!-- Buttons -->
-            <div class="col-12 mt-3">
-                <button id="editsub" name="editsub" type="submit"
-                        class="btn btn-danger me-2">Save</button>
-
-                <button id="abandonedit" name="abandonedit" type="button"
-                        class="btn btn-misc" onclick="abandonEdit()">Abandon</button>
-            </div>
-
-            <!-- Status area -->
-            <div class="col-12">
-                <div class="d-flex">
-                    <div id="statusarea"
-                         class="invisible alert d-flex align-items-center alert-dismissable fade show"
-                         role="alert"></div>
-                </div>
-            </div>
-<?php
-} else {
-	printf("<tr><td colspan=\"2\"><div class=\"alert alert-danger\">No such QSO ID %s</div></td></tr>", $qkey);
+} catch(Exception $e){
+	printf("<tr><td colspan=\"2\"><div class=\"alert alert-danger\">%s</div></td></tr>",
+		$e->getMessage());
 }
-$db->close();
 ?>
         </form>
     </div>

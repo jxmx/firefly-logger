@@ -2,8 +2,7 @@
 header('Content-Type: application/octet-stream');
 header('Content-disposition: inline; filename=fieldday.log');
 //header('Content-Type: text/plain');
-
-include_once("api/functions.php");
+include_once(__DIR__ . "/../api/functions.php");
 
 $cab = array();
 foreach($_POST as $k => $v){
@@ -23,14 +22,11 @@ $band = array(
 	"70CM" => "432"
 );
 
-include("api/db.php");
-
 print "START-OF-LOG: 3.0\n";
 printf("CONTEST: %s\n", $cab['cabcontest']);
 printf("CLUB: %s\n", $cab['cabclub']);
 printf("CALLSIGN: %s\n", $cab['cabcall']);
 printf("LOCATION: %s\n", $cab['cabsection']);
-printf("CATEGORY-OPERATOR: %s\n", $cab['cabop']);
 printf("CATEGORY-STATION: %s\n", $cab['cabstation']);
 printf("CATEGORY-TRANSMITTER: %s\n", $cab['cabtransmitter']);
 printf("CLAIMED-SCORE: %s\n", $cab['cabscore']);
@@ -44,40 +40,43 @@ printf("EMAIL: %s\n", $cab['cabemail']);
 print "CREATED-BY: Firefly Field Day Logger\n";
 print "\n";
 
-$qry = "SELECT * FROM qso ORDER BY date ASC";
+try{
+	$qry = "SELECT * FROM qso ORDER BY date ASC";
+	$stmt = $db->pdo()->query($qry);
+	$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	if( count($rows) > 0 ){
+		foreach( $rows as $row){
+			$dt = explode(" ", $row['date']);
 
-if($res = $db->query($qry)){
-	while( $row = $res->fetch_assoc()){
+			if( $row['mode'] == "PHONE" ){
+				$m = "PH";
+			} else if($row ['mode'] == "DATA" ){
+				$m = "DG";
+			} else {
+				$m = "CW";
+			}
 
-		$dt = explode(" ", $row['date']);
+			// QSO: ***** ** yyyy-mm-dd nnnn ************* nnn ****** ************* nnn ****** n
 
-		if( $row['mode'] == "PHONE" ){
-			$m = "PH";
-		} else if($row ['mode'] == "DATA" ){
-			$m = "DG";
-		} else {
-			$m = "CW";
+			printf("QSO: %5s %2s %10s %4s %13s %3s %6s %13s %3s %6s 0\n",
+				$band[strtoupper($row['band'])],
+				$m,
+				strtoupper($dt[0]),
+				substr(preg_replace('/:/', '', $dt[1]),0,4),
+				strtoupper($row['station']),
+				$cab['cabtransmitter']. strtoupper($cab['cabstation']),
+				strtoupper($cab['cabsection']),
+				strtoupper($row['callsign']),
+				strtoupper($row['class']),
+				strtoupper($row['section'])
+			);
 		}
-
-		// QSO: ***** ** yyyy-mm-dd nnnn ************* nnn ****** ************* nnn ****** n
-		
-		printf("QSO: %5s %2s %10s %4s %13s %3s %6s %13s %3s %6s 0\n",
-			$band[strtoupper($row['band'])],
-			$m,
-			strtoupper($dt[0]),
-			substr(preg_replace('/:/', '', $dt[1]),0,4),
-			strtoupper($row['station']),
-			$cab['cabtransmitter']. strtoupper($cab['cabstation']),
-			strtoupper($cab['cabsection']),
-			strtoupper($row['callsign']),
-			strtoupper($row['class']),
-			strtoupper($row['section'])
-		);
+		print "END-OF-LOG:\n";
+	} else {
+		print "DB ERROR";
 	}
-	print "END-OF-LOG:\n";
-} else {
-	print "DB ERROR";
+} catch (Exception $e){
+	print($e->getMessage());
 }
-$db->close();
-
+exit;
 ?>

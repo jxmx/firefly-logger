@@ -212,7 +212,7 @@ function submitEdit() {
 function handleSubmitEdit(msg) {
     if( msg === "OK" ){
         goodStatusMsg(msg);
-		setTimeout(window.close, 2000);
+		//setTimeout(window.close, 2000);
     } else {
         alertStatusMsg(msg);
     }

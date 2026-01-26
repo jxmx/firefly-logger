@@ -8,6 +8,13 @@ $ff_header_content = <<<EOT
 	<h2>Scoreboard</h2>
 	EOT;
 
+$ff_additional_scripts = <<<EOT
+	<script src="js/jquery.validate-1.22.0.min.js"></script>
+	<script src="js/logdisplay.js"></script>
+	<script src="js/board.js"></script>
+EOT;
+
+
 include("header.php");
 ?>
   <main>
@@ -75,4 +82,24 @@ include("header.php");
 
 	</div>
 </main>
+
+<div class="modal fade" id="errorModal"
+	data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+	aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="errorModalLabel">Backend Data Service Error</h5>
+      </div>
+      <div class="modal-body">
+        <p class="text-danger">An unexpected error occurred. Information is not updating. Check server and reload.</p>
+		<div id="modal-ajax-error"></div>
+		<div id="modal-xhr-error"></div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php include("footer.php"); ?>

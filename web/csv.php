@@ -12,8 +12,8 @@ include("header.php");
 ?>
 <main>
 	<div class="container-md mt-5 shadow rounded-3">
-		<div class="row">
-				<form id="CSV" name="CSV" method="POST" action="csv.php">
+		<div class="row p-3">
+				<form id="CSV" name="CSV" method="POST" action="exports/csv.php">
 					<table class="table table-borderless">
 						<tbody>
 						<tr>

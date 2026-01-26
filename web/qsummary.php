@@ -13,7 +13,7 @@ include("header.php");
 <main>
 	<div class="container-md mt-5 shadow rounded-3">
 		<div class="row">
-				<form id="dupe" name="dupe" method="POST" action="qsummary.php">
+				<form id="dupe" name="dupe" method="POST" action="exports/qsummary.php">
 					<table class="table table-borderless">
 						<thead>
 							<th scope="col" style="width: 20%">Header Item</th>

@@ -1,26 +1,28 @@
 <?php
-header('Content-Type: text/plain');
-include("db.php");
+header('Content-Type: application/json');
 include_once("functions.php");
 
 $qkey = getGetVar("qkey");
-$insqry = sprintf("SELECT COUNT(qkey) FROM qso WHERE qkey='%s'", $qkey);
 
-if ($res = $db->query($insqry)) {
-    $row = $res->fetch_row();
+$qry = "SELECT COUNT(qkey) FROM qso WHERE qkey=?";
+$qry_params = [ $qkey ];
+
+try {
+    $stmt = $db->pdo()->prepare($qry);
+    $stmt->execute($qry_params);
+    $count = $stmt->fetchColumn();
 
     // Note: these return the opposite of what you might expect
     // because this is fed into jQuery Validate which is expecting
     // "true" if the form can proceed and "false" if it cannot
-    if($row[0] == 1){
+    if($count > 0){
         print("false");
     } else {
         print("true");
     }
-} else {
-    print("true");
+} catch(Exception $e){
+    http_response_code(400);
+	print(returnError($e->getMessage()));
+	exit;
 }
-
-$db->close();
-?>
-
+exit;

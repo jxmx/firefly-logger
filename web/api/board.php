@@ -1,54 +1,70 @@
 <?php
-header('Content-Type: text/plain');
+header('Content-Type: application/json');
 include_once("functions.php");
 
-function getElement($qq){
-	include("db.php");
-	if($res = $db->query($qq)){
-		$row = $res->fetch_row();
-		return $row[0];
-	} else {
-		return "DB ERROR";
+function getElement($db, $qry){
+	try{
+		$qry_params = [];
+		$stmt = $db->pdo()->prepare($qry);
+		$stmt->execute($qry_params);
+		return $stmt->fetchColumn();
+		$count;
+	} catch(Exception $e){
+		http_response_code(400);
+		return returnError($e->getMessage());
+		exit;
 	}
-	$db->close();
 }
 
 $q = getGetVar("q");
 
 switch ($q){
 	case "total":
-		print getElement("SELECT COUNT(qkey) FROM qso");
+		print returnOK(
+			getElement($db, "SELECT COUNT(qkey) FROM qso")
+		);
 		break;
 	case "phone":
-		print getElement("SELECT COUNT(qkey) FROM qso WHERE mode='PHONE'");
+		print returnOK(
+			getElement($db, "SELECT COUNT(qkey) FROM qso WHERE mode='PHONE'")
+		);
 		break;
 
 	case "cw":
-		print getElement("SELECT COUNT(qkey) FROM qso WHERE mode='CW'");
+		print returnOK(
+			getElement($db, "SELECT COUNT(qkey) FROM qso WHERE mode='CW'")
+		);
 		break;
 
 	case "data":
-		print getElement("SELECT COUNT(qkey) FROM qso WHERE mode='DATA'");
+		print returnOK(
+			getElement($db, "SELECT COUNT(qkey) FROM qso WHERE mode='DATA'")
+		);
 		break;
 
 	case "distinct":
-		print getElement("SELECT COUNT(DISTINCT(callsign)) FROM qso");
+		print returnOK(
+			getElement($db, "SELECT COUNT(DISTINCT(callsign)) FROM qso")
+		);
 		break;
 
 	case "sections":
-		print getElement("SELECT COUNT(DISTINCT(section)) FROM qso");
+		print returnOK(
+			getElement($db, "SELECT COUNT(DISTINCT(section)) FROM qso")
+		);
 		break;
 
 	// print totals by default
 	default:
-		printf("%d", 
-			getElement("SELECT COUNT(qkey) FROM qso WHERE mode='PHONE'") + 
-			( getElement("SELECT COUNT(qkey) FROM qso WHERE mode='CW'") * 2 ) + 
-			( getElement("SELECT COUNT(qkey) FROM qso WHERE mode='DATA'") * 2 )
+		print(
+			returnOK(
+				sprintf("%d",
+					getElement($db, "SELECT COUNT(qkey) FROM qso WHERE mode='PHONE'") +
+					getElement($db, "SELECT COUNT(qkey) FROM qso WHERE mode='CW'") * 2 +
+					getElement($db, "SELECT COUNT(qkey) FROM qso WHERE mode='DATA'") * 2
+				)
+			)
 		);
 		exit;
-
 }
-
-
 ?>
