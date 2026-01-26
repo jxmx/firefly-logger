@@ -20,7 +20,7 @@ EOT;
 include("header.php");
 ?>
 <main>
-	<div class="container-md qso-entry-container shadow">
+	<div class="container-md qso-entry-container shadow rounded-3">
 		<div class="row">
 			<div class="col-12 justify-content-center">
 			<form id="log" name="log" role="form" class="needs-validation" novalidate>
@@ -79,7 +79,7 @@ include("header.php");
 			</div>
 		</div>
 	</div>
-	<div class="container-md shadow log-disp-container mb-3">
+	<div class="container-md shadow rounded-3 log-disp-container mb-3">
 		<div class="row">
 			<div class="col">
 				<div class="d-flex titlebars p-2"><b>Last 10 QSOs</b></div>

@@ -4,7 +4,7 @@
 
 $ff_station_info_form = <<<EOT
 	<form id="stationset" name="stationset">
-		<table width="100%" height="100%" class="stationsett">
+		<table width="100%" height="100%" class="rounded-3 stationsett">
 			<tbody style="background-color: rgba(255,255,255,0.5);" class="shadow">
 				<td style="text-align: center;" class="p-2">
 					<b>Station Info</b>

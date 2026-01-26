@@ -432,6 +432,9 @@ function saveStationData() {
 	setCookie("band", document.getElementById("band").value, 30);
 	setCookie("mode", document.getElementById("mode").value, 30);
 	stationcookieexists = true;
+    setTimeout(() =>
+		$("#stationset").find(".form-control").removeClass("is-valid is-invalid")
+		, 3000);
 };
 
 // Set Station from Cookie on Load

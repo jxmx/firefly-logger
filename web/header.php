@@ -29,7 +29,7 @@
 	</symbol>
     </svg>
 <div class="ff-page-wrapper">
-<header class="shadow-sm bg-body">
+<header class="shadow-sm bg-body pb-2 mb-2">
 	<div class="container">
 		<div class="row align-items-center">
             <!-- left box -->
