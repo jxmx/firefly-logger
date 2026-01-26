@@ -101,3 +101,11 @@ main {
 .ff-in-col-head {
 	font-weight: bold;
 }
+
+.form-label {
+	font-weight: bold;
+}
+
+#statusarea {
+	min-height: 3.5rem;
+}

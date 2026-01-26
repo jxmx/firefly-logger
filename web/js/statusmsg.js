@@ -4,11 +4,12 @@
 function goodStatusMsg(msg) {
     var statusbox = document.getElementById("statusarea");
     clearStatusMsg();
-    statusbox.classList.remove("invisible");
     statusbox.classList.add("alert-success");
     statusbox.innerHTML += "<svg class=\"bi flex-shrink-0 me-2\" width=\"24\" height=\"24\" role=\"img\" aria-label=\"Success:\"><use xlink:href=\"#check-circle-fill\"/></svg>";
     statusbox.innerHTML += "<div class=\"d-inline-flex\">" + msg + "</div>";
-    statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>";
+    statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" onclick=\"clearStatusMsg()\" aria-label=\"Close\"></button>";
+
+    $("#statusarea").removeClass("opacity-0").addClass("opacity-100");
 };
 
 function decayingGoodStatusMsg(msg, secs) {
@@ -19,11 +20,11 @@ function decayingGoodStatusMsg(msg, secs) {
 function alertStatusMsg(msg) {
     var statusbox = document.getElementById("statusarea");
     clearStatusMsg();
-    statusbox.classList.remove("invisible");
     statusbox.classList.add("alert-danger");
     statusbox.innerHTML += "<svg class=\"bi flex-shrink-0 me-2\" width=\"24\" height=\"24\" role=\"img\" aria-label=\"Success:\"><use xlink:href=\"#exclamation-triangle-fill\"/></svg>";
     statusbox.innerHTML += "<div class=\"d-inline-flex\">" + msg + "</div>";
-    statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>";
+    statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" onclick=\"clearStatusMsg()\" aria-label=\"Close\"></button>";
+    $("#statusarea").removeClass("opacity-0").addClass("opacity-100");
 };
 
 function decayingAlertStatusMsg(msg, secs) {
@@ -34,7 +35,7 @@ function decayingAlertStatusMsg(msg, secs) {
 function clearStatusMsg(){
     var statusbox = document.getElementById("statusarea");
     statusbox.classList.remove("alert-success", "alert-danger");
-    statusbox.classList.add("invisible");
     statusbox.innerHTML = "";
+    $("#statusarea").addClass("opacity-0").removeClass("opacity-100");
 }
 

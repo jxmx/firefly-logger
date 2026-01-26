@@ -21,62 +21,101 @@ include("header.php");
 ?>
 <main>
 	<div class="container-md qso-entry-container shadow rounded-3">
-		<div class="row">
-			<div class="col-12 justify-content-center">
-			<form id="log" name="log" role="form" class="needs-validation" novalidate>
-				<table class="table table-borderless" width="100%">
-					<thead>
-						<th scope="col" style="width: 20%">Date/Time</th>
-						<th scope="col" style="width: 15%">Callsign</th>
-						<th scope="col" style="width: 15%">Class</th>
-						<th scope="col" style="width: 10%">Section</th>
-						<th scope="col" style="width: 10%">&nbsp;</th>
-						<th scope="col" style="width: 10%">&nbsp;</th>
-						<th scope="col" style="width: 30%"></th>
-					</thead>
-					<tbody>
-						<td class="align-top">
-							<input type="text" size=15 name="logclock" id="logclock" class="form-control"
-								tabindex="-1" autocomplete="off">
-						</td>
-						<td class="align-top">
-							<input id="call" name="call" type="text" size="10" class="form-control"
-								onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
-						</td>
-						<td class="align-top">
-							<input id="opclass" name="opclass" type="text" size="10" class="form-control"
-									onkeyup="this.value = this.value.toUpperCase();" autocomplete="off">
-						</td>
-						<td class="align-top">
+		<div class="row mt-3">
+			<div class="col-12 d-flex justify-content-center">
+				<form id="log" name="log" class="needs-validation w-100" novalidate>
+
+					<div class="row mt-2 g-3 align-items-start">
+
+						<!-- Date/Time -->
+						<div class="col-12 col-md-2">
+							<label for="logclock" class="form-label">Date/Time</label>
+							<input type="text"
+								id="logclock"
+								name="logclock"
+								class="form-control"
+								tabindex="-1"
+								autocomplete="off">
+						</div>
+
+						<!-- Callsign -->
+						<div class="col-12 col-md-2">
+							<label for="call" class="form-label">Callsign</label>
+							<input type="text"
+								id="call"
+								name="call"
+								class="form-control"
+								autocomplete="off"
+								onkeyup="this.value = this.value.toUpperCase();">
+						</div>
+
+						<!-- Class -->
+						<div class="col-12 col-md-2">
+							<label for="opclass" class="form-label">Class</label>
+							<input type="text"
+								id="opclass"
+								name="opclass"
+								class="form-control"
+								autocomplete="off"
+								onkeyup="this.value = this.value.toUpperCase();">
+						</div>
+
+						<!-- Section -->
+						<div class="col-12 col-md-2">
+							<label for="section" class="form-label">Section</label>
 							<div id="arrl-sections" class="position-relative">
-							<input id="section" name="section" class="form-control" type="text"
-									size="10" autocomplete="off">
-							<div id="section-hint" class="hint-overlay"></div>
+								<input type="text"
+									id="section"
+									name="section"
+									class="form-control"
+									autocomplete="off">
+								<div id="section-hint" class="hint-overlay"></div>
 							</div>
-						</td>
-						<td class="align-top text-center">
-							<button id="logsubmit" name="logsubmit"
-								type="submit" class="btn btn-primary">Log</button>
-						</td>
-						<td class="align-top text-center">
-							<button id="logclear" name="logclear" type="button" class="btn btn-misc"
-								onclick="logReset()" tabindex="-1">Clear</button>
-						</td>
-						<td><!-- future --> </td>
-				</tbody>
-				</table>
-				<input type="hidden" id="opcallsign" name="opcallsign" value="">
-				<input type="hidden" id="opoperator" name="opoperator" value="">
-				<input type="hidden" id="opband" name="opband" value="">
-				<input type="hidden" id="opmode" name="opmode" value="">
-				<input type="hidden" id="qkey" name="qkey" value="">
-			</form>
+						</div>
+
+						<!-- Log Button -->
+						<div class="col-6 col-md-1 d-grid">
+							<label class="form-label opacity-0">Log</label>
+							<button type="submit"
+									id="logsubmit"
+									name="logsubmit"
+									class="btn btn-primary">
+								Log
+							</button>
+						</div>
+
+						<!-- Clear Button -->
+						<div class="col-6 col-md-1 d-grid">
+							<label class="form-label opacity-0">Clear</label>
+							<button type="button"
+									id="logclear"
+									name="logclear"
+									class="btn btn-secondary"
+									onclick="logReset()"
+									tabindex="-1">
+								Clear
+							</button>
+						</div>
+
+						<!-- Future expansion -->
+						<div class="col-12 col-md-2"></div>
+
+					</div>
+
+					<!-- Hidden fields -->
+					<input type="hidden" id="opcallsign" name="opcallsign">
+					<input type="hidden" id="opoperator" name="opoperator">
+					<input type="hidden" id="opband" name="opband">
+					<input type="hidden" id="opmode" name="opmode">
+					<input type="hidden" id="qkey" name="qkey">
+
+				</form>
 			</div>
 		</div>
 		<div class="row">
-			<div id="d-flex">
-				<div id="statusarea" class="invisible alert d-flex align-items-center alert-dismissable fade show" role="alert"></div>
-			</div>
+			<div id="statusarea"
+				class="alert d-flex align-items-center fade show opacity-0 m-3"
+				role="alert"></div>
 		</div>
 	</div>
 	<div class="container-md shadow rounded-3 log-disp-container mb-3">
