@@ -11,7 +11,7 @@ $ff_header_content = <<<EOT
 include("header.php");
 ?>
 <main>
-	<div class="container-md mt-5 shadow">
+	<div class="container-md mt-5 shadow rounded-3">
 		<div class="row">
 			<form id="adif" name="adif" method="POST" action="exports/adif.php">
 				<table class="table table-borderless">

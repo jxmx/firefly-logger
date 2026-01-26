@@ -13,33 +13,33 @@ include("header.php");
   <main>
 	<div class="container-md">
 		<div class="row mt-5">
-			<div class="col-md m-1 shadow h-auto d-inline-block">
+			<div class="col-md m-1 shadow rounded-3 h-auto d-inline-block">
 				<div class="fs-1 text-center fw-bold">Total QSOs</div>
 				<div id="total" name="total" class="fs-1 text-center">0</div>
 			</div>
-			<div class="col-md m-1 shadow h-auto d-inline-block">
+			<div class="col-md m-1 shadow rounded-3 h-auto d-inline-block">
 				<div class="fs-1 text-center fw-bold">Voice</div>
 				<div id="phone" name="phone" class="fs-1 text-center">0</div>
 			</div>
-			<div class="col-md m-1 shadow h-auto d-inline-block">
+			<div class="col-md m-1 shadow rounded-3 h-auto d-inline-block">
 				<div class="fs-1 text-center fw-bold">CW</div>
 				<div id="cw" name="cw" class="fs-1 text-center">0</div>
 			</div>
-			<div class="col-md m-1 shadow h-auto d-inline-block">
+			<div class="col-md m-1 shadow rounded-3 h-auto d-inline-block">
                 <div class="fs-1 text-center fw-bold">Digital/Data</div>
                 <div id="data" name="data" class="fs-1 text-center">0</div>
 			</div>
 		</div>
 		<div class="row mt-5">
-			<div class="col-md m-1 shadow h-auto d-inline-block">
+			<div class="col-md m-1 shadow rounded-3 h-auto d-inline-block">
 				<div class="fs-1 text-center fw-bold">Total Pts</div>
 				<div id="score" name="score" class="fs-1 text-center">0</div>
 			</div>
-			<div class="col-md m-1 shadow h-auto d-inline-block">
+			<div class="col-md m-1 shadow rounded-3 h-auto d-inline-block">
 				<div class="fs-1 text-center fw-bold">Sections</div>
 				<div id="sections" name="sections" class="fs-1 text-center">0</div>
 			</div>
-			<div class="col-md m-1 shadow h-auto d-inline-block">
+			<div class="col-md m-1 shadow rounded-3 h-auto d-inline-block">
 				<div class="fs-1 text-center fw-bold">Distinct Calls</div>
 				<div id="distinct" name="distinct" class="fs-1 text-center">0</div>
 			</div>
@@ -49,10 +49,10 @@ include("header.php");
 			</div>
 		</div>
 	</div>
-	<div class="container-md shadow log-disp-container">
+	<div class="container-md shadow  rounded-3 log-disp-container">
 		<div class="row">
 			<div class="col">
-				<div class="d-flex titlebars p-2"><b>Last 10 QSOs</b></div>
+				<div class="d-flex titlebars p-2  rounded-3"><b>Last 10 QSOs</b></div>
         	        <table class="table table-hover">
 	                    <thead>
 	                        <tr>
