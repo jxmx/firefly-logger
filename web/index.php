@@ -19,7 +19,7 @@ EOT;
 
 include("header.php");
 ?>
-<main>
+<main data-logclock-mode="auto">
 	<div class="container-md qso-entry-container shadow rounded-3">
 		<div class="row mt-3">
 			<div class="col-12 d-flex justify-content-center">

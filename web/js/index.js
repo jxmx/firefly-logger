@@ -10,7 +10,12 @@ var APIPrefix = "api";
 
 // Is the session cookie there?
 var stationcookieexists = false;
+
+// is the station info set
 var stationInfoSet = false;
+
+//
+const logclockMode = document.querySelector("main").dataset.logclockMode;
 
 // master configuration for the application itself
 let config = {
@@ -93,9 +98,11 @@ window.addEventListener("load", async function(){
 	setGeneralConfig();
 	updateLogTime();
 	initSectionSelect();
-	setInterval(updateLogTime,1000);
 	setInterval(testCookieExists,1000);
 
+	if(logclockMode === "auto") {
+		setInterval(updateLogTime,1000);
+	}
 });
 
 //
@@ -194,6 +201,42 @@ $(function (){
     });
 });
 
+// Validation
+$(function (){
+	$.validator.addMethod("logclock", function (value, element) {
+		if (this.optional(element)) return true;
+
+		// If time is missing seconds, append :00
+		// Matches YYYY-MM-DD HH:MM
+		const noSeconds = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
+
+		if (noSeconds.test(value)) {
+			value = value + ":00";
+			$(element).val(value);   // update the field so the form uses the normalized value
+		}
+
+		// Now validate full format YYYY-MM-DD HH:MM:SS
+		const full = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+		if (!full.test(value)) return false;
+
+		// Deep validation using Date()
+		const [datePart, timePart] = value.split(" ");
+		const [year, month, day] = datePart.split("-").map(Number);
+		const [hour, minute, second] = timePart.split(":").map(Number);
+
+		const dt = new Date(year, month - 1, day, hour, minute, second);
+
+		return (
+			dt.getFullYear() === year &&
+			dt.getMonth() === month - 1 &&
+			dt.getDate() === day &&
+			dt.getHours() === hour &&
+			dt.getMinutes() === minute &&
+			dt.getSeconds() === second
+		);
+	}, "Invalid date/time format (YYYY-MM-DD HH:MM or YYYY-MM-DD HH:MM:SS)");
+});
+
 // Actual validation of the forms
 $(document).ready(function () {
 	$("#log").validate({
@@ -223,7 +266,11 @@ $(document).ready(function () {
             "section": {
                 required: true,
                 section: true
-            }
+            },
+			logclock: {
+				required: true,
+				logclock: true
+			}
         },
 		messages: {
         	call: {
@@ -238,6 +285,10 @@ $(document).ready(function () {
 			section: {
 				required: "Section is required",
 				section: "Invalid Section"
+			},
+			logclock: {
+				required: "Timestamp is required",
+				logclock: "Use YYYY-MM-DD HH:MM[:SS]"
 			}
     	},
         highlight: function (element) {
