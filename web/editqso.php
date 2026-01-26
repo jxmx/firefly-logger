@@ -13,59 +13,65 @@ $ff_header_content = <<<EOT
 	<h2>Edit QSO</h2>
 	EOT;
 
+$ff_additional_scripts = <<<EOT
+	<script src="js/jquery.validate-1.22.0.min.js"></script>
+	<script src="js/statusmsg.js"></script>
+	<script src="js/editqso.js"></script>
+EOT;
+
 include("header.php");
 ?>
 <main>
-	<div class="container-md qso-entry-container shadow">
-		<div class="row">
-			<div class="alert alert-warning"><b>NOTE:</b> There is NO field validation in this form. Edit carefully!</div>
-		</div>
-		<div class="row">
-		<form id="editqso" name="editqso">
-			<table class="table">
-				<tr>
-					<th><b>Field</b></th>
-					<th><b>Value</b></th>
-				</tr>
+    <div class="container qso-entry-container shadow rounded-3 p-4 my-3">
+
+        <form id="editqso" name="editqso" class="row g-3">
 <?php
+
 if($res = $db->query($qry)){
 	while( $row = $res->fetch_assoc()){
 		foreach($row as $key => $val){
-
-			print "<tr>\n";
-			printf("<td><b>%s</b></td>\n", $key);
 			if( $key == "qkey" ){
-				printf("<td><input id=\"%s\" name=\"%s\" type=\"hidden\" value=\"%s\">%s</td>\n", $key, $key, $val, $val);
+				print <<<EOT
+					<input type="hidden" id="oldqkey" name="oldqkey" value="{$qkey}">
+					<input type="hidden" id="newqkey" name="newqkey" value="{$qkey}">
+				EOT;
 			} else {
-				printf("<td><input id=\"%s\" name=\"%s\" type=\"test\" size=\"15\" class=\"form-control\" " .
-					"autocomplete=\"off\" value=\"%s\"></td>\n", $key, $key, $val);
-
+				print <<<EOT
+					<!-- {$key} -->
+					<div class="col-md-6">
+						<label for="{$key}" class="form-label fw-bold">{$key}</label>
+						<input id="{$key}" name="{$key}" type="text" class="form-control"
+							autocomplete="off" value="{$val}">
+					</div>
+				EOT;
 			}
-			print "</tr>\n";
-
 		}
 	}
-	print "<tr><td colspan=\"2\">\n";
-	print "<button id=\"editsub\" name=\"editsub\" type=\"button\" class=\"btn btn-danger mx-2\" onclick=\"submitEdit()\">Save</button>";
-	print "<button id=\"abandonedit\" name=\"abandonedit\" type=\"button\" class=\"btn btn-misc mx-2\" onclick=\"abandonEdit()\">Abandon</button>";
-	print "</td></tr>\n";
+?>
+            <!-- Buttons -->
+            <div class="col-12 mt-3">
+                <button id="editsub" name="editsub" type="submit"
+                        class="btn btn-danger me-2">Save</button>
 
+                <button id="abandonedit" name="abandonedit" type="button"
+                        class="btn btn-misc" onclick="abandonEdit()">Abandon</button>
+            </div>
+
+            <!-- Status area -->
+            <div class="col-12">
+                <div class="d-flex">
+                    <div id="statusarea"
+                         class="invisible alert d-flex align-items-center alert-dismissable fade show"
+                         role="alert"></div>
+                </div>
+            </div>
+<?php
 } else {
 	printf("<tr><td colspan=\"2\"><div class=\"alert alert-danger\">No such QSO ID %s</div></td></tr>", $qkey);
 }
 $db->close();
 ?>
-		<tr>
-			<td colspan="2">
-				<div id="d-flex">
-    	            <div id="statusarea" class="invisible alert d-flex align-items-center alert-dismissable fade show"
-						role="alert"></div>
-	            </div>
-			</td>
-		</tr>
-
-		</form>
-		</div>
-	</div>
+        </form>
+    </div>
 </main>
 <?php include("footer.php"); ?>

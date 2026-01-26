@@ -17,6 +17,9 @@ var stationInfoSet = false;
 //
 const logclockMode = document.querySelector("main").dataset.logclockMode;
 
+// statuses and counters
+var qsinceload = 0;
+
 // master configuration for the application itself
 let config = {
 	"general": [
@@ -30,13 +33,6 @@ let config = {
 		"sections": [ "XX" ]
 	}
 };
-
-// statuses and counters
-var qsinceload = 0;
-var thispage = location.href.split("/").slice(-1);
-
-if(thispage == "handkey.html")
-	var isHandKey = true;
 
 // load configuration from JSON files
 async function getConfig(configType){
