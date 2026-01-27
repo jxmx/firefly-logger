@@ -25,7 +25,7 @@ include("header.php");
 		<div class="row justify-content-center">
 			<div class="col table-responsive-md">
 				<!-- Bootstrap Tables -->
-				<table id="table" class="table table-sm m-0 p-0"
+				<table id="table" class="table"
 					data-toggle="table"
 					data-pagination="true"
 					data-search="true"
@@ -44,7 +44,7 @@ include("header.php");
 						<th data-field="section">Section</th>
 						<th data-field="mode">Mode</th>
 						<th data-field="operator">Operator</th>
-						<th data-field="qkey" data-formatter="qsoButtons"></th>
+						<th data-field="qkey" data-formatter="qsoButtons" class="text-center"></th>
 					</tr>
 					</thead>
 				</table>
