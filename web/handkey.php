@@ -18,11 +18,11 @@ include("header.php");
 ?>
 <main data-logclock-mode="manual">
 <div class="container-md qso-entry-container shadow rounded-3">
-		<div class="row mt-3">
-			<div class="col-12 d-flex justify-content-center">
+		<div class="row mt-3 justify-content-center">
+			<div class="col-12 col-lg-10">
 				<form id="log" name="log" class="needs-validation w-100" novalidate>
 
-					<div class="row mt-2 g-3 align-items-start">
+					<div class="row mt-2 g-3 align-items-top justify-content-center">
 
 						<!-- Date/Time -->
 						<div class="col-12 col-md-2">
@@ -31,6 +31,7 @@ include("header.php");
 								id="logclock"
 								name="logclock"
 								class="form-control"
+								tabindex="-1"
 								autocomplete="off">
 						</div>
 
@@ -78,6 +79,7 @@ include("header.php");
 									class="btn btn-primary">
 								Log
 							</button>
+							<div class="invalid-feedback d-block opacity-0">placeholder</div>
 						</div>
 
 						<!-- Clear Button -->
@@ -91,13 +93,9 @@ include("header.php");
 									tabindex="-1">
 								Clear
 							</button>
+							<div class="invalid-feedback d-block opacity-0">placeholder</div>
 						</div>
-
-						<!-- Future expansion -->
-						<div class="col-12 col-md-2"></div>
-
 					</div>
-
 					<!-- Hidden fields -->
 					<input type="hidden" id="opcallsign" name="opcallsign">
 					<input type="hidden" id="opoperator" name="opoperator">
