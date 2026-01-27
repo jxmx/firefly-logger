@@ -53,6 +53,7 @@
                             <li><a class="dropdown-item" href="index.php">Logger</a></li>
                             <li><a class="dropdown-item" href="board.php">Display Board</a></li>
                             <li><a class="dropdown-item" href="handkey.php">Handkey Interface</a></li>
+                            <li><a class="dropdown-item" href="allqsos.php">All QSOs</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="cabrillo.php">Export Cabrillo</a></li>
                             <li><a class="dropdown-item" href="adif.php">Export ADIF</a></li>
