@@ -25,8 +25,8 @@ include("header.php");
 					<div class="row mt-2 g-3 align-items-top justify-content-center">
 
 						<!-- Date/Time -->
-						<div class="col-12 col-md-2">
-							<label for="logclock" class="form-label">Date/Time</label>
+						<div class="col-12 col-md-3">
+							<label for="logclock" class="form-label px-2">Date/Time</label>
 							<input type="text"
 								id="logclock"
 								name="logclock"
@@ -37,7 +37,7 @@ include("header.php");
 
 						<!-- Callsign -->
 						<div class="col-12 col-md-2">
-							<label for="call" class="form-label">Callsign</label>
+							<label for="call" class="form-label px-2">Callsign</label>
 							<input type="text"
 								id="call"
 								name="call"
@@ -48,7 +48,7 @@ include("header.php");
 
 						<!-- Class -->
 						<div class="col-12 col-md-2">
-							<label for="opclass" class="form-label">Class</label>
+							<label for="opclass" class="form-label px-2">Class</label>
 							<input type="text"
 								id="opclass"
 								name="opclass"
@@ -59,7 +59,7 @@ include("header.php");
 
 						<!-- Section -->
 						<div class="col-12 col-md-2">
-							<label for="section" class="form-label">Section</label>
+							<label for="section" class="form-label px-2">Section</label>
 							<div id="arrl-sections" class="position-relative">
 								<input type="text"
 									id="section"
