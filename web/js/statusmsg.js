@@ -5,7 +5,7 @@ function goodStatusMsg(msg) {
     var statusbox = document.getElementById("statusarea");
     clearStatusMsg();
     statusbox.classList.add("alert-success");
-    statusbox.innerHTML += '<i class="bi bi-check-circle-fill my-2"></i>';
+    statusbox.innerHTML += '<i class="bi bi-check-circle-fill my-2 msgbox-bi-bi"></i>';
     statusbox.innerHTML +=  `&nbsp;&nbsp${msg}`;
     statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" onclick=\"clearStatusMsg()\" aria-label=\"Close\"></button>";
     $("#statusarea").removeClass("opacity-0").addClass("opacity-100");
@@ -20,7 +20,7 @@ function alertStatusMsg(msg) {
     var statusbox = document.getElementById("statusarea");
     clearStatusMsg();
     statusbox.classList.add("alert-danger");
-    statusbox.innerHTML += `<i class="bi bi-x-circle-fill"></i>`;
+    statusbox.innerHTML += `<i class="bi bi-x-circle-fill msgbox-bi-bi"></i>`;
     statusbox.innerHTML += `&nbsp;&nbsp${msg}`;
     statusbox.innerHTML += "<button type=\"button\" class=\"btn-close\" onclick=\"clearStatusMsg()\" aria-label=\"Close\"></button>";
     $("#statusarea").removeClass("opacity-0").addClass("opacity-100");
