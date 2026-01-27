@@ -9,6 +9,7 @@
 </div> <!-- closes ff-wrapper -->
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/jquery-4.0.0.min.js"></script>
+<script src="js/header.js"></script>
 <?php
 	if( isset($ff_additional_scripts) ){
 		print($ff_additional_scripts);

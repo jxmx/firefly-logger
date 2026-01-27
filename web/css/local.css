@@ -1,27 +1,95 @@
-/*
- * Black Coral #465362 / rgb(70, 83, 98)
- * Cultured #F4F4F6 / rgb(244, 244, 246)
- * Coquelicot #F34213 / rgb(243, 66, 19)
- * Titanium Yellow #F4E409 / rgb(244, 228, 9)
- * Claret #840032 / rgb(132, 0, 50)
- */
-
  :root {
-	--black-coral: rgb(70, 83, 98);
-	--cultured: rgb(244, 244, 246);
-	--coquelicot: rgb(243, 66, 19);
-	--titanium-yellow: rgb(244, 228, 9);
-	--claret: rgb(132, 0, 50);
+	/** core page **/
+	--page-bg: white;
+	--page-text: black;
+
+	/** custom colors **/
+	--ff-accent-red: #841617;
+	--ff-white-ish: #FEFEFE;
+	--ff-gunmetal: #353839;
+	--ff-typeahead: #FFBF00;
+	--ff-silver: #C0C0C0;
+	--ff-darker-gray: #414A4C;
+	--ff-twilight-indigo: #1F305E;
+	--ff-flag-red: #CE2029;
+	--ff-cornflower: #6495ED;
+
+	/** variables for div section header titles **/
+	--ff-titlebars-bg: var(--ff-silver);
+	--ff-titlebars-fg: var(--ff-gunmetal);
+
+	/** variables for the footer **/
+	--ff-footer-bg: var(--ff-accent-red);
+	--ff-footer-fg: var(--ff-white-ish);
+
+	/** variables for the navbar **/
+	--ff-navbar-items: var(--ff-darker-gray);
+
+	/** Variables for the station set box **/
+	--ff-stationset-box-bg: var(--ff-silver);
+
+	/** Boostrap overrides **/
+	--bs-primary: var(--ff-twilight-indigo);
+	--bs-danger: var(--ff-flag-red);
+	--ff-bs-hover-primary: var(--ff-cornflower);
+	--ff-bs-hover-danger: var(--ff-white-ish);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary) !important;
+  --bs-btn-border-color: var(--bs-primary) !important;
+  --bs-btn-hover-bg: color-mix(in srgb, var(--ff-bs-hover-primary) 85%, black) !important;
+  --bs-btn-active-bg: color-mix(in srgb, var(--ff-bs-hover-primary) 70%, black) !important;
+}
+
+.btn-danger {
+  --bs-btn-bg: var(--bs-danger) !important;
+  --bs-btn-border-color: var(--bs-danger) !important;
+  --bs-btn-hover-bg: color-mix(in srgb, var(--ff-bs-hover-danger) 85%, black) !important;
+  --bs-btn-active-bg: color-mix(in srgb, var(--ff-bs-hover-danger) 70%, black) !important;
+}
+
+
+[data-theme="dark"] {
+	/** core page **/
+	--page-bg: rgb(53,56,57);
+	--page-text: white;
+
+	/** variables for div section header titles **/
+	--ff-titlebars-bg: var(--ff-darker-gray);
+	--ff-titlebars-fg: var(--ff-white-ish);
+
+	/** variables for the navbar **/
+	--ff-navbar-items: var(--ff-silver);
+
+	/** Variables for the station set box **/
+	--ff-stationset-box-bg: var(--ff-gunmetal);
+}
+
+/** bootstrap-specific things **/
+[data-bs-theme="dark"] , [data-bs-theme="dark"] .table {
+	--bs-table-bg: transparent !important;
+
+	/** shadows on the boxes **/
+  	--bs-box-shadow: 0 .5rem 1rem rgba(255, 255, 255, .12);
+  	--bs-box-shadow-sm: 0 .125rem .25rem rgba(255, 255, 255, .08);
+  	--bs-box-shadow-lg: 0 1rem 3rem rgba(255, 255, 255, .18);
 }
 
 html, body {
 	height: 100%;
 	margin: 0;
+	background: var(--page-bg);
+	color: var(--page-text);
 }
 
 header {
-	border-bottom: 3px solid var(--coquelicot);
+	border-bottom: 3px solid var(--ff-accent-red);
 	margin-bottom: 15px;
+}
+
+main {
+	flex: 1; /* push footer down */
 }
 
 .ff-page-wrapper {
@@ -30,32 +98,13 @@ header {
 	flex-direction: column;
 }
 
-main {
-	flex: 1; /* push footer down */
-}
-
 .titlebars {
-	background-color: lightgray;
-	color: black;
+	background-color: var(--ff-titlebars-bg);
+	color: var(--ff-titlebars-fg);
 }
 
-.btn-misc {
-	color: white;
-	background-color: var(--black-coral);
-	border-color: var(--black-coral);
-}
-
-.btn-misc:hover {
-	color: var(--black-coral);;
-	background-color: var(--cultured);
-	border-color: var(--black-coral);
-}
-
-.btn-success:hover {
-	color: green;
-	background-color: white;
-	border-color: green;
-}
+/* hides the down-carat for menu dropdowns */
+.dropdown-toggle::after { display: none; }
 
 .log-disp-container {
 	padding:		30px;
@@ -67,20 +116,24 @@ main {
 }
 
 .nav-link, .nav-link:hover{
-	color: var(--coquelicot) !important;
+	color: var(--ff-navbar-item) !important;
 }
 
 .ff-footer {
 	margin-top: 25px;
-	color: var(--cultured);
-	background-color: var(--coquelicot);
+	color: var(--ff-white-ish);
+	background-color: var(--ff-footer-bg);
 }
 
 .ff-footerbar a:link, .ff-footerbar a:hover, .ff-footerbar a:active, .ff-footerbar a:visited {
-	color: var(--cultured);;
+	color: var(--ff-footer-fg);;
 }
 
-/* For section hinting */
+.ff-stationset-box {
+	background: var(--ff-stationset-box-bg);
+}
+
+/* For section type-head hinting */
 .hint-overlay {
     position: absolute;
     top: 0;
@@ -89,7 +142,7 @@ main {
     height: 100%;
     pointer-events: none;
     padding: .375rem .75rem; /* match Bootstrap input padding */
-    color: #adb5bd; /* Bootstrap gray-500 */
+    color: var(--ff-typeahead); /* Bootstrap gray-500 */
     font-size: 1rem; /* match input font size */
     line-height: 1.5;
 }
@@ -108,4 +161,8 @@ main {
 
 #statusarea {
 	min-height: 3.5rem;
+}
+
+.nav-bi-big {
+	font-size: 2rem;
 }

@@ -32,10 +32,10 @@
             <div class="col-2 align-self-center text-end">
                 <ul class="nav nav-pills f-nav-header">
                     <li class="nav-item dropdown">
-                    <a class="nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                        <i class="bi bi-list"></i>&nbsp;Screens
-                    </a>
-                        <ul class="dropdown-menu">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                            <i class="bi bi-list nav-bi-big"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="index.php">Logger</a></li>
                             <li><a class="dropdown-item" href="board.php">Display Board</a></li>
                             <li><a class="dropdown-item" href="handkey.php">Handkey Interface</a></li>
@@ -49,9 +49,21 @@
                             <li><a class="dropdown-item" href="configmgr.php">Config Mgr</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                            <i class="bi bi-moon-stars-fill nav-bi-big"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><button id="theme-light" class="dropdown-item">
+                                <i class="bi bi-sun-fill"></i>&nbsp;Light</button>
+                            </li>
+                            <li><button id="theme-dark" class="dropdown-item">
+                                <i class="bi bi-moon-stars-fill"></i>&nbsp;Dark</button>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
-		    </div>
-
+            </div>
 	    </div>
     </div>
 </header>

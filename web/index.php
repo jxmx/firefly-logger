@@ -121,7 +121,10 @@ include("header.php");
 	<div class="container-md shadow rounded-3 log-disp-container mb-3">
 		<div class="row">
 			<div class="col">
-				<div class="d-flex titlebars  rounded-3 p-2"><b>Last 10 QSOs</b></div>
+				<div class="d-flex justify-content-center titlebars rounded-3 p-2">
+					<div><b>Last 10 QSOs</b></div>
+				</div>
+
 				<table class="table table-hover">
 					<thead>
 						<tr>
