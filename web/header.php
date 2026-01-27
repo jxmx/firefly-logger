@@ -12,7 +12,7 @@
 		}
 	?>
 	<link href="css/local.css" rel="stylesheet">
-	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
+    <link rel="icon" href="img/Firefly_Logo_FavIco_96sq.png">
     <script src="js/header.js"></script>
 </head>
 <body>
@@ -22,7 +22,7 @@
 		<div class="row align-items-center">
             <!-- left box -->
 			<div class="col-2 align-self-center text-start">
-				<img src="img/firefly.svg" height="45px">
+                <a href="index.php"><img src="img/Firefly_Logo_150_100.webp" class="header-logo" alt="Firefly Logger"></a>
 			</div>
 
             <!-- center main box -->

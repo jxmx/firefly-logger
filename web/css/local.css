@@ -119,6 +119,14 @@ main {
 	color: var(--ff-navbar-item) !important;
 }
 
+.header-logo {
+	max-height: 65px;
+	width: auto;
+	height: auto;
+	border-radius: 12px;
+	margin-top: 8px;
+}
+
 .ff-footer {
 	margin-top: 25px;
 	color: var(--ff-white-ish);
