@@ -13,6 +13,7 @@
 	?>
 	<link href="css/local.css" rel="stylesheet">
 	<link rel="shortcut icon" href="img/firefly.svg" sizes="any" type="image/svg+xml">
+    <script src="js/header.js"></script>
 </head>
 <body>
 <div class="ff-page-wrapper">
