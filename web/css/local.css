@@ -33,6 +33,7 @@
 	--bs-danger: var(--ff-flag-red);
 	--ff-bs-hover-primary: var(--ff-cornflower);
 	--ff-bs-hover-danger: var(--ff-white-ish);
+
 }
 
 .btn-primary {
@@ -49,7 +50,6 @@
   --bs-btn-active-bg: color-mix(in srgb, var(--ff-bs-hover-danger) 70%, black) !important;
 }
 
-
 [data-theme="dark"] {
 	/** core page **/
 	--page-bg: rgb(53,56,57);
@@ -64,6 +64,7 @@
 
 	/** Variables for the station set box **/
 	--ff-stationset-box-bg: var(--ff-gunmetal);
+
 }
 
 /** bootstrap-specific things **/
@@ -81,6 +82,7 @@ html, body {
 	margin: 0;
 	background: var(--page-bg);
 	color: var(--page-text);
+	overflow: hidden;
 }
 
 header {
@@ -96,6 +98,7 @@ main {
 	min-height: 100%;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 }
 
 .titlebars {
