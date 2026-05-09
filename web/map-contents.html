@@ -5,216 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Firefly Field Day Logger — ARRL Section Map</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/map.css" rel="stylesheet">
 <link rel="icon" href="img/Firefly_Logo_FavIco_96sq.png">
-<style>
-:root {
-  --ff-map-bg: white;
-  --ff-map-panel: white;
-  --ff-map-sidebar-border: grey;
-  --ff-map-text: black;
-  --ff-map-sidebar-text: black;
-  --ff-map-sidebar-text-worked: green;
-  --ff-map-outline: black;
-  --ocean: #b3e9ff;
-  --land-base: red;
-
-  /* Four section colors — dim (unworked) is brighter than ocean so sections remain visible */
-  --c1-dim: #efefef;   --c1: #E8896B;
-  --c2-dim: #e9e9e9;   --c2: #F4C95D;
-  --c3-dim: #dedede;   --c3: #9CB380;
-  --c4-dim: #fcfcfc;   --c4: #A98DBA;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  background: var(--ff-map-bg);
-  color: var(--ff-map-text);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-body::after {
-  content:''; position: fixed; inset: 0;
-  pointer-events: none; z-index: 9999;
-}
-
-/* ── MAIN LAYOUT ── */
-.layout {
-  display: flex; flex: 1;
-  overflow: hidden; min-height: 0;
-}
-
-/* ── MAP PANEL ── */
-.map-panel {
-  flex: 1; display: flex; flex-direction: column;
-  overflow: hidden; min-width: 0;
-}
-
-.map-wrap {
-  flex: 1; overflow: hidden; position: relative;
-  background: var(--ocean);
-  padding: 4px;
-  min-height: 0;
-}
-
-#map-svg {
-  width: 100%; height: 100%;
-  display: block;
-}
-
-/* ── SVG STYLES ── */
-.ocean {
-  fill: var(--ocean);
-}
-
-.us-land, .canada-land {
-  fill: var(--land-base);
-  stroke: #1e3e52;
-  stroke-width: .3;
-}
-
-.lakes {
-  fill: var(--ocean);
-  stroke: #1e3e52;
-  stroke-width: .3;
-}
-
-.sp { /* section-path */
-  stroke: #04090f;
-  stroke-width: .4;
-  stroke-linejoin: round;
-  cursor: pointer;
-  transition: filter .12s ease, stroke .12s ease;
-}
-
-.sp.c1 { fill: var(--c1-dim); }
-.sp.c2 { fill: var(--c2-dim); }
-.sp.c3 { fill: var(--c3-dim); }
-.sp.c4 { fill: var(--c4-dim); }
-
-.sp.worked.c1 { fill: var(--c1); }
-.sp.worked.c2 { fill: var(--c2); }
-.sp.worked.c3 { fill: var(--c3); }
-.sp.worked.c4 { fill: var(--c4); }
-
-.sp.worked {
-  stroke: rgba(255,255,255,.25);
-  filter: drop-shadow(0 0 3px rgba(255,255,255,.3));
-}
-
-.sp:hover {
-  stroke: var(--ff-map-outline) !important;
-  stroke-width: 1 !important;
-  filter: brightness(1.5) !important;
-}
-
-/* section labels */
-.sl {
-  font-family: monospace;
-  font-size: 6px;
-  fill: var(--ff-map-text);
-  pointer-events: none;
-  text-anchor: middle;
-  dominant-baseline: central;
-  font-weight: bold;
-  stroke: white;
-  stroke-width: 2px;
-  paint-order: stroke fill;
-  stroke-linejoin: round;
-}
-.sl.worked {
-  font-weight: bold;
-}
-
-.inset-title {
-  font-family: monospace;
-  font-size: 8px;
-  font-weight: bolder;
-  text-anchor: middle;
-  letter-spacing: .14em;
-}
-
-/* ── SIDEBAR ── */
-.sidebar {
-  width: 200px;
-  flex-shrink: 0;
-  background: var(--ff-map-panel);
-  border-left: 1px solid var(--ff-map-sidebar-border);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.sidebar::-webkit-scrollbar { width: 5px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb { background: var(--ff-map-sidebar-border); border-radius: 2px; }
-
-.sb-group {
-  border-bottom: 1px solid rgba(26,53,69,.4);
-}
-
-.sb-head {
-  padding: 2px 5px;
-  font-size: .8rem;
-  font-weight: bold;
-  letter-spacing: .15em;
-  color: var(--ff-map-sidebar-text);
-  background: rgba(0,0,0,.35);
-  position: sticky; top: 0; z-index: 1;
-}
-
-.sb-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 10px;
-  cursor: pointer;
-  transition: background .1s;
-  color: var(--ff-map-sidebar-text);
-}
-
-.sb-item:hover {
-  background: rgba(0,245,212,.05);
-  color: var(--ff-map-text);
-}
-
-.sb-item.worked {
-  color: var(--ff-map-sidebar-text-worked);
-}
-
-.sb-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  flex-shrink: 0;
-  background: #1a3545;
-  border: 1px solid rgba(255,255,255,.06);
-  transition: background .2s, box-shadow .2s;
-}
-
-.sb-item.worked .sb-dot {
-  background: green;
-  box-shadow: 0 0 5px green;
-}
-
-.sb-abbr {
-  min-width: 32px;
-  font-weight: bold;
-  font-size: .8rem;
-}
-
-.sb-name {
-  font-size: .8rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-</style>
 </head>
 <body>
 <div class="layout">
@@ -415,17 +207,50 @@ body::after {
 
   <div class="sidebar" id="sidebar"></div>
 </div>
-
 <script>
 // ═════════════════════════════════════════════════════════════
 //  SECTION DATA (names + groups)
 // ═════════════════════════════════════════════════════════════
-const SECTIONS = [{"a":"AB","n":"Alberta","g":"CA"},{"a":"AK","n":"Alaska","g":"7"},{"a":"AL","n":"Alabama","g":"4"},{"a":"AR","n":"Arkansas","g":"5"},{"a":"AZ","n":"Arizona","g":"7"},{"a":"BC","n":"British Columbia","g":"CA"},{"a":"CO","n":"Colorado","g":"0"},{"a":"CT","n":"Connecticut","g":"1"},{"a":"DE","n":"Delaware","g":"3"},{"a":"EB","n":"East Bay","g":"6"},{"a":"EMA","n":"Eastern Massachusetts","g":"1"},{"a":"ENY","n":"Eastern New York","g":"2"},{"a":"EPA","n":"Eastern Pennsylvania","g":"3"},{"a":"EWA","n":"Eastern Washington","g":"7"},{"a":"GA","n":"Georgia","g":"4"},{"a":"GH","n":"Ontario Golden Horseshoe","g":"CA"},{"a":"IA","n":"Iowa","g":"0"},{"a":"ID","n":"Idaho","g":"7"},{"a":"IL","n":"Illinois","g":"9"},{"a":"IN","n":"Indiana","g":"9"},{"a":"KS","n":"Kansas","g":"0"},{"a":"KY","n":"Kentucky","g":"4"},{"a":"LA","n":"Louisiana","g":"5"},{"a":"LAX","n":"Los Angeles","g":"6"},{"a":"MB","n":"Manitoba","g":"CA"},{"a":"MDC","n":"Maryland-DC","g":"3"},{"a":"ME","n":"Maine","g":"1"},{"a":"MI","n":"Michigan","g":"8"},{"a":"MN","n":"Minnesota","g":"0"},{"a":"MO","n":"Missouri","g":"0"},{"a":"MS","n":"Mississippi","g":"5"},{"a":"MT","n":"Montana","g":"7"},{"a":"NB","n":"New Brunswick","g":"CA"},{"a":"NC","n":"North Carolina","g":"4"},{"a":"ND","n":"North Dakota","g":"0"},{"a":"NE","n":"Nebraska","g":"0"},{"a":"NFL","n":"Northern Florida","g":"4"},{"a":"NH","n":"New Hampshire","g":"1"},{"a":"NL","n":"Newfoundland & Labrador","g":"CA"},{"a":"NLI","n":"NYC-Long Island","g":"2"},{"a":"NM","n":"New Mexico","g":"5"},{"a":"NNJ","n":"Northern New Jersey","g":"2"},{"a":"NNY","n":"Northern New York","g":"2"},{"a":"NS","n":"Nova Scotia","g":"CA"},{"a":"NTX","n":"North Texas","g":"5"},{"a":"NV","n":"Nevada","g":"7"},{"a":"OH","n":"Ohio","g":"8"},{"a":"OK","n":"Oklahoma","g":"5"},{"a":"ONE","n":"Ontario East","g":"CA"},{"a":"ONN","n":"Ontario North","g":"CA"},{"a":"ONS","n":"Ontario South","g":"CA"},{"a":"OR","n":"Oregon","g":"7"},{"a":"ORG","n":"Orange","g":"6"},{"a":"PAC","n":"Pacific (Hawaii)","g":"6"},{"a":"PE","n":"Prince Edward Island","g":"CA"},{"a":"PR","n":"Puerto Rico","g":"4"},{"a":"QC","n":"Quebec","g":"CA"},{"a":"RI","n":"Rhode Island","g":"1"},{"a":"SB","n":"Santa Barbara","g":"6"},{"a":"SC","n":"South Carolina","g":"4"},{"a":"SCV","n":"Santa Clara Valley","g":"6"},{"a":"SD","n":"South Dakota","g":"0"},{"a":"SDG","n":"San Diego","g":"6"},{"a":"SF","n":"San Francisco","g":"6"},{"a":"SFL","n":"Southern Florida","g":"4"},{"a":"SJV","n":"San Joaquin Valley","g":"6"},{"a":"SK","n":"Saskatchewan","g":"CA"},{"a":"SNJ","n":"Southern New Jersey","g":"2"},{"a":"STX","n":"South Texas","g":"5"},{"a":"SV","n":"Sacramento Valley","g":"6"},{"a":"TER","n":"Territories","g":"CA"},{"a":"TN","n":"Tennessee","g":"4"},{"a":"UT","n":"Utah","g":"7"},{"a":"VA","n":"Virginia","g":"4"},{"a":"VI","n":"US Virgin Islands","g":"4"},{"a":"VT","n":"Vermont","g":"1"},{"a":"WCF","n":"West Central Florida","g":"4"},{"a":"WI","n":"Wisconsin","g":"9"},{"a":"WMA","n":"Western Massachusetts","g":"1"},{"a":"WNY","n":"Western New York","g":"2"},{"a":"WPA","n":"Western Pennsylvania","g":"3"},{"a":"WTX","n":"West Texas","g":"5"},{"a":"WV","n":"West Virginia","g":"8"},{"a":"WWA","n":"Western Washington","g":"7"},{"a":"WY","n":"Wyoming","g":"7"}];
+
+const API_URI = "api/allworkedsecs.php";
+
+const SECTIONS = [
+  {"a":"AB","n":"Alberta","g":"CA"},{"a":"AK","n":"Alaska","g":"7"},{"a":"AL","n":"Alabama","g":"4"},
+  {"a":"AR","n":"Arkansas","g":"5"},{"a":"AZ","n":"Arizona","g":"7"},{"a":"BC","n":"British Columbia","g":"CA"},
+  {"a":"CO","n":"Colorado","g":"0"},{"a":"CT","n":"Connecticut","g":"1"},{"a":"DE","n":"Delaware","g":"3"},
+  {"a":"EB","n":"East Bay","g":"6"},{"a":"EMA","n":"Eastern Massachusetts","g":"1"},
+  {"a":"ENY","n":"Eastern New York","g":"2"},{"a":"EPA","n":"Eastern Pennsylvania","g":"3"},
+  {"a":"EWA","n":"Eastern Washington","g":"7"},{"a":"GA","n":"Georgia","g":"4"},{"a":"GH","n":"Ontario Golden Horseshoe","g":"CA"},
+  {"a":"IA","n":"Iowa","g":"0"},{"a":"ID","n":"Idaho","g":"7"},{"a":"IL","n":"Illinois","g":"9"},
+  {"a":"IN","n":"Indiana","g":"9"},{"a":"KS","n":"Kansas","g":"0"},{"a":"KY","n":"Kentucky","g":"4"},
+  {"a":"LA","n":"Louisiana","g":"5"},{"a":"LAX","n":"Los Angeles","g":"6"},{"a":"MB","n":"Manitoba","g":"CA"},
+  {"a":"MDC","n":"Maryland-DC","g":"3"},{"a":"ME","n":"Maine","g":"1"},{"a":"MI","n":"Michigan","g":"8"},
+  {"a":"MN","n":"Minnesota","g":"0"},{"a":"MO","n":"Missouri","g":"0"},{"a":"MS","n":"Mississippi","g":"5"},
+  {"a":"MT","n":"Montana","g":"7"},{"a":"NB","n":"New Brunswick","g":"CA"},{"a":"NC","n":"North Carolina","g":"4"},
+  {"a":"ND","n":"North Dakota","g":"0"},{"a":"NE","n":"Nebraska","g":"0"},{"a":"NFL","n":"Northern Florida","g":"4"},
+  {"a":"NH","n":"New Hampshire","g":"1"},{"a":"NL","n":"Newfoundland & Labrador","g":"CA"},
+  {"a":"NLI","n":"NYC-Long Island","g":"2"},{"a":"NM","n":"New Mexico","g":"5"},
+  {"a":"NNJ","n":"Northern New Jersey","g":"2"},{"a":"NNY","n":"Northern New York","g":"2"},
+  {"a":"NS","n":"Nova Scotia","g":"CA"},{"a":"NTX","n":"North Texas","g":"5"},{"a":"NV","n":"Nevada","g":"7"},
+  {"a":"OH","n":"Ohio","g":"8"},{"a":"OK","n":"Oklahoma","g":"5"},{"a":"ONE","n":"Ontario East","g":"CA"},
+  {"a":"ONN","n":"Ontario North","g":"CA"},{"a":"ONS","n":"Ontario South","g":"CA"},{"a":"OR","n":"Oregon","g":"7"},
+  {"a":"ORG","n":"Orange","g":"6"},{"a":"PAC","n":"Pacific (Hawaii)","g":"6"},{"a":"PE","n":"Prince Edward Island","g":"CA"},
+  {"a":"PR","n":"Puerto Rico","g":"4"},{"a":"QC","n":"Quebec","g":"CA"},{"a":"RI","n":"Rhode Island","g":"1"},
+  {"a":"SB","n":"Santa Barbara","g":"6"},{"a":"SC","n":"South Carolina","g":"4"},{"a":"SCV","n":"Santa Clara Valley","g":"6"},
+  {"a":"SD","n":"South Dakota","g":"0"},{"a":"SDG","n":"San Diego","g":"6"},{"a":"SF","n":"San Francisco","g":"6"},
+  {"a":"SFL","n":"Southern Florida","g":"4"},{"a":"SJV","n":"San Joaquin Valley","g":"6"},{"a":"SK","n":"Saskatchewan","g":"CA"},
+  {"a":"SNJ","n":"Southern New Jersey","g":"2"},{"a":"STX","n":"South Texas","g":"5"},{"a":"SV","n":"Sacramento Valley","g":"6"},
+  {"a":"TER","n":"Territories","g":"CA"},{"a":"TN","n":"Tennessee","g":"4"},{"a":"UT","n":"Utah","g":"7"},
+  {"a":"VA","n":"Virginia","g":"4"},{"a":"VI","n":"US Virgin Islands","g":"4"},{"a":"VT","n":"Vermont","g":"1"},
+  {"a":"WCF","n":"West Central Florida","g":"4"},{"a":"WI","n":"Wisconsin","g":"9"},{"a":"WMA","n":"Western Massachusetts","g":"1"},
+  {"a":"WNY","n":"Western New York","g":"2"},{"a":"WPA","n":"Western Pennsylvania","g":"3"},{"a":"WTX","n":"West Texas","g":"5"},
+  {"a":"WV","n":"West Virginia","g":"8"},{"a":"WWA","n":"Western Washington","g":"7"},{"a":"WY","n":"Wyoming","g":"7"}
+];
 
 const GROUP_NAMES = {
-  '0':'Call Area 0','1':'Call Area 1','2':'Call Area 2','3':'Call Area 3',
-  '4':'Call Area 4','5':'Call Area 5','6':'Call Area 6','7':'Call Area 7',
-  '8':'Call Area 8','9':'Call Area 9','CA':'Canada'
+  '0':'US Area 0','1':'US Area 1','2':'US Area 2','3':'US Area 3',
+  '4':'US Area 4','5':'US Area 5','6':'US Area 6','7':'US Area 7',
+  '8':'US Area 8','9':'US Area 9','CA':'Canada'
 };
 
 const worked = new Set();
@@ -449,7 +274,7 @@ function buildSidebar() {
       li.className = 'sb-item' + (worked.has(s.a) ? ' worked' : '');
       li.id = 'sb-' + s.a;
       li.innerHTML = '<div class="sb-dot"></div><span class="sb-abbr">' + s.a + '</span><span class="sb-name">' + s.n + '</span>';
-      li.addEventListener('click', () => FieldDayMap.toggle(s.a));
+      //li.addEventListener('click', () => FieldDayMap.toggle(s.a));
       div.appendChild(li);
     });
     sb.appendChild(div);
@@ -468,19 +293,6 @@ function refresh(abbr) {
 
 function refreshAll() {
   SECTIONS.forEach(s => refresh(s.a));
-  updateStats();
-}
-
-function updateStats() {
-  let us = 0, ca = 0;
-  worked.forEach(a => {
-    const s = SECTIONS.find(x => x.a === a);
-    if (s) { s.g === 'CA' ? ca++ : us++; }
-  });
-  document.getElementById('s-worked').textContent = worked.size;
-  document.getElementById('s-us').textContent = us;
-  document.getElementById('s-ca').textContent = ca;
-  document.getElementById('progress').style.width = (worked.size / 85 * 100).toFixed(1) + '%';
 }
 
 // ═════════════════════════════════════════════════════════════
@@ -494,7 +306,6 @@ window.FieldDayMap = {
     if (!known) return false;
     worked.add(abbr);
     refresh(abbr);
-    updateStats();
     return true;
   },
 
@@ -503,7 +314,6 @@ window.FieldDayMap = {
     abbr = String(abbr).toUpperCase();
     worked.delete(abbr);
     refresh(abbr);
-    updateStats();
   },
 
   /** Toggle a section's worked state. */
@@ -532,15 +342,14 @@ window.FieldDayMap = {
    * Fetch worked sections from a JSON endpoint.
    * Expected response: { "worked": ["OH", "QC", ...] }
    */
-  async loadFromAPI(url) {
-    try {
-      const r = await fetch(url);
-      const d = await r.json();
-      if (Array.isArray(d.worked)) this.setWorked(d.worked);
-      else console.warn('FieldDayMap.loadFromAPI: expected { worked: [...] }');
-    } catch(e) { console.error('FieldDayMap.loadFromAPI error:', e); }
-  },
-
+async loadFromAPI(url) {
+  try {
+    const r = await fetch(url);
+    const d = await r.json();
+    if (Array.isArray(d)) this.setWorked(d);
+    else console.warn('FieldDayMap.loadFromAPI: expected an array');
+  } catch(e) { console.error('FieldDayMap.loadFromAPI error:', e); }
+},
   /**
    * Poll an API endpoint on an interval.
    * Returns the interval ID (pass to clearInterval to stop).
@@ -560,18 +369,27 @@ window.FieldDayMap = {
 };
 
 // ── Click handlers ──
+/*
 document.querySelectorAll('.sp').forEach(el => {
   el.addEventListener('click', function() {
     const sec = this.dataset.section;
     if (sec) FieldDayMap.toggle(sec);
   });
 });
+*/
 
 // ── Init ──
+const saved = localStorage.getItem("theme");
+if (saved) {
+  document.documentElement.setAttribute("data-theme", saved);
+  document.documentElement.setAttribute("data-bs-theme", saved);
+}
 buildSidebar();
-updateStats();
+window.FieldDayMap.loadFromAPI(API_URI);
+window.FieldDayMap.startPolling(API_URI, 5000);
 
 // Console help
+/*
 console.log('%c🦟 Firefly Field Day Logger — Section Map API', 'color:#00f5d4;font-family:monospace;font-size:13px;font-weight:bold');
 console.log('%cwindow.FieldDayMap methods:', 'color:#7ecfea;font-family:monospace');
 console.log('  .work("OH")            mark section worked');
@@ -584,6 +402,7 @@ console.log('  .loadFromAPI(url)      fetch { worked:[...] } from URL');
 console.log('  .startPolling(url,ms)  auto-refresh (returns interval ID)');
 console.log('  .getSections()         list all 85 abbreviations');
 console.log('  .getSectionInfo("OH")  details about one section');
+*/
 </script>
 </body>
 </html>

@@ -38,7 +38,9 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="index.php">Logger</a></li>
-                            <li><a class="dropdown-item" href="board.php">Display Board</a></li>
+                            <li><a class="dropdown-item" href="board.php">Scoreboard</a></li>
+                            <li><a class="dropdown-item" href="map.php">Map</a></li>
+                            <li><a class="dropdown-item" href="map-contents.html">Map (Fullscreen)</a></li>
                             <li><a class="dropdown-item" href="handkey.php">Handkey Interface</a></li>
                             <li><a class="dropdown-item" href="allqsos.php">All QSOs</a></li>
                             <li><hr class="dropdown-divider"></li>
