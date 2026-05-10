@@ -61,7 +61,7 @@ try {
 				<button id="editsub" name="editsub" type="submit"
 					class="btn btn-danger me-2">Save</button>
 				<button id="abandonedit" name="abandonedit" type="button"
-					class="btn btn-misc" onclick="abandonEdit()">Abandon</button>
+					class="btn btn-secondary" onclick="abandonEdit()">Abandon</button>
 			</div>
 			<!-- Status area -->
 			<div class="col-12">
