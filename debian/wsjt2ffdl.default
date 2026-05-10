@@ -1,0 +1,11 @@
+# Using the default WSJT-X directions, WSJT-X will multicast its
+# information to 224.0.0.1 on port 2237. Change the multicast
+# IP target and the port here
+MGIP=224.0.0.1
+MGPT=2237
+
+# URL for the API for Firefly Field Day Logger
+APIURL=http://localhost/firefly-logger/api/storeqso.php
+
+# Other options like --debug
+#OPT=

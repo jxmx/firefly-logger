@@ -33,8 +33,29 @@ do_configure() {
 	chown -R www-data:www-data /var/www/firefly-logger
 
 	if [ ! -d /var/lib/mysql/ffdl ]; then
-		/usr/bin/firefly-logger-loaddb	
+		/usr/bin/firefly-logger-loaddb
 	fi
+
+	## User Management
+    if ! getent passwd wsjt2ffdl >/dev/null 2>&1; then
+		adduser --system --no-create-home --home /nonexistent --group \
+			--shell /usr/sbin/nologin --disabled-login --disabled-password wsjt2ffdl
+    fi
+
+	## Systemd Management
+	if deb-systemd-helper debian-installed wsjt2ffdl.service; then
+		if deb-systemd-helper --quiet was-enabled wsjt2ffdl.service; then
+			deb-systemd-helper enable wsjt2ffdl.service >/dev/null || true
+		else
+			deb-systemd-helper update-state wsjt2ffdl.service >/dev/null || true
+		fi
+	else
+		deb-systemd-helper enable wsjt2ffdl.service >/dev/null || true
+	fi
+	if [ -d /run/systemd/system ]; then
+		deb-systemd-invoke start wsjt2ffdl.service >/dev/null || true
+	fi
+
 }
 
 case "$1" in

@@ -11,7 +11,8 @@ PKGNAME = firefly-logger
 BUILDABLES = \
 	bin \
 	conf \
-	web
+	web \
+	wsjt2ffdl
 
 ifdef ${DESTDIR}
 DESTDIR=${DESTDIR}

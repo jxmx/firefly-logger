@@ -1,0 +1,17 @@
+[Unit]
+Description=WSJT-X to Firefly Field Day Integrator
+After=multi-user.target
+After=network-online.target
+Requires=network-online.target
+
+[Service]
+Type=exec
+User=wsjt2ffdl
+Group=wsjt2ffdl
+Environment="PATH=/usr/bin:/bin:/usr/sbin:/sbin"
+EnvironmentFile=-/etc/default/wsjt2ffdl
+ExecStart=wsjt2ffdl-listener $OPTS --port $MGPT $MGIP $APIURL
+
+[Install]
+WantedBy=multi-user.target
+
