@@ -55,7 +55,6 @@ do_configure() {
 	if [ -d /run/systemd/system ]; then
 		deb-systemd-invoke start wsjt2ffdl.service >/dev/null || true
 	fi
-
 }
 
 case "$1" in
