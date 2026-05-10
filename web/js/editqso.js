@@ -65,35 +65,33 @@ function qkeyCalculate(qsocall, opband, opmode){
 // Add a custom rule called "callsign"
 const callsignRegex = /^(?:[A-Z]{1,2}|[0-9][A-Z])\d{1,2}[A-Z]{1,4}$/i;
 
-// Validation function for the callsign
 $(function () {
     $.validator.addMethod("callsign", function(value, element) {
         return this.optional(element) || callsignRegex.test(value);
-    });
-}, "Valid callsign required");
+    }, "Valid callsign required");
+});
 
-// Validation function for the operator class
-$(function (){
+$(function () {
     $.validator.addMethod("opclass", function(value, element) {
-        if( config.general.fdType == "WFD"){
+        let re;
+        if (config.general.fdType == "WFD") {
             re = /^[0-9]{1,2}[himoHIOM]$/;
         } else {
             re = /^[0-9]{1,2}[a-fA-F]$/;
         }
         return this.optional(element) || re.test(value);
-    });
-}, "Valid class required");
+    }, "Valid class required");
+});
 
-// Validation function for the section
-$(function (){
+$(function () {
     $.validator.addMethod("section", function(value, element) {
         let retval = false;
-        if(config.sections.sections.includes(value.toUpperCase())){
+        if (config.sections.sections.includes(value.toUpperCase())) {
             retval = true;
         }
         return this.optional(element) || retval;
-    });
-}, "Valid section required");
+    }, "Valid section required");
+});
 
 // Validation
 $(function (){
