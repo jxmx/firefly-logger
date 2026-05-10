@@ -1,4 +1,38 @@
 -------------------------
+** v26.0 - 2026-05-10
+-------------------------
+New Features:
+- Dark mode! Toggle light and dark mode from the menu in the top-right
+- Shaded map to track QSO progress!
+- Updated form validation system using jQuery Validate Library
+- Fully-responsive design; removed legacy layout that did not work well on smaller screens
+- An "All QSOs" screen with filtering and searching features
+- Added a ping/polling feature to the main log screen and the board display to bring up an unmissable and unclearable alert if the connection to the server drops
+
+Major Bug Fixes:
+- All Ajax/XHR calls now properly validate and report on errors
+- Editing a QSO did not change the qkey index value leading to potential collisions
+- Operator field was not always properly uppercasing
+
+Major Internal Enhancements:
+- Cleanup old JavaScript code
+- Replacement of inline SVG with Bootstrap Icons
+- Upgrade of jQuery
+- Upgrade of Bootstrap
+- Replacement of the Twitter typeahead library with a minimalist custom solution
+- Much more robust error handling
+- Transition to MySQL PDO for database
+
+-------------------------
+** v5.5 - 2025-05-11
+-------------------------
+* Massively updated Pi appliance
+* Validated for Field Day 2025
+* Firefly Logger v5.5 Fixes
+    * Fix broken UI and field validation on the Handkey screen (#45)
+    * Fix inserts to always be upper-case due to odd Safari browser behavior (#46)
+
+-------------------------
 ** v5.4 - 2025-05-10
 -------------------------
 
@@ -11,7 +45,7 @@ Bugs/Issues:
 -------------------------
 
 new features:
-- config manager screen now has a button to clear the 
+- config manager screen now has a button to clear the
 local browser configuration
 - add 1.25m/220 mhz band per request
 
@@ -24,7 +58,7 @@ bugs/issues:
 -------------------------
 ** v5.2 - 2024-03-23
 -------------------------
-Version 5.2 is the first production-ready version of the 
+Version 5.2 is the first production-ready version of the
 5.x codebase. The 5.x codebase has been modernized and
 re-organized for installation and appliance builds.
 
@@ -91,7 +125,7 @@ Bugs/Issues:
     api/config_bands.json - List of bands
     api/config_modes.json - List of modes
     api/config_sections.json - List of ARRL/RAC sections
-    
+
 
 -------------------------
 ** v2.0.0 - 2022-01-31 **

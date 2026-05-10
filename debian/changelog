@@ -1,3 +1,29 @@
+firefly-logger (26.0-1) unstable; urgency=medium
+
+  *  Dark mode! Toggle light and dark mode from the menu in the top-right
+  *  Shaded map to track QSO progress!
+  *  Updated form validation system using jQuery Validate Library
+  *  Fully-responsive design; removed legacy layout that did not work well on
+     smaller screens
+  *  An "All QSOs" screen with filtering and searching features
+  *  Added a ping/polling feature to the main log screen and the board display to
+     bring up an unmissable and unclearable alert if the connection to the server
+     drops
+  *  All Ajax/XHR calls now properly validate and report on errors
+  *  Editing a QSO did not change the qkey index value leading to potential
+     collisions
+  *  Operator field was not always properly uppercasing
+  *  Cleanup old JavaScript code
+  *  Replacement of inline SVG with Bootstrap Icons
+  *  Upgrade of jQuery
+  *  Upgrade of Bootstrap
+  *  Replacement of the Twitter typeahead library with a minimalist custom
+     solution
+  *  Much more robust error handling
+  *  Transition to MySQL PDO for database 
+
+ -- Helium <jason@mfamily.org>  Sun, 10 May 2026 14:10:26 -0400
+
 firefly-logger (5.5-1) unstable; urgency=medium
 
   * Minor fixes for Debian 12 compatability; no features 
