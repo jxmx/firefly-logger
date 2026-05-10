@@ -1,0 +1,75 @@
+#!/usr/bin/python3
+#
+# Copyright(C) 2024 Jason D. McCormick
+# Distributed under the "3 Clause BSD License"
+# See LICENSE.md with the source
+
+import argparse
+import logging
+import logging.handlers
+import signal
+import socket
+import socketserver
+import sys
+from wsjt2ffdl import wsjt_decoder, wsjt_handler, wsjt_qso
+
+_BUILD_ID = "@@HEAD-DEVELOP@@"
+
+# Handle Signals
+def sigterm_handler(_signo, _stack_frame):
+    log.info("exiting on signal %d", _signo)
+    sys.exit(0)    
+signal.signal(signal.SIGINT, sigterm_handler)
+signal.signal(signal.SIGHUP, sigterm_handler)
+signal.signal(signal.SIGTERM, sigterm_handler)
+
+# argparse
+ap = argparse.ArgumentParser(description="Listen for WSJT-X QSO messages and log them to FFDL")
+ap.add_argument("group", type=str, help="Multicast Group IP")
+ap.add_argument("url", type=str, help="URL to Firefly FDL API")
+ap.add_argument("--port", type=int, help="Multicast port (default 2237)", default=2237)
+ap.add_argument("--debug", help="enable debug-level logging output", action="store_true")
+ap.add_argument("--debugmodule", type=str, help="enable debugging only for module specified")
+ap.add_argument("--version", help="get the version of the software", action="version", version='%(prog)s {}'.format(_BUILD_ID))
+args = ap.parse_args()
+
+# Setup Logging
+log = logging.getLogger("wsjt2ffdl-listener")
+lh = logging.StreamHandler()
+lf = logging.Formatter(fmt="%(levelname)s: (%(name)s) %(message)s")
+lh.setFormatter(lf)
+log.addHandler(lh)
+
+if args.debugmodule:
+    mlog = logging.getLogger(args.debugmodule)
+else:
+    mlog = logging.getLogger("wsjt2ffdl")
+mlog.addHandler(lh)
+
+if args.debug:
+    log.setLevel(logging.DEBUG)
+    mlog.setLevel(logging.DEBUG)
+else:
+    log.setLevel(logging.INFO)
+    mlog.setLevel(logging.INFO)
+
+FFDL_URL = args.url
+log.info(f"Server publishing to {FFDL_URL}")
+
+if __name__ == "__main__":
+    HOST, PORT = "0.0.0.0", args.port
+    GROUP = args.group
+    listener = socketserver.UDPServer((HOST, PORT), wsjt_handler.WsjtHandler)
+    listener.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    mreq = socket.inet_aton(GROUP) + socket.inet_aton('0.0.0.0')
+    listener.socket.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+    listener.ffdl_url = FFDL_URL
+
+    log.info(f"Server listening for {GROUP}:{PORT}")
+
+    try:
+        listener.serve_forever()
+    finally:
+        log.info("UDP listener shutdown on signal")
+        listener.shutdown()
+        
