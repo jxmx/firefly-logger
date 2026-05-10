@@ -522,20 +522,19 @@ function setCookie(cname, cvalue, exdays) {
 // Generic get method
 function getCookie(cname) {
   var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
+  var ca = decodeURIComponent(document.cookie).split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length);
     }
   }
-  return "";
+  return null;
 }
 
+function testCookieExists(cname) {
+  return getCookie(cname) !== null;
+}
 
 
 // Set Station from Form
@@ -550,18 +549,32 @@ function saveStationData() {
 };
 
 // Set Station from Cookie on Load
+// Set Station from Cookie on Load
 function setStationDataFromCookie() {
-	var re = /^[a-zA-Z0-9\/]{2,9}[a-zA-Z]$/;
-	if( ( operator = getCookie("operator") ) && re.test(getCookie("operator")) ) {
-		document.getElementById("operator").value = operator;
-	}
-	if( ( band = getCookie("band") ) && ( getCookie("band") !== "X" ) ) {
-		document.getElementById("band").value = band;
-	}
-	if( ( mode = getCookie("mode") ) && ( getCookie("mode") !== "X" ) ) {
-		document.getElementById("mode").value = mode;
-	}
-	stationInfoSet = true;
+    var re = /^[a-zA-Z0-9\/]{2,9}[a-zA-Z]$/;
+    var operatorSet = false;
+    var bandSet = false;
+    var modeSet = false;
+
+    var operator = getCookie("operator");
+    if (operator && re.test(operator)) {
+        document.getElementById("operator").value = operator;
+        operatorSet = true;
+    }
+
+    var band = getCookie("band");
+    if (band && band !== "X") {
+        document.getElementById("band").value = band;
+        bandSet = true;
+    }
+
+    var mode = getCookie("mode");
+    if (mode && mode !== "X") {
+        document.getElementById("mode").value = mode;
+        modeSet = true;
+    }
+
+    stationInfoSet = operatorSet && bandSet && modeSet;
 }
 
 // Test for the cookie
