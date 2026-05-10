@@ -1,0 +1,2 @@
+debian/wsjt2ffdl etc/default/
+debian/wsjt2ffdl.service lib/systemd/system/
