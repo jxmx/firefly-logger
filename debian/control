@@ -17,4 +17,4 @@ Description: Firefly Logger webapp for use at ARRL Field Day operating events.
  The design of this logger is to be a simple, effective logger that can be
  used on any device that can have a reasonably modern browser installed on
  it. This includes older laptops running Linux + Chromium, tablets with Chrome
- or Firefox, Rasperry Pi 3 or 4 with Raspberry Pi OS (Raspbian), etc.
+ or Firefox, Raspberry Pi 3 or 4 with Raspberry Pi OS (Raspbian), etc.
