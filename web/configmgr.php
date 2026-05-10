@@ -61,5 +61,36 @@ include("header.php");
 		</div>
 	</div>
 </main>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    loadConfig();
+});
+
+function loadConfig() {
+    fetch("api/config_general.json", { cache: "no-store" })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("Failed to load config: " + response.status);
+            }
+            return response.json();
+        })
+        .then(function(config) {
+            if (config.stationCall !== undefined) {
+                document.getElementById("stationCall").value = config.stationCall;
+            }
+            if (config.fdType !== undefined) {
+                document.getElementById("fdType").value = config.fdType;
+            }
+            if (config.multiOp !== undefined) {
+                // Handle both boolean true/false and string "true"/"false"
+                var isChecked = (config.multiOp === true || config.multiOp === "true");
+                document.getElementById("multiOp").checked = isChecked;
+            }
+        })
+        .catch(function(error) {
+            console.error("Error loading config:", error);
+        });
+}
+</script>
 
 <?php include("footer.php"); ?>
