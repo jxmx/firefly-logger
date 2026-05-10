@@ -1,4 +1,4 @@
-firefly-logger (26.1-1) unstable; urgency=medium
+firefly-logger (26.0-1) unstable; urgency=medium
 
   *  Dark mode! Toggle light and dark mode from the menu in the top-right
   *  Shaded map to track QSO progress!
@@ -22,7 +22,7 @@ firefly-logger (26.1-1) unstable; urgency=medium
   *  Much more robust error handling
   *  Transition to MySQL PDO for database 
 
- -- Helium <jason@mfamily.org>  Sun, 10 May 2026 16:48:48 -0400
+ -- Helium <jason@mfamily.org>  Sun, 10 May 2026 17:47:25 -0400
 
 firefly-logger (5.5-1) unstable; urgency=medium
 
