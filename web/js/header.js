@@ -10,11 +10,19 @@ window.addEventListener("load", async function(){
         document.documentElement.setAttribute("data-theme", "light");
         document.documentElement.setAttribute("data-bs-theme", "light");
         localStorage.setItem("theme", "light");
+        reloadIFrames();
     });
 
     document.getElementById("theme-dark").addEventListener("click", () => {
         document.documentElement.setAttribute("data-theme", "dark");
         document.documentElement.setAttribute("data-bs-theme", "dark");
         localStorage.setItem("theme", "dark");
+        reloadIFrames();
     });
 });
+
+function reloadIFrames(){
+    document.querySelectorAll('iframe').forEach(iframe => {
+    iframe.src = iframe.src;
+    });
+}
