@@ -149,9 +149,15 @@ body::after {
 .inset-title {
   font-family: monospace;
   font-size: 8px;
-  font-weight: bolder;
+  fill: var(--ff-map-text);
+  pointer-events: none;
   text-anchor: middle;
-  letter-spacing: .14em;
+  dominant-baseline: central;
+  font-weight: bold;
+  stroke: var(--ff-map-label-stroke);
+  stroke-width: 2px;
+  paint-order: stroke fill;
+  stroke-linejoin: round;
 }
 
 /* ── SIDEBAR ── */
