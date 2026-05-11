@@ -67,6 +67,6 @@ debclean:
 	rm -f debian/files
 	rm -rf debian/.debhelper/
 	rm -f debian/debhelper-build-stamp
-	rm -f debian/*.substvars
+	rm -f debian/*.substvars debian/*.debhelper
 	rm -rf debian/$(PKGNAME)/ debian/.debhelper/
 	rm -f debian/debhelper-build-stamp debian/files debian/mfamily-scripts.substvars
