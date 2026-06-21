@@ -15,7 +15,7 @@ ROOT_FILES = $(wildcard *.html *.php *.ico)
 CSS_FILES = $(wildcard $(CSS_DIR)/*.css) $(wildcard $(CSS_DIR)/bootstrap-icons*/bootstrap*) \
 	$(wildcard $(CSS_DIR)/bootstrap-icons*/fonts/*)
 
-IMG_FILES = $(wildcard $(IMG_DIR)/*.png $(IMG_DIR)/*.svg) $(IMG_DIR/*.webp)
+IMG_FILES = $(wildcard $(IMG_DIR)/*.png $(IMG_DIR)/*.svg $(IMG_DIR)/*.webp)
 JS_FILES = $(wildcard $(JS_DIR)/*.js)
 API_FILES = $(wildcard $(API_DIR)/*)
 
