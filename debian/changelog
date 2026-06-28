@@ -1,3 +1,11 @@
+firefly-logger (26.2-1) unstable; urgency=medium
+
+  * Fix bytestream decode order for wsjt2ffdl mixing
+    up op_call and de_call
+  * Package is missing the exports/*.php web files
+
+ -- Helium <jason@mfamily.org>  Sun, 28 Jun 2026 17:05:28 -0400
+
 firefly-logger (26.1-1) unstable; urgency=medium
 
   *  Fix header image in make/package
